@@ -1,5 +1,7 @@
 package org.sid.appbackser.entities;
 
 public enum RoleTypes {
-    Re
+    Gest,
+    ProjectMembre,
+    AdminGrp
 }

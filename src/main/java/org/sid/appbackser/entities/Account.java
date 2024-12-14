@@ -1,25 +1,25 @@
 package org.sid.appbackser.entities;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @Table
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+@NoArgsConstructor
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "roles")
-    private List<Groupe> groupes;
-    @OneToMany(mappedBy = "role")
-    private List<Account>accounts;
-    private RoleTypes roleTypes;
-
+    @OneToOne
+    private User user;
+    private String username;
+    private String mail;
+    private String password;
+    @ManyToOne(optional = false)
+    private Role role;
 }

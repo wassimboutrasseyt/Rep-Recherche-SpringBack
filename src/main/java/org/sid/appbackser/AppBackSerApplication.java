@@ -19,6 +19,4 @@ public class AppBackSerApplication {
             System.out.println(new Date());
         };
     }
-
-
 }
