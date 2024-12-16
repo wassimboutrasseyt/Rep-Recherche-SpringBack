@@ -9,4 +9,5 @@ public class RegistredUserController {
     // the registred user should just auth so he inherit from the usercontroller (methode 1)
     // the registred user share comune methodes with other actors (projMember, projAdmin, plaformAdmin)
     //     the comune methode accesed from /registred/profile for example
+
 }
