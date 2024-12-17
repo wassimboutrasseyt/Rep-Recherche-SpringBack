@@ -1,6 +1,8 @@
 package org.sid.appbackser.entities;
 
 
+import java.util.Set;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,11 +17,12 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @ManyToOne
     private User user;
     private String username;
     private String mail;
     private String password;
-    @ManyToOne(optional = false)
-    private Role role;
+    
+    @OneToMany(mappedBy = "account")
+    private Set<GroupeAccount> groupeAccounts;
 }

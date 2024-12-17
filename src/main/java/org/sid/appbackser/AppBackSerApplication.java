@@ -1,7 +1,7 @@
 package org.sid.appbackser;
 
 import org.sid.appbackser.entities.Role;
-import org.sid.appbackser.entities.RoleTypes;
+import org.sid.appbackser.enums.RoleTypes;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

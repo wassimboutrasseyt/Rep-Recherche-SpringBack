@@ -10,4 +10,6 @@ public interface MessageRepository extends MongoRepository<Message, String> {
     List<Message> findByGroupId(Long groupId);
 
     List<Message> findByReceiverId(Long receiverId);
+
+    List<Message> findBySenderId(Long senderId);
 }
