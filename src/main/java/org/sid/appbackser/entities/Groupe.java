@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 
 @Entity
 @Table
@@ -15,7 +17,7 @@ public class Groupe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nomGRP;
-    @ManyToOne( optional = false)
-    private Role roles;
+    @ManyToOne(optional = false)
+    private Role role;
 
 }

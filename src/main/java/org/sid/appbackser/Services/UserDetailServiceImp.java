@@ -1,0 +1,33 @@
+/*
+package org.sid.appbackser.Services;
+
+import org.sid.appbackser.Repositories.AccountRepository;
+import org.sid.appbackser.Repositories.UserRepository;
+import org.sid.appbackser.entities.Account;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class UserDetailServiceImp implements UserDetailsService {
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    AccountRepository accountRepository;
+
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Account account = accountRepository.findFirstByMail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+
+        return UserDetailsImp.build(account);
+    }
+
+}
+
+*/

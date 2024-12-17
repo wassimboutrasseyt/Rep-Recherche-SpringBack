@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table
 @Data
@@ -20,6 +22,6 @@ public class Account {
     private String username;
     private String mail;
     private String password;
-    @ManyToOne(optional = false)
+    @ManyToOne (optional = false)
     private Role role;
 }
