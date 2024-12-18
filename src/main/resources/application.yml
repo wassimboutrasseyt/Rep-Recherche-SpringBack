@@ -6,6 +6,10 @@ spring:
     username: root
     password: Qzdsqzds123@
     driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    user:
+      name: admin
+      password: admin
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -23,4 +27,5 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/NGResearch  # MongoDB URI
+      auto-index-creation: true
 

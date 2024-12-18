@@ -1,4 +1,4 @@
-package org.sid.appbackser.Repositories;
+package org.sid.appbackser.repositories;
 
 import org.sid.appbackser.entities.Role;
 import org.springframework.data.jpa.repository.JpaRepository;

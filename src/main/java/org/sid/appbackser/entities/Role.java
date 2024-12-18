@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
+
+import org.sid.appbackser.enums.GuestPrivileges;
+import org.sid.appbackser.enums.RoleTypes;
 
 @Entity
 @Table
@@ -21,6 +25,10 @@ public class Role {
     @ElementCollection
     @Enumerated(EnumType.STRING) // Store enums as Strings in the database
     private List<String> privileges;
+
+    @OneToMany(mappedBy = "role")
+    private Set<GroupeAccount> groupAccount;
+
     /*@OneToMany(mappedBy = "roles")
     private List<Groupe> groupes;
     @OneToMany(mappedBy = "role")

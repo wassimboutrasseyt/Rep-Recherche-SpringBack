@@ -1,11 +1,9 @@
-/*
-package org.sid.appbackser.Services;
+package org.sid.appbackser.services;
 
-import org.sid.appbackser.Repositories.AccountRepository;
-import org.sid.appbackser.Repositories.UserRepository;
+import org.sid.appbackser.repositories.AccountRepository;
+import org.sid.appbackser.repositories.UserRepository;
 import org.sid.appbackser.entities.Account;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserDetailServiceImp implements UserDetailsService {
     @Autowired
-    UserRepository userRepository;
+   UserRepository userRepository;
     @Autowired
     AccountRepository accountRepository;
 
@@ -30,4 +28,3 @@ public class UserDetailServiceImp implements UserDetailsService {
 
 }
 
-*/

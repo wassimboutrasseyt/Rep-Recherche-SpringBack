@@ -1,7 +1,7 @@
-/*
-package org.sid.appbackser.Services;
 
-import org.sid.appbackser.Repositories.AccountRepository;
+package org.sid.appbackser.services;
+
+import org.sid.appbackser.repositories.AccountRepository;
 import org.sid.appbackser.entities.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ public class ProjectServiceImp implements ProjectServices{
     AccountRepository accountRepository;
     @Override
     public List<String> getRolesFromAccount(Account account) {
-        return accountRepository.findFirstByMail();
+        return null;
     }
 }
-*/
+
