@@ -1,25 +1,15 @@
 package org.sid.appbackser.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.sid.appbackser.entities.User;
-import org.sid.appbackser.repositories.UserRepository;
-import java.util.*;
-@Service
-public class UserService {
+import org.sid.appbackser.dto.*; 
+import java.util.List;
 
-//     @Autowired
-//     private UserRepository userRepository;
+import org.sid.appbackser.entity.User;
 
-//  // Method to find a user by their name
-//  public User findUserByName(String name) {
-//     Optional<User> user = userRepository.findByNom(name);
-//     return user.orElse(null); // Return null if no user is found
-// }
+public interface UserService {
 
-// // Method to find a user by their ID
-// public User findUserById(Long userId) {
-//     Optional<User> user = userRepository.findById(userId);
-//     return user.orElse(null); // Return null if no user is found
-// }
+public User createUser(User user);
+public String updateUser(User user);
+public User getUser(String userId);
+public String deleteUser(String userId);
+public List<User> getAllUsers();
 }
