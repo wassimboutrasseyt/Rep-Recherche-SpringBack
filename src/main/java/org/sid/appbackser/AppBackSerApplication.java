@@ -19,8 +19,6 @@ public class AppBackSerApplication {
     CommandLineRunner start(){
         return args -> {
             System.out.println(new Date());
-            RoleTypes [] role = RoleTypes.values() ;
-
         };
     }
 }
