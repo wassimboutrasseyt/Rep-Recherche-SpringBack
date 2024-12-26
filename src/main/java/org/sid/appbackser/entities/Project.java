@@ -21,12 +21,13 @@ public class Project {
     @Id
     private Long id;
     private String name;
-    @ElementCollection
+    // @ElementCollection
     @Enumerated(EnumType.STRING) // Store enums as Strings in the database
     private ProjectVisibility visibility;
-    @ElementCollection
+    // @ElementCollection
     @Enumerated(EnumType.STRING) // Store enums as Strings in the database
     private ProjectType type;
+    
     private String licence;
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Groupe> group;

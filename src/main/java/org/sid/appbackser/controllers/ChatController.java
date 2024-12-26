@@ -2,9 +2,9 @@ package org.sid.appbackser.controllers;
 
 import org.sid.appbackser.entities.Message;
 import org.sid.appbackser.entities.User;
+import org.sid.appbackser.enums.GroupType;
 import org.sid.appbackser.services.MessageService;
 import org.sid.appbackser.services.UserService;
-import org.sid.appbackser.entities.GroupType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;

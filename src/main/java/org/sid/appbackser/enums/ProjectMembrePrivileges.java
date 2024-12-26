@@ -1,4 +1,4 @@
-package org.sid.appbackser.entities;
+package org.sid.appbackser.enums;
 
 public enum ProjectMembrePrivileges {
     CREATE_TASK,

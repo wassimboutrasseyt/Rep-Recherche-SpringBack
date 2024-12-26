@@ -1,5 +1,6 @@
 package org.sid.appbackser.entities;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -20,8 +21,11 @@ public class User {
     private long id ;
     private String nom ;
     private String prenom;
+    private LocalDateTime dob;
+    private String phone;
+    private String profession;
 
     @OneToMany(mappedBy = "user")
-    private TreeSet<Account> acc;
+    private Set<Account> acc;
     
 }

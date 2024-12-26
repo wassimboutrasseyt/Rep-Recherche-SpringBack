@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.Set;
 
+import org.sid.appbackser.enums.AdminGrpPrivileges;
 import org.sid.appbackser.enums.GuestPrivileges;
+import org.sid.appbackser.enums.ProjectMembrePrivileges;
 import org.sid.appbackser.enums.RoleTypes;
 
 @Entity

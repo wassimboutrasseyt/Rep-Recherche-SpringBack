@@ -16,6 +16,7 @@ public class GroupeAccount {
     private Long id;
     @ManyToOne
     private Groupe groupe;
+    
     @ManyToOne
     private Account account;
     

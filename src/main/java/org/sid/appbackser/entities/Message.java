@@ -1,5 +1,6 @@
 package org.sid.appbackser.entities;
 
+import org.sid.appbackser.enums.GroupType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
