@@ -1,8 +1,9 @@
 package org.sid.appbackser.dto;
 
+import org.sid.appbackser.entities.Account;
+import org.sid.appbackser.entities.User;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.sid.appbackser.entity.Account;
-import org.sid.appbackser.entity.User;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

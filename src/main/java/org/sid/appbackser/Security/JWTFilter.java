@@ -2,8 +2,8 @@ package org.sid.appbackser.Security;
 
 import java.io.IOException;
 
-import org.sid.appbackser.services.implement.AccountDetailsService;
-import org.sid.appbackser.services.implement.JWTService;
+import org.sid.appbackser.services.implementations.AccountDetailsService;
+import org.sid.appbackser.services.implementations.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

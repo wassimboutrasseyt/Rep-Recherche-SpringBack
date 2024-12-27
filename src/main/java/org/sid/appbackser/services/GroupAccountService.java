@@ -1,6 +1,6 @@
 package org.sid.appbackser.services;
 
-import org.sid.appbackser.entity.GroupAccount;
+import org.sid.appbackser.entities.GroupAccount;
 
 public interface GroupAccountService {
 

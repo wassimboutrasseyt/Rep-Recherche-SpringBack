@@ -1,7 +1,7 @@
 package org.sid.appbackser.dto;
 
 
-import org.sid.appbackser.entity.User;
+import org.sid.appbackser.entities.User;
 
 import lombok.Data;
 
