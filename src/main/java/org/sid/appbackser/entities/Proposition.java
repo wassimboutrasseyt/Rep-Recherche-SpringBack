@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import org.sid.appbackser.enums.ProjectType;
+import org.sid.appbackser.enums.ProjectVisibility;
+import org.sid.appbackser.enums.PropositionStatus;
+
 @Entity
 public class Proposition {
 

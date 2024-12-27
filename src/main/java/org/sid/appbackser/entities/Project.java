@@ -3,6 +3,9 @@ package org.sid.appbackser.entities;
 import jakarta.persistence.*;
 import java.util.Objects;
 
+import org.sid.appbackser.enums.ProjectType;
+import org.sid.appbackser.enums.ProjectVisibility;
+
 @Entity
 public class Project {
 

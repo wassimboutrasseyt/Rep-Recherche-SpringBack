@@ -3,7 +3,7 @@ package org.sid.appbackser.repositories;
 import java.util.Optional;
 
 import org.sid.appbackser.entities.RolePerGroup;
-import org.sid.appbackser.entities.RolesPerGroup;
+import org.sid.appbackser.enums.RolesPerGroup;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

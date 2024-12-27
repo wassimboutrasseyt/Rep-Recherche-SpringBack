@@ -1,4 +1,4 @@
-package org.sid.appbackser.controller;
+package org.sid.appbackser.controllers;
 
 import org.sid.appbackser.dto.UserAccountDTO;
 import org.sid.appbackser.dto.UserLoggedDTO;
@@ -38,7 +38,7 @@ public class AuthentificationController {
     
     //Authentification methodes
     
-    @PostMapping("/logging")
+    @PostMapping("/login")
     public ResponseEntity<UserLoggedDTO> login(@RequestBody Account acc) {
     	String s=accountService.verify(acc);
     	if(s==null) {

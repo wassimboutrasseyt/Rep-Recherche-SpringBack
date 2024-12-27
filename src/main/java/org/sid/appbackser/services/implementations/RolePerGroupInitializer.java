@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.sid.appbackser.entities.Role;
 import org.sid.appbackser.entities.RolePerGroup;
-import org.sid.appbackser.entities.Roles;
-import org.sid.appbackser.entities.RolesPerGroup;
+import org.sid.appbackser.enums.Roles;
+import org.sid.appbackser.enums.RolesPerGroup;
 import org.sid.appbackser.repositories.RolePerGroupRepository;
 import org.sid.appbackser.repositories.RoleRepository;
 

@@ -1,5 +1,6 @@
 package org.sid.appbackser.entities;
 
+import org.sid.appbackser.enums.Roles;
 import org.sid.appbackser.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,9 +11,11 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Data;
 
 
 @Entity
+@Data
 public class Role {
 	
 
@@ -32,21 +35,21 @@ public class Role {
         this.role= role;
     }
 
-    public Long getId() {
-        return id;
-    }
+    // public Long getId() {
+    //     return id;
+    // }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // public void setId(Long id) {
+    //     this.id = id;
+    // }
 
-    public String getName() {
-        return this.role.toString();
-    }
+    // public String getName() {
+    //     return this.role.toString();
+    // }
 
-    public void setName(Roles role) {
-        this.role = role;
-    }
+    // public void setName(Roles role) {
+    //     this.role = role;
+    // }
     
     
 //    @PostConstruct

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.sid.appbackser.entities.Project;
 import org.sid.appbackser.entities.Proposition;
-import org.sid.appbackser.entities.PropositionStatus;
+import org.sid.appbackser.enums.PropositionStatus;
 import org.sid.appbackser.repositories.PropositionRepository;
 import org.sid.appbackser.services.ProjectService;
 import org.sid.appbackser.services.PropositionService;

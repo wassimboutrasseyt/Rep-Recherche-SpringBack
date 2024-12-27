@@ -1,5 +1,6 @@
 package org.sid.appbackser.entities;
 
+import org.sid.appbackser.enums.RolesPerGroup;
 import org.sid.appbackser.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,8 +15,6 @@ import jakarta.persistence.Id;
 
 @Entity
 public class RolePerGroup {
-	
-
 	
 	
     @Id

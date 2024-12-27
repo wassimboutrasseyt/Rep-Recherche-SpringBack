@@ -30,14 +30,14 @@ public class WebSecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
 		return http.csrf(customizer->customizer.disable()).
-		authorizeHttpRequests(request -> request.requestMatchers("/auth/register").permitAll()
-				.requestMatchers("/auth/logging").permitAll()
-				.requestMatchers("/admin/**").hasAnyRole("ADMIN")
-				.requestMatchers("/ruser/").hasAnyAuthority("ADMIN","REGISTRED_USER")
-				.requestMatchers("/quest/**").hasAnyAuthority("ADMIN","REGISTRED_USER","GUEST")
+		authorizeHttpRequests(request -> request.requestMatchers("/auth/**").permitAll()
+				// .requestMatchers("/auth/login").permitAll()
+				.requestMatchers("/admin/").hasAnyRole("ADMIN")
+				.requestMatchers("/registred-user/").hasAnyAuthority("ADMIN","REGISTRED_USER")
+				.requestMatchers("/guest/**").hasAnyAuthority("ADMIN","REGISTRED_USER","GUEST")
 				.anyRequest().authenticated()).
 				httpBasic(Customizer.withDefaults()).
-//				formLogin(Customizer.withDefaults()).
+				// formLogin(Customizer.withDefaults()).
 				sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class)
 				.build();
