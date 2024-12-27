@@ -86,7 +86,6 @@
             <artifactId>spring-messaging</artifactId>
         </dependency>
 
-
         <!-- here i switched to mysql for better use and add mongodbdriver  -->
         <dependency>
             <groupId>mysql</groupId>
