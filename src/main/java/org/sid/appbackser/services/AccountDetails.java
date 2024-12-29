@@ -1,8 +1,9 @@
-package org.sid.appbackser.entities;
+package org.sid.appbackser.services;
 
 import java.util.Collection;
 import java.util.Collections;
 
+import org.sid.appbackser.entities.Account;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
