@@ -36,6 +36,7 @@ public class JWTFilter extends OncePerRequestFilter{
 		String authHeader=request.getHeader("Authorization");
 		String token=null;
 		String email=null;
+		Integer i = null; 
 		
 		
 		if(authHeader !=null && authHeader.startsWith("Bearer ")) {

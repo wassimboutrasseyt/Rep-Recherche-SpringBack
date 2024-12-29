@@ -36,6 +36,11 @@ public class JWTService {
         return getClaims(token).getSubject();
     }
 
+    // Extract ID from token
+    public Integer extractId(String token) {
+        return getClaims(token).get("id", Integer.class);
+    }
+
     // Validate token
     public boolean validateToken(String token, UserDetails userDetails) {
         final String email = extractEmail(token);
