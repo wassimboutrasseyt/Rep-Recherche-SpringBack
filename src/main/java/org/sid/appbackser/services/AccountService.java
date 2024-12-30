@@ -1,8 +1,10 @@
 package org.sid.appbackser.services;
 
+import java.security.Principal;
 import java.util.List;
 import org.sid.appbackser.dto.*;
 import org.sid.appbackser.entities.Account;
+import org.sid.appbackser.entities.AccountDetails;
 import org.sid.appbackser.entities.Group;
 
 public interface AccountService {
@@ -24,4 +26,6 @@ public interface AccountService {
 	String verify(Account acc);
 
 	UserLoggedDTO loadInfo(Account acc);
+
+    Account getAccountFromToken(Principal principal);
 }

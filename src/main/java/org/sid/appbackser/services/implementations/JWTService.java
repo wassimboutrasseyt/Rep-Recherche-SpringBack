@@ -1,9 +1,12 @@
 package org.sid.appbackser.services.implementations;
 
+import java.security.Principal;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
 
+import org.sid.appbackser.entities.Account;
+import org.sid.appbackser.entities.AccountDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +25,7 @@ public class JWTService {
     }
 
     // Generate JWT token
-    public String generateToken(String email) {
+    public String generateToken(String email, Integer id) {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -35,7 +38,7 @@ public class JWTService {
     public String extractEmail(String token) {
         return getClaims(token).getSubject();
     }
-
+    
     // Validate token
     public boolean validateToken(String token, UserDetails userDetails) {
         final String email = extractEmail(token);

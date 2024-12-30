@@ -3,7 +3,6 @@ package org.sid.appbackser.controllers;
 import org.sid.appbackser.dto.UserAccountDTO;
 import org.sid.appbackser.dto.UserLoggedDTO;
 import org.sid.appbackser.entities.Account;
-import org.sid.appbackser.entities.Group;
 import org.sid.appbackser.entities.User;
 import org.sid.appbackser.services.AccountService;
 import org.sid.appbackser.services.UserService;

@@ -1,5 +1,5 @@
 package org.sid.appbackser.enums;
 
 public enum RolesPerGroup {
-	ADMIN,MEMEBERs
+	ADMIN,MEMBER
 }

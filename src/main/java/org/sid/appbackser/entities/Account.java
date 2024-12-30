@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.validation.annotation.Validated;
@@ -30,6 +31,7 @@ public class Account {
     private Integer id;
     private String email;
     private String password;
+    private Instant createdAt = Instant.now();
 
     // Many accounts can belong to many groups with a specific role
     @ManyToMany
@@ -39,7 +41,6 @@ public class Account {
         inverseJoinColumns = @JoinColumn(name = "group_id")
     )
     private List<Group> groups;
-
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -54,52 +55,12 @@ public class Account {
     @OneToMany(mappedBy="account")
     private List<Proposition> propositions;
 
-    // Getters and Setters
-    // public Integer getId() {
-    //     return id;
-    // }
-
-    // public void setId(Integer id) {
-    //     this.id = id;
-    // }
-
-    // public String getEmail() {
-    //     return email;
-    // }
-
-    // public void setEmail(String email) {
-    //     this.email = email;
-    // }
-
-    // public String getPassword() {
-    //     return password;
-    // }
-
-    // public void setPassword(String password) {
-    //     this.password = password;
-    // }
-
-    // public List<Group> getGroups() {
-    //     return groups;
-    // }
-
-    // public void setGroups(List<Group> groups) {
-    //     this.groups = groups;
-    // }
-
-    // public User getUser() {
-    //     return user;
-    // }
-
-    // public void setUser(User user) {
-    //     this.user = user;
-    // }
-
 	public String getRole() {
 		return this.role.getRole().name();
 	}
+
     public void setRole(Role role) {
         this.role = role;
     }
-	
+
 }

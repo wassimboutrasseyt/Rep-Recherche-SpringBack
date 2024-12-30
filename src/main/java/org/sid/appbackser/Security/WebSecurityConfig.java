@@ -31,6 +31,7 @@ public class WebSecurityConfig {
 		
 		return http.csrf(customizer->customizer.disable()).
 		authorizeHttpRequests(request -> request.requestMatchers("/auth/**").permitAll()
+				// .requestMatchers("/ws/chat/**").authenticated()  // Allow WebSocket URL
 				// .requestMatchers("/auth/login").permitAll()
 				.requestMatchers("/admin/").hasAnyRole("ADMIN")
 				.requestMatchers("/registred-user/").hasAnyAuthority("ADMIN","REGISTRED_USER")
