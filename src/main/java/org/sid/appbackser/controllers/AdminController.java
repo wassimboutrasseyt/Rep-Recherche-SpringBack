@@ -14,4 +14,9 @@ public class AdminController {
 	public ResponseEntity<String> helloRUser() {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body("hello");
 	}
+
+	@GetMapping("/sayhello")
+	public ResponseEntity<String> sayhello() {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body("hello");
+	}
 }

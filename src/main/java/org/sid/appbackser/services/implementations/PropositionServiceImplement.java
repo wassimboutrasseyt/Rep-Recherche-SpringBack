@@ -43,7 +43,7 @@ public class PropositionServiceImplement implements PropositionService {
 
         // Automatically create the project
         Project project = new Project();
-        project.setName(proposition.getName());
+        project.setName(proposition.getLongName());
         project.setShortName(proposition.getShortName());
         project.setType(proposition.getType());
         project.setTheme(proposition.getTheme());

@@ -9,8 +9,10 @@ import lombok.Data;
 public class UserLoggedDTO {
 
 	private User user;
+	private Integer id;
 	private String email;
 	private String role;
+	
 	
 
 	

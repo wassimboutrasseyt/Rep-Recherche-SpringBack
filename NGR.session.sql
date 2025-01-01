@@ -1,1 +1,1 @@
-SELECT * FROM user
+DELETE FROM account WHERE id = 2 or id = 3;
