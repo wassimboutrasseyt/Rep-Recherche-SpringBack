@@ -50,13 +50,13 @@ public class AdminInitializer {
             admin.setPassword(encoder.encode("admin-ngr"));
             admin.setRole(role);
             admin.setUser(user1);
-            accountRepository.save(admin);
+            //accountRepository.save(admin);
             Account admin1 = new Account();
             admin1.setEmail("admin2@ngr.com");
             admin1.setPassword(encoder.encode("admin-ngr"));
             admin1.setRole(role);
             admin1.setUser(user1);
-            accountRepository.save(admin);
+            //accountRepository.save(admin);
             Account admin2 = new Account();
             admin2.setEmail("admin3@ngr.com");
             admin2.setPassword(encoder.encode("admin-ngr"));

@@ -52,7 +52,7 @@ public class Account {
 
 
     @Enumerated(EnumType.STRING) // This ensures the enum value is stored as a string
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Roles role;
 
     @ManyToOne
