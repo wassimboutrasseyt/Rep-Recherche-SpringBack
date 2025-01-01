@@ -32,6 +32,5 @@ public class ChatGroup {
     private List<Integer> members;
 
     @Field(targetType = FieldType.STRING)
-
     private Instant createdAt = Instant.now();
 }

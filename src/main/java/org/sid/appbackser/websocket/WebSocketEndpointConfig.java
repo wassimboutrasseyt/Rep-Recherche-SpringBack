@@ -1,6 +1,7 @@
 package org.sid.appbackser.websocket;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
@@ -11,22 +12,24 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 @EnableWebSocket
 public class WebSocketEndpointConfig implements WebSocketConfigurer {
 
-    @Autowired
-    private GroupChatWebSocketHandler groupChatWebSocketHandler; 
+    @Bean
+    public GroupChatWebSocketHandler groupChatWebSocketHandler() {
+        return new GroupChatWebSocketHandler();
+    }
 
-    // public WebSocketEndpointConfig(GroupMessageWebSocketHandler messageWebSocketHandler) {
-    //     this.messageWebSocketHandler = messageWebSocketHandler;
-    // }
-
+    @Bean
+    public PrivateChatWebSocketHandler privateChatWebSocketHandler() {
+        return new PrivateChatWebSocketHandler();
+    }
+    
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(groupChatWebSocketHandler, "/ws/chat/{chatGroupId}")
+        registry.addHandler(groupChatWebSocketHandler(), "/ws/chat/{projectId}/{groupId}")
             .addInterceptors(new HttpSessionHandshakeInterceptor())
             .setAllowedOrigins("*"); 
-        
-            registry.addHandler(groupChatWebSocketHandler, "/ws/private/{receiverId}")
+
+        registry.addHandler(privateChatWebSocketHandler(), "/ws/chat/private/{projectId}/{recieverId}")
             .addInterceptors(new HttpSessionHandshakeInterceptor())
             .setAllowedOrigins("*");
-            
     }
 }

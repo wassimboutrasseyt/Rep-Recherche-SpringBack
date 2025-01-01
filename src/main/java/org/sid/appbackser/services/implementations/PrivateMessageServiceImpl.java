@@ -1,5 +1,6 @@
 package org.sid.appbackser.services.implementations;
 
+import org.sid.appbackser.entities.PrivateConversation;
 import org.sid.appbackser.entities.PrivateMessage;
 import org.sid.appbackser.enums.MessageType;
 import org.sid.appbackser.repositories.PrivateMessageRepository;
@@ -17,11 +18,11 @@ public class PrivateMessageServiceImpl implements PrivateMessageService {
     private PrivateMessageRepository privateMessageRepository;
 
     @Override
-    public PrivateMessage createPrivateMessage(Integer senderId, Integer receiverId, Integer projectId, String content, MessageType type) {
+    public PrivateMessage createPrivateMessage(Integer senderId, Integer receiverId, String content, MessageType type, PrivateConversation conversation) {
         PrivateMessage privateMessage = new PrivateMessage();
         privateMessage.setSenderId(senderId);
         privateMessage.setReceiverId(receiverId);
-        privateMessage.setProjectId(projectId);
+        privateMessage.setConversation(conversation);
         privateMessage.setContent(content);
         privateMessage.setType(type);
         return privateMessageRepository.save(privateMessage);

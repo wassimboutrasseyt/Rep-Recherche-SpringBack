@@ -39,13 +39,13 @@ public class AuthentificationController {
     
     @PostMapping("/login")
     public ResponseEntity<UserLoggedDTO> login(@RequestBody Account acc) {
-    	String s=accountService.verify(acc);
-    	if(s==null) {
-    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-    	}
-    	UserLoggedDTO userInformation=accountService.loadInfo(acc);
-    	
-    	return ResponseEntity.status(HttpStatus.ACCEPTED).header("bearer",s).body(userInformation);
+        String s=accountService.verify(acc);
+        if(s==null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        UserLoggedDTO userInformation=accountService.loadInfo(acc);
+        
+        return ResponseEntity.status(HttpStatus.ACCEPTED).header("bearer",s).body(userInformation);
     }
     
    

@@ -27,8 +27,6 @@ public class PrivateMessage {
     private Integer senderId;  // Account ID of the sender
     private Integer receiverId; // Account ID of the receiver
 
-    private Integer projectId;  // Project ID for this private message
-
     private String content;    // Message content
 
     @Field(targetType = FieldType.STRING)

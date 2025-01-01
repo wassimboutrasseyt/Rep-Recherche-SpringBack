@@ -48,30 +48,31 @@ public class AdminInitializer {
         Role role = adminRoleOptional.get();
         boolean adminExists = accountRepository.existsByRole(role);
         if (!adminExists) {
-            User user = new User();
-            userRepository.save(user);
+            User user1 = new User();
+            userRepository.save(user1);
             Account admin = new Account();
-            admin.setEmail("admin@ngr.com");
+            admin.setEmail("admin1@ngr.com");
             admin.setPassword(encoder.encode("admin-ngr"));
             admin.setRole(role);
-            admin.setUser(user);
+            admin.setUser(user1);
             accountRepository.save(admin);
             Account admin1 = new Account();
-            admin1.setEmail("admin@ngr.com");
+            admin1.setEmail("admin2@ngr.com");
             admin1.setPassword(encoder.encode("admin-ngr"));
             admin1.setRole(role);
-            admin1.setUser(user);
+            admin1.setUser(user1);
             accountRepository.save(admin);
             Account admin2 = new Account();
-            admin2.setEmail("admin@ngr.com");
+            admin2.setEmail("admin3@ngr.com");
             admin2.setPassword(encoder.encode("admin-ngr"));
             admin2.setRole(role);
-            admin2.setUser(user);
+            admin2.setUser(user1);
+
             accountRepository.save(admin);
             accountRepository.save(admin1);
             accountRepository.save(admin2);
 
-                    ChatGroup newGroup = new ChatGroup();
+                ChatGroup newGroup = new ChatGroup();
                 newGroup.setName("General Group 1");
                 newGroup.setType(ChatGroupType.GENERALE);  // Adjust based on your use case
                 newGroup.setMembers(List.of(1, 2, 3));  // Example: list of member IDs
