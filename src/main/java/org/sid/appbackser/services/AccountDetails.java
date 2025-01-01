@@ -1,8 +1,9 @@
-package org.sid.appbackser.entities;
+package org.sid.appbackser.services;
 
 import java.util.Collection;
 import java.util.Collections;
 
+import org.sid.appbackser.entities.Account;
 import org.springframework.data.mongodb.core.aggregation.ArrayOperators.In;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,7 +21,7 @@ public class AccountDetails implements UserDetails{
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 	
-		return Collections.singleton(new SimpleGrantedAuthority(account.getRole()));
+		return Collections.singleton(new SimpleGrantedAuthority(account.getRole().name()));
 	}
 
 	public Integer getId() {

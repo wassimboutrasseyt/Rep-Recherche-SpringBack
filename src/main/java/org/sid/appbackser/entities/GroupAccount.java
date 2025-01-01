@@ -1,15 +1,26 @@
 package org.sid.appbackser.entities;
 
+import org.sid.appbackser.enums.RolesPerGroup;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="group_account")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class GroupAccount {
 
     @Id
@@ -24,45 +35,9 @@ public class GroupAccount {
     @ManyToOne
     private Account account;
 
-    @ManyToOne
-    @JoinColumn(name = "rolePerGroup_id")
-    private RolePerGroup role;
-//    @ManyToOne
-//    @JoinColumn(name = "role_id")
-//    
-//    private Role role;
-    
-    
-    // Getters and Setters
-    public Integer getId() {
-        return id;
-    }
+   @Enumerated(EnumType.STRING) 
+    @Column(nullable = false, unique = true)
+    private RolesPerGroup role;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-//    public Role getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(Role role) {
-//        this.role = role;
-//    }
 }

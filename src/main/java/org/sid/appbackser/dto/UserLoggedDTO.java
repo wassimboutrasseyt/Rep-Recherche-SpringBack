@@ -6,7 +6,6 @@ import org.sid.appbackser.entities.User;
 import lombok.Data;
 
 @Data
-
 public class UserLoggedDTO {
 
 	private User user;
@@ -14,9 +13,6 @@ public class UserLoggedDTO {
 	private String email;
 	private String role;
 	
-	public Integer getId() {
-		return id;
-	}
 	public User getUser() {
 		return user;
 	}

@@ -3,8 +3,6 @@ package org.sid.appbackser.services.initializers;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import org.sid.appbackser.entities.Role;
 import org.sid.appbackser.entities.User;
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.ChatGroup;
@@ -23,13 +21,15 @@ import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
 
 @Service
-@DependsOn({"roleInitializer"})
+
 public class AdminInitializer {
 
     @Autowired  
     private AccountRepository accountRepository;
     @Autowired  
     private UserRepository userRepository;
+
+
 
     @Autowired
     private RoleRepository roleRepository;
@@ -40,12 +40,12 @@ public class AdminInitializer {
 
     @PostConstruct
     public void init(){
-        Optional<Role> adminRoleOptional = roleRepository.findByRole(Roles.ADMIN);
-        if (!adminRoleOptional.isPresent()) {
-            throw new IllegalStateException("Admin role not found");
-        }
+        // Optional<Role> adminRoleOptional = roleRepository.findByRole(Roles.ADMIN);
+        // if (!adminRoleOptional.isPresent()) {
+        //     throw new IllegalStateException("Admin role not found");
+        // }
 
-        Role role = adminRoleOptional.get();
+        Roles role = Roles.ADMIN;
         boolean adminExists = accountRepository.existsByRole(role);
         if (!adminExists) {
             User user1 = new User();
