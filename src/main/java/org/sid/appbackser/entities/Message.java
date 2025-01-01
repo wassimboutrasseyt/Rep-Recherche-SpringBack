@@ -1,31 +1,37 @@
 package org.sid.appbackser.entities;
 
-import org.sid.appbackser.enums.GroupType;
-import org.springframework.data.annotation.Id;
+import java.time.Instant;
+
+import org.sid.appbackser.enums.MessageType;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
-@Document(collection = "messages")
+@Document()
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Message {
-
+    
     @Id
     private String id;
-
-    private User sender; // The user sending the message
-
-    private Groupe group; // The group in which the message was sent (null for private messages)
-
-    private User receiver; // The receiver of the private message (null for group messages)
-
-    private String content; // The message content
-
-    private LocalDateTime timestamp; // Timestamp of the message
-
-    private GroupType groupType; // Enum to differentiate group type: Admin, Default, Guest, Specific
+    
+    @DBRef
+    private ChatGroup chatGroup;
+    private Integer senderId;
+    private String content;
 
     
+    private Instant timestamp = Instant.now();
+
+    private MessageType type;
+
 }

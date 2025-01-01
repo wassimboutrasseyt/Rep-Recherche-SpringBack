@@ -1,14 +1,14 @@
 package org.sid.appbackser.services;
 
-import org.sid.appbackser.entities.Message;
-import org.sid.appbackser.repositories.MessageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
-@Service
-public class MessageService {
+import org.sid.appbackser.entities.ChatGroup;
+import org.sid.appbackser.entities.Message;
+import org.sid.appbackser.enums.MessageType;
 
-
+public interface MessageService {
+    Message createMessageToGroup(Integer senderId, String chatGroupId, String content, MessageType type);
+    List<Message> getMessagesForChatGroup(String chatGroup);
+    List<Message> getMessagesForAccountOnGroup(Integer accountId, String chatGroupId);
+    void deleteMessage(String messageId);
 }

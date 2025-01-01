@@ -1,31 +1,41 @@
 package org.sid.appbackser.entities;
 
-import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 
 @Entity
 @Table
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
-    private String nom ;
-    private String prenom;
-    private LocalDateTime dob;
+    private Integer id;
+    private String firstName;
+    private String lastName;
     private String phone;
-    private String profession;
+    private Date dob;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Account> acc;
-    
+    // One user can have many accounts
+    @JsonManagedReference
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // "user" is the field in Account entity
+    private List<Account> accounts=new ArrayList<Account>();
+
+ 
 }

@@ -1,1 +1,1 @@
-SELECT * FROM role_privileges 
+DELETE FROM account WHERE id = 2 or id = 3;

@@ -1,15 +1,17 @@
 package org.sid.appbackser.repositories;
 
+import java.util.List;
 import org.sid.appbackser.entities.Message;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository
+public interface MessageRepository extends MongoRepository<Message, String>{
+    // Custom query method to find messages by chatGroupId
+    List<Message> findByChatGroupId(String chatGroupId);
 
-public interface MessageRepository extends MongoRepository<Message, String> {
-
-    List<Message> findByGroupId(Long groupId);
-
-    List<Message> findByReceiverId(Long receiverId);
-
-    List<Message> findBySenderId(Long senderId);
+    // Custom query method to find messages by senderId
+    List<Message> findBySenderId(Integer senderId);
+    
+    
 }
