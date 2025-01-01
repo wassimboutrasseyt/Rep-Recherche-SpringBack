@@ -1,12 +1,15 @@
 package org.sid.appbackser.entities;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 import org.sid.appbackser.enums.ProjectType;
 import org.sid.appbackser.enums.ProjectVisibility;
 import org.sid.appbackser.enums.PropositionStatus;
+
+import jdk.jfr.Label;
 
 @Entity
 public class Proposition {
@@ -59,11 +62,11 @@ public class Proposition {
     }
 
     public String getName() {
-        return name;
+        return LongName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.LongName = name;
     }
 
     public String getShortName() {

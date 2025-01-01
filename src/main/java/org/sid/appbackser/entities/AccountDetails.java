@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.aggregation.ArrayOperators.In;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.sid.appbackser.entities.Account;
 
 public class AccountDetails implements UserDetails{
 

@@ -17,6 +17,10 @@ public class UserLoggedDTO {
 	public Integer getId() {
 		return id;
 	}
+	
+	public Integer getId() {
+		return id;
+	}
 	public User getUser() {
 		return user;
 	}
