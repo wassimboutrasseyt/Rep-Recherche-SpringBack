@@ -3,11 +3,9 @@ package org.sid.appbackser.services.implementations;
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.Group;
 import org.sid.appbackser.entities.GroupAccount;
-import org.sid.appbackser.entities.Role;
 import org.sid.appbackser.repositories.AccountRepository;
 import org.sid.appbackser.repositories.GroupAccountRepository;
 import org.sid.appbackser.repositories.GroupRepository;
-import org.sid.appbackser.repositories.RoleRepository;
 import org.sid.appbackser.services.GroupAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +23,7 @@ public class GroupAccountServiceImplement implements GroupAccountService {
     @Autowired
     private GroupRepository groupRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
+
     
     
     @Autowired

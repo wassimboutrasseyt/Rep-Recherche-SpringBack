@@ -32,8 +32,8 @@ public class WebSecurityConfig {
 		return http.csrf(customizer->customizer.disable()).
 		authorizeHttpRequests(request -> request.requestMatchers("/auth/**").permitAll()
 				// .requestMatchers("/auth/login").permitAll()
-				.requestMatchers("/admin/").hasAnyRole("ADMIN")
-				.requestMatchers("/registred-user/").hasAnyAuthority("ADMIN","REGISTRED_USER")
+				.requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+				.requestMatchers("/registred-user/**").hasAnyAuthority("ADMIN","REGISTRED_USER")
 				.requestMatchers("/guest/**").hasAnyAuthority("ADMIN","REGISTRED_USER","GUEST")
 				.anyRequest().authenticated()).
 				httpBasic(Customizer.withDefaults()).

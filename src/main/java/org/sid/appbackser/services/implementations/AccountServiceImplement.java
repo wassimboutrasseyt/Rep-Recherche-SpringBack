@@ -11,15 +11,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import org.sid.appbackser.dto.AuthentificationDTO;
+
 import org.sid.appbackser.dto.UserLoggedDTO;
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.Group;
-import org.sid.appbackser.entities.Role;
+import org.sid.appbackser.entities.GroupAccount;
 import org.sid.appbackser.entities.User;
 import org.sid.appbackser.enums.Roles;
 import org.sid.appbackser.repositories.AccountRepository;
-import org.sid.appbackser.repositories.RoleRepository;
 import org.sid.appbackser.repositories.UserRepository;
 import org.sid.appbackser.services.AccountService;
 import org.sid.appbackser.services.UserService;
@@ -30,8 +29,6 @@ public class AccountServiceImplement implements AccountService {
     @Autowired
     private final AccountRepository accountRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
     
     @Autowired 
     private UserRepository userRepository;
@@ -54,8 +51,11 @@ public class AccountServiceImplement implements AccountService {
     @Override
     public Account createAccount(Account account) {
     	account.setPassword(encoder.encode(account.getPassword()));
+      //  account.setGroups(null);
+        account.setRole(Roles.REGISTRED_USER);
     	Account account_2= accountRepository.save(account);
-    	this.setRoleForAccount(account_2.getId(),Roles.REGISTRED_USER);
+    	//this.setRoleForAccount(account_2.getId(),Roles.REGISTRED_USER);
+
         return account_2;// Return saved account
     }
 
@@ -78,19 +78,15 @@ public class AccountServiceImplement implements AccountService {
 
     @Override
     public List<Account> getAccountsByUserId(Integer userId) {
-        return accountRepository.findAll(); // Add filtering logic if needed
+        return accountRepository.findAll(); 
     }
 
     @Override
     public List<Account> getAllAccounts() {
-        return accountRepository.findAll(); // Retrieve all accounts
+        return accountRepository.findAll(); 
     }
 
-    @Override
-    public List<Group> getGroupsForAccount(Integer accountId) {
-        Account account = accountRepository.findById(accountId).orElse(null);
-        return account != null ? account.getGroups() : null; // Assuming Account has a `getGroups()` method
-    }
+
 
     // New method to set a role for an account
     public String setRoleForAccount(Integer accountId, Roles roleEnum) {
@@ -100,11 +96,11 @@ public class AccountServiceImplement implements AccountService {
         }
 
         // Find the role by its enum value
-        Role role = roleRepository.findByRole(roleEnum)
-                                   .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+        // Role role = roleRepository.findByRole(roleEnum)
+        //                            .orElseThrow(() -> new IllegalArgumentException("Role not found"));
 
         // Assign the role to the account
-        account.setRole(role);
+        account.setRole(roleEnum);
 
         // Save the updated account
         accountRepository.save(account);
@@ -129,11 +125,17 @@ public class AccountServiceImplement implements AccountService {
 		logger.info("agter fetching user is:"+account.getRole());
 		
 		UserLoggedDTO dto=new UserLoggedDTO();
-		dto.setRole(account.getRole());
+		dto.setRole(account.getRole().toString());
 		dto.setEmail(account.getEmail());
 		dto.setUser(account.getUser());
 		
 		logger.info("after assiging the role in the dto is :"+dto.getRole());
 		return dto;
 	}
+
+        // @Override
+    // public List<Group> getGroupsForAccount(Integer accountId) {
+    //     Account account = accountRepository.findById(accountId).orElse(null);
+    //     return account != null ? account.getGroups() : null; 
+    // }
 }
