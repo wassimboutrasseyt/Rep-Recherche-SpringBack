@@ -23,7 +23,7 @@ public class Proposition {
     private Integer id;
 
     @Column(nullable = false)
-    private String name;
+    private String LongName;
 
     @Column(nullable = false, unique = true)
     private String shortName;

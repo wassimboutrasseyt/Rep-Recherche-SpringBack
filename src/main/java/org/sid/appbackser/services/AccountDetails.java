@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.sid.appbackser.entities.Account;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators.In;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,11 @@ public class AccountDetails implements UserDetails{
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 	
 		return Collections.singleton(new SimpleGrantedAuthority(account.getRole().name()));
+	}
+
+	public Integer getId() {
+		// TODO Auto-generated method stub
+		return this.account.getId();
 	}
 
 	@Override
@@ -57,6 +63,10 @@ public class AccountDetails implements UserDetails{
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	public Account getAccount() {
+		return account;
 	}
 
 }

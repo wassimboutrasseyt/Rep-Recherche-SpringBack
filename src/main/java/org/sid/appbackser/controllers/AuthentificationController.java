@@ -3,7 +3,6 @@ package org.sid.appbackser.controllers;
 import org.sid.appbackser.dto.UserAccountDTO;
 import org.sid.appbackser.dto.UserLoggedDTO;
 import org.sid.appbackser.entities.Account;
-import org.sid.appbackser.entities.Group;
 import org.sid.appbackser.entities.User;
 import org.sid.appbackser.enums.Roles;
 import org.sid.appbackser.services.AccountService;
@@ -47,7 +46,10 @@ public class AuthentificationController {
     	}
     	UserLoggedDTO userInformation=accountService.loadInfo(acc);
     	
-    	return ResponseEntity.status(HttpStatus.ACCEPTED).header("bearer",s).body(userInformation);
+        ResponseEntity<UserLoggedDTO> response = ResponseEntity.status(HttpStatus.ACCEPTED)
+            .header("Authorization", s)
+            .body(userInformation);
+        return response;
     }
     
    

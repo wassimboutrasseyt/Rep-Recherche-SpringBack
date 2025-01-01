@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.sid.appbackser.enums.Roles;
@@ -38,6 +39,7 @@ public class Account {
     private Integer id;
     private String email;
     private String password;
+<<<<<<< HEAD
     
     //
     @OneToMany
@@ -53,15 +55,42 @@ public class Account {
     @Column(nullable = false, unique = true)
     private Roles role;
 
+=======
+    private Instant createdAt = Instant.now();
+
+    // Many accounts can belong to many groups with a specific role
+    @ManyToMany
+    @JsonIgnore
+    @JsonManagedReference
+    @JoinTable(
+        name = "group_account",
+        joinColumns = @JoinColumn(name = "account_id"),
+        inverseJoinColumns = @JoinColumn(name = "group_id")
+    )
+    private List<Group> groups;
+
+>>>>>>> origin/first-branch
     @ManyToOne
     @JsonBackReference
     private User user;
     
     @OneToMany(mappedBy="account")
+    @JsonIgnore
     private List<Proposition> propositions;
 
+<<<<<<< HEAD
  
 
 
 	
+=======
+	public String getRole() {
+		return this.role.getRole().name();
+	}
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+>>>>>>> origin/first-branch
 }

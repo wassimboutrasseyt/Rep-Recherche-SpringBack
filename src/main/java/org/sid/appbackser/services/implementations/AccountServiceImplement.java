@@ -1,5 +1,6 @@
 package org.sid.appbackser.services.implementations;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -8,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 import org.sid.appbackser.dto.UserLoggedDTO;
 import org.sid.appbackser.entities.Account;
+import org.sid.appbackser.entities.AccountDetails;
 import org.sid.appbackser.entities.Group;
 import org.sid.appbackser.entities.GroupAccount;
 import org.sid.appbackser.entities.User;
@@ -22,6 +25,7 @@ import org.sid.appbackser.repositories.AccountRepository;
 import org.sid.appbackser.repositories.UserRepository;
 import org.sid.appbackser.services.AccountService;
 import org.sid.appbackser.services.UserService;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
 @Service
 public class AccountServiceImplement implements AccountService {
@@ -32,6 +36,9 @@ public class AccountServiceImplement implements AccountService {
     
     @Autowired 
     private UserRepository userRepository;
+
+    @Autowired
+    private AccountDetailsService accountDetailService;
 
     @Autowired
     AuthenticationManager authManager;
@@ -110,7 +117,7 @@ public class AccountServiceImplement implements AccountService {
 	@Override
 	public String verify(Account acc) {
 		Authentication auth=authManager.authenticate(new UsernamePasswordAuthenticationToken(acc.getEmail(),acc.getPassword()));
-		if(auth.isAuthenticated()) return JwtService.generateToken(acc.getEmail()) ;
+		if(auth.isAuthenticated()) return JwtService.generateToken(acc.getEmail(), acc.getId()) ;
 		return "not registred";
 	}
 
