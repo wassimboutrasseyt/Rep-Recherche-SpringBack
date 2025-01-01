@@ -13,8 +13,4 @@ public class UserLoggedDTO {
 	private String email;
 	private String role;
 	
-	
-
-	
-	
 }
