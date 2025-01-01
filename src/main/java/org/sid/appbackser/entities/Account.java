@@ -1,9 +1,6 @@
 package org.sid.appbackser.entities;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,14 +10,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.util.List;
 
-import org.sid.appbackser.enums.Roles;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -30,8 +24,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Account {
 
     @Id
@@ -39,23 +31,6 @@ public class Account {
     private Integer id;
     private String email;
     private String password;
-<<<<<<< HEAD
-    
-    //
-    @OneToMany
-    // @JoinTable(
-    //     name = "group_account",
-    //     joinColumns = @JoinColumn(name = "account_id"),
-    //     inverseJoinColumns = @JoinColumn(name = "group_id")
-    // )
-    private List<GroupAccount> groups;
-
-
-    @Enumerated(EnumType.STRING) // This ensures the enum value is stored as a string
-    @Column(nullable = false, unique = true)
-    private Roles role;
-
-=======
     private Instant createdAt = Instant.now();
 
     // Many accounts can belong to many groups with a specific role
@@ -69,8 +44,13 @@ public class Account {
     )
     private List<Group> groups;
 
->>>>>>> origin/first-branch
     @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+    
+    // Many accounts belong to one user
+    @ManyToOne
+    
     @JsonBackReference
     private User user;
     
@@ -78,12 +58,6 @@ public class Account {
     @JsonIgnore
     private List<Proposition> propositions;
 
-<<<<<<< HEAD
- 
-
-
-	
-=======
 	public String getRole() {
 		return this.role.getRole().name();
 	}
@@ -92,5 +66,4 @@ public class Account {
         this.role = role;
     }
 
->>>>>>> origin/first-branch
 }

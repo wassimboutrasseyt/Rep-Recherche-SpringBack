@@ -22,7 +22,7 @@ public interface AccountService {
 
     List<Account> getAllAccounts(); // Added for completeness
 
-    // List<Group> getGroupsForAccount(Integer accountId); 
+    List<Group> getGroupsForAccount(Integer accountId); // Added to fetch groups
 
 	String verify(Account acc);
 

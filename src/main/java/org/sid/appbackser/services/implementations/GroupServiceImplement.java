@@ -2,7 +2,6 @@ package org.sid.appbackser.services.implementations;
 
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.Group;
-import org.sid.appbackser.entities.GroupAccount;
 import org.sid.appbackser.repositories.AccountRepository;
 import org.sid.appbackser.repositories.GroupRepository;
 import org.sid.appbackser.services.GroupService;
@@ -41,9 +40,8 @@ public class GroupServiceImplement implements GroupService {
     }
 
     @Override
-    public List<GroupAccount> getAccountsForGroup(Integer groupId) {
-        Group group = groupRepository.findById(groupId).orElse(null);           //to modify
+    public List<Account> getAccountsForGroup(Integer groupId) {
+        Group group = groupRepository.findById(groupId).orElse(null);
         return group != null ? group.getAccounts() : null;
     }
-
 }

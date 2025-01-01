@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.Group;
-import org.sid.appbackser.entities.GroupAccount;
 
 public interface GroupService {
 
@@ -14,5 +13,5 @@ public interface GroupService {
 
     List<Group> getAllGroups();
 
-    List<GroupAccount> getAccountsForGroup(Integer groupId);
+    List<Account> getAccountsForGroup(Integer groupId);
 }
