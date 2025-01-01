@@ -26,6 +26,7 @@ import org.sid.appbackser.repositories.RoleRepository;
 import org.sid.appbackser.repositories.UserRepository;
 import org.sid.appbackser.services.AccountService;
 import org.sid.appbackser.services.UserService;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
 @Service
 public class AccountServiceImplement implements AccountService {
@@ -142,6 +143,17 @@ public class AccountServiceImplement implements AccountService {
 		logger.info("after assiging the role in the dto is :"+dto.getRole());
 		return dto;
 	}
+
+    @Override
+    public UserLoggedDTO loadInfo(String email) {
+        Account acc=accountRepository.findByEmail(email);
+        UserLoggedDTO dto=new UserLoggedDTO();
+        dto.setRole(acc.getRole());
+        dto.setEmail(acc.getEmail());
+        dto.setId(acc.getId());
+        dto.setUser(acc.getUser());
+        return dto;
+    }
 
     @Override
     public Account getAccountFromToken(Principal principal) {

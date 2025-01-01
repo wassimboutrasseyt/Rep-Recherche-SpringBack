@@ -14,5 +14,7 @@ public class GuestController {
 	public ResponseEntity<String> helloAdmin() {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body("hello");
 	}
+
+
 	
 }

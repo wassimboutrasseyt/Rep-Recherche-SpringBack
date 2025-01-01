@@ -35,6 +35,8 @@ public class Account {
 
     // Many accounts can belong to many groups with a specific role
     @ManyToMany
+    @JsonIgnore
+    @JsonManagedReference
     @JoinTable(
         name = "group_account",
         joinColumns = @JoinColumn(name = "account_id"),
@@ -53,6 +55,7 @@ public class Account {
     private User user;
     
     @OneToMany(mappedBy="account")
+    @JsonIgnore
     private List<Proposition> propositions;
 
 	public String getRole() {

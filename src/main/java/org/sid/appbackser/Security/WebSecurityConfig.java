@@ -30,11 +30,12 @@ public class WebSecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
 		return http.csrf(customizer->customizer.disable()).
+		cors(cors->{}).
 		authorizeHttpRequests(request -> request.requestMatchers("/auth/**").permitAll()
 				// .requestMatchers("/ws/chat/**").authenticated()  // Allow WebSocket URL
 				// .requestMatchers("/auth/login").permitAll()
-				.requestMatchers("/admin/").hasAnyRole("ADMIN")
-				.requestMatchers("/registred-user/").hasAnyAuthority("ADMIN","REGISTRED_USER")
+				.requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+				.requestMatchers("/registred-user/**").hasAnyAuthority("ADMIN","REGISTRED_USER")
 				.requestMatchers("/guest/**").hasAnyAuthority("ADMIN","REGISTRED_USER","GUEST")
 				.anyRequest().authenticated()).
 				httpBasic(Customizer.withDefaults()).

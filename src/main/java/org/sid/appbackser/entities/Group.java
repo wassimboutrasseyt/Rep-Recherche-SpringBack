@@ -2,6 +2,8 @@ package org.sid.appbackser.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +22,8 @@ public class Group {
 
     // Many groups can have many accounts (via GroupAccount)
     @ManyToMany(mappedBy = "groups")
+    @JsonBackReference
+
     private List<Account> accounts;
 
     // Getters and Setters

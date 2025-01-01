@@ -7,6 +7,7 @@ import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.AccountDetails;
 import org.sid.appbackser.entities.Group;
 
+
 public interface AccountService {
 
     Account createAccount(Account account); // Updated to return Account
@@ -25,7 +26,12 @@ public interface AccountService {
 
 	String verify(Account acc);
 
+
+    
+    
 	UserLoggedDTO loadInfo(Account acc);
+
+    UserLoggedDTO loadInfo(String email);
 
     Account getAccountFromToken(Principal principal);
 }
