@@ -21,7 +21,7 @@ public class Project {
     private Integer id;
 
     @Column(nullable = false, unique = true)
-    private String name;
+    private String longname;
 
     @Column(nullable = false, unique = true)
     private String shortName;

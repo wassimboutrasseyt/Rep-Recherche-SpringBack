@@ -20,11 +20,11 @@ public class ProjectServiceImplement implements ProjectService {
 
     public Project createProject(Project project) {
         Group projectGroup = new Group();
-        projectGroup.setName(project.getName());
+        projectGroup.setName(project.getLongname());
         groupRepository.save(projectGroup);
 
         Group adminGroup = new Group();
-        adminGroup.setName(project.getName() + "-adm");
+        adminGroup.setName(project.getLongname() + "-adm");
         groupRepository.save(adminGroup);
 
         project.setProjectGroup(projectGroup);

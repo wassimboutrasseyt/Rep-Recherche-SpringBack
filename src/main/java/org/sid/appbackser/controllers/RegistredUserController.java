@@ -1,14 +1,17 @@
 package org.sid.appbackser.controllers;
 
+import java.security.Principal;
 import java.util.List;
 
-import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
 import org.sid.appbackser.dto.ChatGroupDTO;
 import org.sid.appbackser.dto.UserLoggedDTO;
 import org.sid.appbackser.entities.Account;
+import org.sid.appbackser.entities.Project;
+import org.sid.appbackser.entities.Proposition;
 import org.sid.appbackser.services.AccountDetails;
 import org.sid.appbackser.services.AccountService;
 import org.sid.appbackser.services.ChatGroupService;
+import org.sid.appbackser.services.PropositionService;
 import org.sid.appbackser.services.implementations.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @RestController
@@ -37,6 +43,9 @@ public class RegistredUserController {
 
 	@Autowired
 	private AccountService accountService;
+
+	@Autowired
+	private PropositionService propositionService;
 
 	@Autowired
 	private ChatGroupService chatGroupService;
@@ -82,6 +91,31 @@ public class RegistredUserController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(dto);
 
     }
-	  
-	
+
+
+	@PostMapping("/ProjectProposition")
+	public ResponseEntity<String> requestPrjtProposition(Principal principal, @RequestBody Proposition proposition) {
+		try{
+
+		proposition.setAccount(accountService.getAccountFromToken(principal));
+		propositionService.createProposition(proposition);
+		return ResponseEntity.ok("La proposition de projet a été créée avec succès.");
+    } catch (Exception e) {
+        // Gérer les erreurs et retourner une réponse appropriée
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Une erreur s'est produite lors de la création de la proposition."+e.getMessage());
+    }
+	}
+
+	@GetMapping("/AllPropositionByMe")
+	public ResponseEntity<Iterable<Proposition>> getProjectPropositions(Principal principal) {
+		try {
+			Iterable<Proposition> propositions = propositionService.getPropositionsByAccount(accountService.getAccountFromToken(principal));
+			return ResponseEntity.ok(propositions);
+		} catch (Exception e) {
+			// Gérer les erreurs et retourner une réponse appropriée
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(null);
+		}
+	}
 }
