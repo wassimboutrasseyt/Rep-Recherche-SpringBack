@@ -2,9 +2,9 @@ package org.sid.appbackser.services.implementations;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.Project;
@@ -26,6 +26,8 @@ public class PropositionServiceImplement implements PropositionService {
 
     @Autowired
     private EmailService emailService;
+
+    
     
 
     @Override
@@ -58,6 +60,10 @@ public class PropositionServiceImplement implements PropositionService {
         project.setVisibility(proposition.getVisibility());
         project.setLicenseName(proposition.getLicenseName());
         projectService.createProject(project);
+
+
+        // Creating Personnel ressources 
+
 
         return proposition;
     }

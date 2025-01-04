@@ -27,6 +27,4 @@ public class Group {
 
     @OneToMany(mappedBy = "group")
     private List<GroupAccount> accounts;
-
-    
 }

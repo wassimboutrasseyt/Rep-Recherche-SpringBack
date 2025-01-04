@@ -50,7 +50,6 @@ public class AuthentificationController {
         return response;
     }
     
-
     @PostMapping("/register")
     public ResponseEntity<String> createAccount(@RequestBody UserAccountDTO userAccount) {
     	User User=userService.createUser(userAccount.getUser());

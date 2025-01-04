@@ -28,7 +28,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,7 +40,7 @@ public class Account {
     private String password;
     private Instant createdAt = Instant.now();
 
-    @OneToMany
+    @OneToMany(mappedBy = "account")
     private List<GroupAccount> groups;
 
 
