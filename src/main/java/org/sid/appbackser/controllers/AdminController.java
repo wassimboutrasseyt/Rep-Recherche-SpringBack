@@ -42,7 +42,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/ApproveProposition")
-	public ResponseEntity<Proposition> ApproveProposition(@RequestParam Integer propositionID) {
+	public ResponseEntity<Proposition> ApproveProposition(@RequestBody Integer propositionID) {
 		
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(
 				propositionService.approveProposition(propositionID));
