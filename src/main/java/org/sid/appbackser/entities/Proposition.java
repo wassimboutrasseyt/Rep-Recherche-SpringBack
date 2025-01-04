@@ -33,7 +33,7 @@ public class Proposition {
     private ProjectType type;
 
     @Column(nullable = false)
-    private String theme;
+    private String category;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

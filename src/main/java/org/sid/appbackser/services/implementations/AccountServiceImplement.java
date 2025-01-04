@@ -132,11 +132,13 @@ public class AccountServiceImplement implements AccountService {
 		logger.info("agter fetching user is:"+account.getRole());
 		
 		UserLoggedDTO dto=new UserLoggedDTO();
+        dto.setId(account.getId());
 		dto.setRole(account.getRole().toString());
 		dto.setEmail(account.getEmail());
 		dto.setUser(account.getUser());
 		
 		logger.info("after assiging the role in the dto is :"+dto.getRole());
+        logger.info("after fetching acc ID is :"+dto.getId());
 		return dto;
 	}
 
@@ -144,9 +146,9 @@ public class AccountServiceImplement implements AccountService {
     public UserLoggedDTO loadInfo(String email) {
         Account acc=accountRepository.findByEmail(email);
         UserLoggedDTO dto=new UserLoggedDTO();
+        dto.setId(acc.getId());
         dto.setRole(acc.getRole());
         dto.setEmail(acc.getEmail());
-        dto.setId(acc.getId());
         dto.setUser(acc.getUser());
         return dto;
     }
@@ -157,5 +159,10 @@ public class AccountServiceImplement implements AccountService {
         AccountDetails accountDetails = (AccountDetails) user;
         return accountDetails.getAccount();
     }
+
+    @Override
+    public List<Account> getAdmisAccount() {
+        return accountRepository.findByRole("ADMIN");
+      }
 
 }
