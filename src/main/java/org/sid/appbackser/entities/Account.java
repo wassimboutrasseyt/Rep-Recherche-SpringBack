@@ -28,7 +28,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -47,7 +46,8 @@ public class Account {
     //     joinColumns = @JoinColumn(name = "account_id"),
     //     inverseJoinColumns = @JoinColumn(name = "group_id")
     // )
-    @OneToMany
+
+    @OneToMany(mappedBy="account")
     private List<GroupAccount> groups;
 
 
