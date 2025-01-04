@@ -41,17 +41,11 @@ public class Account {
     private String password;
     private Instant createdAt = Instant.now();
 
-    // Many accounts can belong to many groups with a specific role
-    // @JoinTable(
-    //     name = "group_account",
-    //     joinColumns = @JoinColumn(name = "account_id"),
-    //     inverseJoinColumns = @JoinColumn(name = "group_id")
-    // )
     @OneToMany
     private List<GroupAccount> groups;
 
 
-    @Enumerated(EnumType.STRING) // This ensures the enum value is stored as a string
+    @Enumerated(EnumType.STRING) 
     @Column(nullable = false)
     private Roles role;
 
@@ -59,50 +53,9 @@ public class Account {
     @JsonBackReference
     private User user;
     
-    @OneToMany(mappedBy="account")
+    @OneToMany(mappedBy = "account")
     @JsonIgnore
     private List<Proposition> propositions;
-
-    // Getters and Setters
-    // public Integer getId() {
-    //     return id;
-    // }
-
-    // public void setId(Integer id) {
-    //     this.id = id;
-    // }
-
-    // public String getEmail() {
-    //     return email;
-    // }
-
-    // public void setEmail(String email) {
-    //     this.email = email;
-    // }
-
-    // public String getPassword() {
-    //     return password;
-    // }
-
-    // public void setPassword(String password) {
-    //     this.password = password;
-    // }
-
-    // public List<Group> getGroups() {
-    //     return groups;
-    // }
-
-    // public void setGroups(List<Group> groups) {
-    //     this.groups = groups;
-    // }
-
-    // public User getUser() {
-    //     return user;
-    // }
-
-    // public void setUser(User user) {
-    //     this.user = user;
-    // }
 
 	public String getRole() {
 		return this.role.name();
