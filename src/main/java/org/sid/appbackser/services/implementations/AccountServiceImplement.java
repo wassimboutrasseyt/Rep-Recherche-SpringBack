@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 
 import org.sid.appbackser.dto.UserLoggedDTO;
 import org.sid.appbackser.entities.Account;
@@ -155,9 +156,10 @@ public class AccountServiceImplement implements AccountService {
     }
 
     @Override
+    @Transactional
     public Account getAccountFromToken(Principal principal) {
-        UserDetails user = accountDetailService.loadUserByUsername(principal.getName());
-        AccountDetails accountDetails = (AccountDetails) user;
+        AccountDetails accountDetails = (AccountDetails) accountDetailService.loadUserByUsername(principal.getName());
         return accountDetails.getAccount();
     }
+    
 }

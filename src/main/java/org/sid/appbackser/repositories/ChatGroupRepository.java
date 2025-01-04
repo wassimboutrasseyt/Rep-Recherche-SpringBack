@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ChatGroupRepository extends MongoRepository<ChatGroup, String>{
     List<ChatGroup> findByProjectId(Integer projectId);
+
+    List<ChatGroup> findByMembersContains(Integer accountId);
 }

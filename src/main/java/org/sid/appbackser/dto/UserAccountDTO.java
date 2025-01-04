@@ -15,5 +15,4 @@ public class UserAccountDTO {
     private User user;
     private Account account;
 
-
 }

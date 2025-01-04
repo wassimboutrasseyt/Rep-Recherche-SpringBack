@@ -2,18 +2,27 @@ package org.sid.appbackser.services.implementations;
 
 import org.sid.appbackser.services.ChatGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.sid.appbackser.dto.ChatGroupDTO;
 import org.sid.appbackser.entities.ChatGroup;
+import org.sid.appbackser.entities.Project;
 import org.sid.appbackser.enums.ChatGroupType;
 import org.sid.appbackser.repositories.ChatGroupRepository;
+import org.sid.appbackser.repositories.ProjectRepository;
 
 @Service
 public class ChatGroupServiceImplement implements ChatGroupService {
 
     @Autowired
     private ChatGroupRepository chatGroupRepository;
+
+    @Autowired
+    private ProjectRepository projectRepository;
 
 
     @Override
@@ -68,5 +77,27 @@ public class ChatGroupServiceImplement implements ChatGroupService {
     @Override
     public ChatGroup getChatGroupById(String id) {
         return chatGroupRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Chat group not found"));
+    }
+
+    @Override
+    public void checkIncomming(Integer projectId, String chatGroupId, Integer accountId) {
+        //check project existance
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("Project not found"));
+        //check chatGroup existance
+        ChatGroup chatGroup = chatGroupRepository.findById(chatGroupId).orElseThrow(() -> new IllegalArgumentException("Chat group not found"));
+        //check chatGroup existance in the project
+        if (chatGroup.getProjectId() != projectId) {
+            throw new IllegalArgumentException("Chat group does not belong to the project" + chatGroupId + " project : " + projectId);
+        }
+        //check if the user is a member of the chat group
+        if (!chatGroup.getMembers().contains(accountId)) {
+            throw new IllegalArgumentException("User "+ accountId + " is not a member of the chat group :" + chatGroupId);
+        }
+    }
+
+    @Override
+    public List<ChatGroupDTO> getChatGroupsForAccount(Integer userId) {
+        List<ChatGroup> chatGroups = chatGroupRepository.findByMembersContains(userId);
+        return chatGroups.stream().map(ChatGroupDTO::new).collect(Collectors.toList());
     }
 }
