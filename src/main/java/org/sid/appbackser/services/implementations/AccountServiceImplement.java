@@ -134,9 +134,10 @@ public class AccountServiceImplement implements AccountService {
 		UserLoggedDTO dto=new UserLoggedDTO();
         dto.setId(account.getId());
 		dto.setRole(account.getRole().toString());
+
 		dto.setEmail(account.getEmail());
 		dto.setUser(account.getUser());
-		
+
 		logger.info("after assiging the role in the dto is :"+dto.getRole());
         logger.info("after fetching acc ID is :"+dto.getId());
 		return dto;

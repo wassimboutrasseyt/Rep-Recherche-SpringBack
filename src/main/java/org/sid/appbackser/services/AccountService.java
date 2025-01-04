@@ -28,9 +28,6 @@ public interface AccountService {
 
 	String verify(Account acc);
 
-
-    
-    
 	UserLoggedDTO loadInfo(Account acc);
 
     UserLoggedDTO loadInfo(String email);

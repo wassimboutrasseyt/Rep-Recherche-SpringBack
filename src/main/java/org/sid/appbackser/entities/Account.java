@@ -42,12 +42,12 @@ public class Account {
     private Instant createdAt = Instant.now();
 
     // Many accounts can belong to many groups with a specific role
-    @OneToMany
     // @JoinTable(
     //     name = "group_account",
     //     joinColumns = @JoinColumn(name = "account_id"),
     //     inverseJoinColumns = @JoinColumn(name = "group_id")
     // )
+    @OneToMany
     private List<GroupAccount> groups;
 
 

@@ -34,25 +34,23 @@ public class AuthentificationController {
         this.accountService = accountService;
     }
     
-    
-    
     //Authentification methodes
     
     @PostMapping("/login")
     public ResponseEntity<UserLoggedDTO> login(@RequestBody Account acc) {
-    	String s=accountService.verify(acc);
-    	if(s==null) {
-    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-    	}
-    	UserLoggedDTO userInformation=accountService.loadInfo(acc);
-    	
+        String s=accountService.verify(acc);
+        if(s==null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        UserLoggedDTO userInformation = accountService.loadInfo(acc);
+        
         ResponseEntity<UserLoggedDTO> response = ResponseEntity.status(HttpStatus.ACCEPTED)
             .header("Authorization", s)
             .body(userInformation);
         return response;
     }
     
-   
+
     @PostMapping("/register")
     public ResponseEntity<String> createAccount(@RequestBody UserAccountDTO userAccount) {
     	User User=userService.createUser(userAccount.getUser());
