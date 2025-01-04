@@ -47,8 +47,8 @@ public class RegistredUserController {
     // }
 
 	@GetMapping
-	public ResponseEntity<String> hello() {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body("hello " + "world");
+	public ResponseEntity<String> hello(@AuthenticationPrincipal AccountDetails authAcc) {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body("hello " + authAcc.getAccount().getUser().getLastName().toUpperCase());
 	}
 
 	// chat section
