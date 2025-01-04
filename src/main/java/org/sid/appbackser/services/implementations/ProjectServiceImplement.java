@@ -30,12 +30,12 @@ public class ProjectServiceImplement implements ProjectService {
     public Project createProject(Project project) {
 
         Group projectGroup = new Group();
-        projectGroup.setName(project.getLongname());
-        groupRepository.save(projectGroup);
+        projectGroup.setName(project.getShortName());
+        projectGroup = groupRepository.save(projectGroup);
 
         Group adminGroup = new Group();
-        adminGroup.setName(project.getLongname() + "-adm");
-        groupRepository.save(adminGroup);
+        adminGroup.setName(project.getShortName() + "-adm");
+        adminGroup = groupRepository.save(adminGroup);
 
         project.setProjectGroup(projectGroup);
         project.setAdminGroup(adminGroup);

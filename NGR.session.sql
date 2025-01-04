@@ -1,1 +1,1 @@
-SELECT * FROM account;
+SELECT * FROM group_account;
