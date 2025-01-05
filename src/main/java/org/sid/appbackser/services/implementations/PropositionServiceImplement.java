@@ -37,7 +37,7 @@ public class PropositionServiceImplement implements PropositionService {
         propositionRepository.save(proposition);
         emailService.notifyAdmins(proposition);
         return "Proposition created successfully";
-            }
+    }
 
     @Override
     public List<Proposition> getPendingPropositions() {
@@ -59,7 +59,7 @@ public class PropositionServiceImplement implements PropositionService {
         project.setTheme(proposition.getCategory());
         project.setVisibility(proposition.getVisibility());
         project.setLicenseName(proposition.getLicenseName());
-        projectService.createProject(project);
+        projectService.createProject(project, proposition.getAccount());
 
 
         // Creating Personnel ressources 

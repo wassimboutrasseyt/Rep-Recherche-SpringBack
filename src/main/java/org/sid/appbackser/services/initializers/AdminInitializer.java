@@ -46,13 +46,13 @@ public class AdminInitializer {
             User user1 = new User();
             userRepository.save(user1);
             Account admin = new Account();
-            admin.setEmail("admin1@ngr.com");
+            admin.setEmail("Boutrasseytwassim@gmail.com");
             admin.setPassword(encoder.encode("admin-ngr"));
             admin.setRole(role);
             admin.setUser(user1);
             //accountRepository.save(admin);
             Account admin1 = new Account();
-            admin1.setEmail("admin2@ngr.com");
+            admin1.setEmail("amranihassan.am@gmail.com");
             admin1.setPassword(encoder.encode("admin-ngr"));
             admin1.setRole(role);
             admin1.setUser(user1);
