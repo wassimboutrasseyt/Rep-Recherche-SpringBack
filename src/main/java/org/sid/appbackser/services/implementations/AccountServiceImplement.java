@@ -164,7 +164,7 @@ public class AccountServiceImplement implements AccountService {
 
     @Override
     public List<Account> getAdmisAccount() {
-        return accountRepository.findByRole("ADMIN");
+        return accountRepository.findByRole(Roles.ADMIN);
       }
 
 }
