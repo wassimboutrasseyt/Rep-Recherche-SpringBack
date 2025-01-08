@@ -20,7 +20,7 @@ public class DepotServiceImp implements DepotService {
     @Autowired
     private FolderService folderService;
 
-    private static final String BASE_PATH = "C:\\Users\\user\\Desktop\\Spring\\NGR\\AppBackService\\Storage\\";
+    private static final String BASE_PATH = "C:\\Users\\user\\Desktop\\Spring\\NGR\\AppBackService\\src\\main\\resources\\Storage\\";
 
     @Override
     public Depot createDepot(String projectName, DepotType type) {
@@ -44,7 +44,7 @@ public class DepotServiceImp implements DepotService {
         } else {
             throw new IllegalArgumentException("Directory already exists at path: " + depotPath);
         }
-        
+
         depotRepository.save(depot);
         return depot;
     }
