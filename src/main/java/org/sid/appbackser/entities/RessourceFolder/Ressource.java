@@ -15,6 +15,7 @@ public abstract class Ressource {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nom;
+    
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "calendrier_id")
     private Calendrier calendrier;

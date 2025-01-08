@@ -8,6 +8,8 @@ import org.sid.appbackser.dto.UserLoggedDTO;
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.Project;
 import org.sid.appbackser.entities.Proposition;
+import org.sid.appbackser.entities.RessourceFolder.Depot;
+import org.sid.appbackser.entities.RessourceFolder.Folder;
 import org.sid.appbackser.services.AccountDetails;
 import org.sid.appbackser.services.AccountService;
 import org.sid.appbackser.services.ChatGroupService;
@@ -118,4 +120,5 @@ public class RegistredUserController {
 					.body(null);
 		}
 	}
+
 }

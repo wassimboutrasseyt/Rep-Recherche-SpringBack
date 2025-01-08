@@ -21,10 +21,16 @@ import org.sid.appbackser.services.AccountDetails;
 import org.sid.appbackser.entities.Group;
 import org.sid.appbackser.entities.GroupAccount;
 import org.sid.appbackser.entities.User;
+import org.sid.appbackser.entities.RessourceFolder.Depot;
+import org.sid.appbackser.entities.RessourceFolder.RessourcePerso;
+import org.sid.appbackser.enums.DepotType;
 import org.sid.appbackser.enums.Roles;
 import org.sid.appbackser.repositories.AccountRepository;
+import org.sid.appbackser.repositories.RessourcePersoRepository;
 import org.sid.appbackser.repositories.UserRepository;
 import org.sid.appbackser.services.AccountService;
+import org.sid.appbackser.services.DepotService;
+import org.sid.appbackser.services.FolderService;
 import org.sid.appbackser.services.UserService;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
@@ -47,6 +53,15 @@ public class AccountServiceImplement implements AccountService {
     @Autowired 
     JWTService JwtService;
     
+    @Autowired
+    private DepotService depotService;
+
+    @Autowired
+    private FolderService folderService;
+    
+    @Autowired
+    private RessourcePersoRepository ressourcePersoRepository;
+
     
 	private static final Logger logger =  LoggerFactory.getLogger(UserService.class);
 

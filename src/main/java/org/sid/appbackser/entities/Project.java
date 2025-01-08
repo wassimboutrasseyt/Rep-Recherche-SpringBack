@@ -7,8 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
+import org.sid.appbackser.entities.RessourceFolder.RessourceProject;
 import org.sid.appbackser.enums.ProjectType;
 import org.sid.appbackser.enums.ProjectVisibility;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Data
@@ -47,5 +50,8 @@ public class Project {
     @JoinColumn(name = "admin_group_id", referencedColumnName = "id")
     private Group adminGroup;
 
-
+    @OneToOne(mappedBy = "projet", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference // Prevents infinite recursion, manages serialization for ressourceProject
+    private RessourceProject ressourceProject;
+    
 }
