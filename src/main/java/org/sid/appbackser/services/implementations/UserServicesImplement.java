@@ -5,8 +5,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Pageable;
 import org.sid.appbackser.dto.UserAccountDTO;
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.User;
@@ -63,10 +64,13 @@ public class UserServicesImplement implements UserService{
 		return null;
 	}
 
+
+
+
+
 	@Override
-	public List<User> getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+	public Page<User> findAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
 	}
 
 }

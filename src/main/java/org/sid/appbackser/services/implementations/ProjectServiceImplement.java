@@ -1,9 +1,12 @@
 package org.sid.appbackser.services.implementations;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +22,9 @@ import org.sid.appbackser.repositories.GroupRepository;
 import org.sid.appbackser.repositories.ProjectRepository;
 import org.sid.appbackser.services.ChatGroupService;
 import org.sid.appbackser.services.ProjectService;
+import org.springframework.cglib.core.Local;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.sid.appbackser.services.RessourceProjectService;
 
 @Service
@@ -49,11 +55,13 @@ public class ProjectServiceImplement implements ProjectService {
         Group projectGroup = new Group();
         projectGroup.setName(project.getShortName());
         projectGroup = groupRepository.save(projectGroup);
+        projectGroup.setProject(project);
 
         // admin group
         Group adminGroup = new Group();
         adminGroup.setName(project.getShortName() + "-adm");
         adminGroup = groupRepository.save(adminGroup);
+        adminGroup.setProject(project);
 
         // creator is the admin of the project (the association between the account and the group)
         GroupAccount groupAccount = new GroupAccount();
@@ -66,6 +74,7 @@ public class ProjectServiceImplement implements ProjectService {
         project.setProjectGroup(projectGroup);
         project.setAdminGroup(adminGroup);
 
+        project.setCreatedAt(LocalDateTime.now());
         /*
          * creating the Ressources of the project  (WEB and SRC depots)
          */
@@ -86,6 +95,20 @@ public class ProjectServiceImplement implements ProjectService {
         chatGroupService.createChatGroup(project.getId(), project.getShortName(), ChatGroupType.GENERALE, List.of(creator.getId()));
 
         return project;
-
     }
+
+    @Override
+    public Page<Project> findAllProjects(PageRequest pageable) {
+       return  projectRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Project> getProjectsByIds(List<Integer> projectIds) {
+        if (projectIds == null || projectIds.isEmpty()) {
+            return new ArrayList<>(); 
+        }
+        return projectRepository.findByIdIn(projectIds);
+    }
+    
+    
 }

@@ -1,6 +1,5 @@
 package org.sid.appbackser.entities;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,12 +29,12 @@ public class User {
     private String phone;
     private Date dob;
 
-    // // One user can have many accounts
-    // @JsonManagedReference
-    // @JsonIgnore
-    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // // "user" is the field in Account entity
-    // private List<Account> accounts;
+    // One user can have many accounts
+    @JsonManagedReference
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // "user" is the field in Account entity
+    private List<Account> accounts;
 
  
 }

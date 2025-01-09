@@ -30,7 +30,6 @@ public interface AccountService {
 
 	UserLoggedDTO loadInfo(Account acc);
 
-    UserLoggedDTO loadInfo(String email);
 
     Account getAccountFromToken(Principal principal);
 }

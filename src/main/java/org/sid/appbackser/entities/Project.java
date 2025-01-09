@@ -1,17 +1,27 @@
 package org.sid.appbackser.entities;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import org.sid.appbackser.entities.RessourceFolder.RessourceProject;
 import org.sid.appbackser.enums.ProjectType;
 import org.sid.appbackser.enums.ProjectVisibility;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
@@ -34,7 +44,8 @@ public class Project {
     private ProjectType type;
 
     @Column(nullable = false)
-    private String theme;
+    private String category;
+
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -42,12 +53,21 @@ public class Project {
 
     private String licenseName; // Optional, only for "logiciel"
 
+    @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "project_group_id", referencedColumnName = "id")
+    @JsonIgnore
     private Group projectGroup;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "admin_group_id", referencedColumnName = "id")
+    @JsonIgnore
     private Group adminGroup;
 
     @OneToOne(mappedBy = "projet", cascade = CascadeType.ALL, orphanRemoval = true)

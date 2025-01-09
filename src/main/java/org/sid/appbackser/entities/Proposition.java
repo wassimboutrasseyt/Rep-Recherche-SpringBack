@@ -52,7 +52,7 @@ public class Proposition {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id")
     private Account account;
 
     
