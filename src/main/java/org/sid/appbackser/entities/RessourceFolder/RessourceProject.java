@@ -29,5 +29,4 @@ public class RessourceProject extends Ressource {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true) 
     @JoinColumn(name = "src_depot_id")
     private Depot srcDepot; // Represents the SRC depot
-
 }

@@ -5,6 +5,7 @@ import java.time.Instant;
 
 import org.sid.appbackser.entities.RessourceFolder.Depot;
 import org.sid.appbackser.entities.RessourceFolder.Folder;
+import org.sid.appbackser.repositories.DepotRepository;
 import org.sid.appbackser.repositories.FolderRepository;
 import org.sid.appbackser.services.FolderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,20 @@ public class FolderServiceImp implements FolderService {
     @Autowired
     private FolderRepository folderRepository;
 
-    public Folder createFolder(Depot depot, String name, Folder parentFolder) {
+    @Autowired
+    private DepotRepository depotRepository;
+
+
+    public Folder createFolder(Integer depotId, String name, Integer parentFolderId) {
+        Depot depot = depotRepository.findById(depotId)
+                .orElseThrow(() -> new IllegalArgumentException("Depot not found with id: " + depotId));
+                
+        Folder parentFolder = null;
+        if (parentFolderId != null) {
+            parentFolder = folderRepository.findById(parentFolderId)
+                    .orElseThrow(() -> new IllegalArgumentException("Parent folder not found with id: " + parentFolderId));
+        }
+
         String folderPath;
 
         if (parentFolder != null) {
@@ -30,7 +44,7 @@ public class FolderServiceImp implements FolderService {
         folder.setName(name);
         folder.setCreatedAt(Instant.now());
         folder.setLocalPath(folderPath);  // Store the local file path
-        folder.setParentFolder(parentFolder != null ? parentFolder : null);  // Link the folder to its parent
+        folder.setParentFolder(parentFolder);  // Link the folder to its parent
         folder.setDepot(depot);  // Link the folder to the depot
 
         // Create the folder on the local filesystem

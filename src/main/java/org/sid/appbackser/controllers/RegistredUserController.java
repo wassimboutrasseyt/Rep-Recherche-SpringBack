@@ -2,6 +2,7 @@ package org.sid.appbackser.controllers;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 import org.sid.appbackser.dto.ChatGroupDTO;
 import org.sid.appbackser.dto.UserLoggedDTO;
@@ -13,14 +14,19 @@ import org.sid.appbackser.entities.RessourceFolder.Folder;
 import org.sid.appbackser.services.AccountDetails;
 import org.sid.appbackser.services.AccountService;
 import org.sid.appbackser.services.ChatGroupService;
+import org.sid.appbackser.services.DepotService;
+import org.sid.appbackser.services.FolderService;
 import org.sid.appbackser.services.PropositionService;
 import org.sid.appbackser.services.implementations.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.method.AuthorizeReturnObject;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,6 +58,11 @@ public class RegistredUserController {
 	@Autowired
 	private ChatGroupService chatGroupService;
 	
+	
+	@Autowired
+	private FolderService folderService;
+
+	
 	// @Autowired
     // public RegistredUserController(JwtService jwtService) {
     //     this.jwtService = jwtService;
@@ -68,6 +79,36 @@ public class RegistredUserController {
 		List<ChatGroupDTO> chatGroupDTOs = chatGroupService.getChatGroupsForAccount(authAcc.getAccount().getId());
 		return ResponseEntity.ok(chatGroupDTOs);
 	}
+
+
+
+	//projects depot section
+	@PostMapping("/project/depot/create-folder")
+	public ResponseEntity<Folder> createFolder(@RequestBody Map<String, Object> requestBody) {
+
+		/*
+		 * Request body example:
+		 * {
+		 *    "depotId": 1,
+		 *    "name": "New Folder",
+		 *    "parentFolderId": 2 // if it's a subfolde, if the folder will be created directly on the SRC or WEB, this should be null or absent
+		 * }
+		 */
+
+		Integer depotId = (Integer) requestBody.get("depotId");
+		String name = (String) requestBody.get("name");
+		Integer parentFolderId = requestBody.get("parentFolderId") != null ? (Integer) requestBody.get("parentFolderId") : null;
+	
+		Folder folder = folderService.createFolder(depotId, name, parentFolderId);
+		return ResponseEntity.ok(folder);
+	}
+	
+
+	@DeleteMapping("/delete/{folderId}")
+    public ResponseEntity<Void> deleteFolder(@PathVariable Integer folderId) {
+        folderService.deleteFolder(folderId);
+        return ResponseEntity.noContent().build();
+    }
 
 	@GetMapping("/me")
     public ResponseEntity<UserLoggedDTO> getUserInfo(@AuthenticationPrincipal AccountDetails acc) {
