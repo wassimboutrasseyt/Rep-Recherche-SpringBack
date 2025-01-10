@@ -106,8 +106,6 @@ public class ProjectServiceImplement implements ProjectService {
         ChatGroup adminChatGroup = chatGroupService.createChatGroup(project.getId(), project.getShortName() + "-adm", ChatGroupType.ADMIN, List.of(creator.getId()));
         // generale chat group (admins + members)
         ChatGroup generalChatGroup = chatGroupService.createChatGroup(project.getId(), project.getShortName(), ChatGroupType.GENERALE, List.of(creator.getId()));
-
-        // Fetch the general ChatGroup from MongoDB
         
         // Set the chat group IDs in the project
         project.setGeneralChatGroupId(generalChatGroup.getId());

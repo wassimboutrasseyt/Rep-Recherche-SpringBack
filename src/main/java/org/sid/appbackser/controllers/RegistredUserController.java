@@ -1,12 +1,15 @@
 package org.sid.appbackser.controllers;
 
 import java.security.Principal;
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
+
 
 import org.sid.appbackser.dto.ChatGroupDTO;
 import org.sid.appbackser.dto.UserLoggedDTO;
 import org.sid.appbackser.entities.Account;
+import org.sid.appbackser.entities.User;
 import org.sid.appbackser.entities.Project;
 import org.sid.appbackser.entities.Proposition;
 import org.sid.appbackser.entities.RessourceFolder.Depot;
@@ -17,6 +20,7 @@ import org.sid.appbackser.services.ChatGroupService;
 import org.sid.appbackser.services.FolderService;
 import org.sid.appbackser.services.ProjectService;
 import org.sid.appbackser.services.PropositionService;
+import org.sid.appbackser.services.UserService;
 import org.sid.appbackser.services.implementations.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
@@ -38,6 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,6 +76,8 @@ public class RegistredUserController {
 	@Autowired
 	private FolderService folderService;
 
+	@Autowired
+	private UserService	userService;
 	// @Autowired
     // public RegistredUserController(JwtService jwtService) {
     //     this.jwtService = jwtService;
@@ -124,6 +131,22 @@ public class RegistredUserController {
 		UserLoggedDTO dto=accountService.loadInfo(account);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(dto);
     }
+
+	@PutMapping("/profile/update/{id}")
+	public ResponseEntity<?> updateUser(@PathVariable Integer id, @RequestBody Map<String, Object> requestBody) {
+		try {
+			String firstName = (String) requestBody.get("firstName");
+			String lastName = (String) requestBody.get("lastName");
+			String phone = (String) requestBody.get("phone");
+			Date dob = (Date) requestBody.get("dob");
+			String profession = (String) requestBody.get("profession");
+			
+			User updatedUser =  userService.updateUser(id, firstName, lastName, phone, dob, profession);
+			return ResponseEntity.ok(updatedUser);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating user: " + e.getMessage());
+		}
+	}
 
 
 

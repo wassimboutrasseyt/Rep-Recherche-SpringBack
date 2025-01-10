@@ -1,5 +1,6 @@
 package org.sid.appbackser.services.implementations;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -48,9 +49,14 @@ public class UserServicesImplement implements UserService{
 	
 
 	@Override
-	public String updateUser(User user) {
-		this.userRepository.save(user);
-		return "user Updated succesfully";
+	public User updateUser(Integer id, String firstName, String lastName, String phone, Date dob, String proffession) {
+		User user = userRepository.getById(id);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setPhone(phone);
+		user.setDob(dob);
+		user.setProffession(proffession);
+		return userRepository.save(user);
 	}
 
 	@Override
