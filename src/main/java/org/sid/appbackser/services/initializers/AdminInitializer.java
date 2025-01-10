@@ -67,8 +67,8 @@ public class AdminInitializer {
             admin2.setUser(user1);
             admin2.setStatus(AccountStatus.ACTIVE);
 
-            // accountRepository.save(admin);
-            // accountRepository.save(admin1);
+            accountRepository.save(admin);
+            accountRepository.save(admin1);
             accountRepository.save(admin2);
 
                 ChatGroup newGroup = new ChatGroup();

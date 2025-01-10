@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jakarta.persistence.EntityManager;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,8 +53,16 @@ public class ProjectServiceImplement implements ProjectService {
     @Autowired
     private ChatGroupRepository chatGroupRepository;
 
+    @Autowired
+    private EntityManager entityManager;
+
     @Transactional
     public Project createProject(Project project, Account creator) {
+
+        // Use EntityManager to persist the project and generate the ID
+        // it just like opening a transaction and it can be rolledback before commit so it takes the id by the database
+        entityManager.persist(project);
+        entityManager.flush(); // Ensures the ID is generated
 
         /*
          * Groups creation
@@ -80,10 +90,10 @@ public class ProjectServiceImplement implements ProjectService {
         project.setProjectGroup(projectGroup);
         project.setAdminGroup(adminGroup);
 
-
         /*
          * creating the Ressources of the project  (WEB and SRC depots)
          */
+
         RessourceProject ressourceProject = ressourcePersoService.createRessourceProject(project);
         
         project.setRessourceProject(ressourceProject);
@@ -98,13 +108,30 @@ public class ProjectServiceImplement implements ProjectService {
         ChatGroup generalChatGroup = chatGroupService.createChatGroup(project.getId(), project.getShortName(), ChatGroupType.GENERALE, List.of(creator.getId()));
 
         // Fetch the general ChatGroup from MongoDB
-
-        project.setGeneralChatGroup(generalChatGroup); // Set the general chat group
-        project.setAdminChatGroup(adminChatGroup); // Set the admin chat group
         
+        // Set the chat group IDs in the project
+        project.setGeneralChatGroupId(generalChatGroup.getId());
+        project.setAdminChatGroupId(adminChatGroup.getId());
+
         // save the project
         project = projectRepository.save(project);
 
+        return project;
+    }
+
+    @Override
+    public Project getProjectByShortName(String shortName) {
+        // Fetch the project from MySQL
+        Project project = projectRepository.findByShortName(shortName);
+    
+        // Fetch chat groups from MongoDB using their IDs
+        ChatGroup generalChatGroup = chatGroupService.getChatGroupById(project.getGeneralChatGroupId());
+        ChatGroup adminChatGroup = chatGroupService.getChatGroupById(project.getAdminChatGroupId());
+    
+        // Set the actual ChatGroup objects on the project
+        project.setGeneralChatGroup(generalChatGroup);
+        project.setAdminChatGroup(adminChatGroup);
+    
         return project;
     }
 
@@ -121,13 +148,7 @@ public class ProjectServiceImplement implements ProjectService {
         return projectRepository.findByIdIn(projectIds);
     }
 
-@Override
-    public Project getProjectByShortName(String shortName) {
-        // Fetch the project from MySQL
-        Project project = projectRepository.findByShortName(shortName);
-
-        return project;
-    }
+    
     
     
 }
