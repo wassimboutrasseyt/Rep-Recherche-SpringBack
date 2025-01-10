@@ -131,14 +131,14 @@ public class RegistredUserController {
 	public ResponseEntity<String> requestPrjtProposition(Principal principal, @RequestBody Proposition proposition) {
 		try{
 
-		proposition.setAccount(accountService.getAccountFromToken(principal));
-		propositionService.createProposition(proposition);
-		return ResponseEntity.ok("La proposition de projet a été créée avec succès.");
-    } catch (Exception e) {
-        // Gérer les erreurs et retourner une réponse appropriée
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Une erreur s'est produite lors de la création de la proposition."+e.getMessage());
-    }
+			proposition.setAccount(accountService.getAccountFromToken(principal));
+			propositionService.createProposition(proposition);
+			return ResponseEntity.ok("La proposition de projet a été créée avec succès.");
+		} catch (Exception e) {
+			// Gérer les erreurs et retourner une réponse appropriée
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Une erreur s'est produite lors de la création de la proposition."+e.getMessage());
+		}
 	}
 
 
@@ -160,5 +160,30 @@ public class RegistredUserController {
         List<Project> projects = projectService.getProjectsByIds(projectIds);
         return ResponseEntity.ok(projects);
     }
+
+	// @GetMapping("/project")
+	// public ResponseEntity<Project> getProjectByShortName(@RequestParam String shortName) {
+	// 	try{
+	// 		Project  project = projectService.getProjectByShortName(shortName);
+	// 		return ResponseEntity.ok(project); 
+	// 	}catch(Exception e){
+	// 		return (ResponseEntity<Project>) ResponseEntity.badRequest();
+	// 	}
+	// }
+
+	@GetMapping("/project")
+	public ResponseEntity<?> getProjectByShortName(@RequestParam String shortName) {
+		try {
+			Project project = projectService.getProjectByShortName(shortName);
+			if (project == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Project not found: No project exists with the given short name.");
+			}
+			return ResponseEntity.ok(project);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid request: " + e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred. Please try again.");
+		}
+	}
 
 }

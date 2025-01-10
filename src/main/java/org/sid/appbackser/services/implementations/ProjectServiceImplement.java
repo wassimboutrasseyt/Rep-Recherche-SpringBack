@@ -11,12 +11,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.sid.appbackser.entities.Account;
+import org.sid.appbackser.entities.ChatGroup;
 import org.sid.appbackser.entities.Group;
 import org.sid.appbackser.entities.GroupAccount;
 import org.sid.appbackser.entities.Project;
 import org.sid.appbackser.entities.RessourceFolder.RessourceProject;
 import org.sid.appbackser.enums.ChatGroupType;
 import org.sid.appbackser.enums.RolesPerGroup;
+import org.sid.appbackser.repositories.ChatGroupRepository;
 import org.sid.appbackser.repositories.GroupAccountRepository;
 import org.sid.appbackser.repositories.GroupRepository;
 import org.sid.appbackser.repositories.ProjectRepository;
@@ -46,6 +48,9 @@ public class ProjectServiceImplement implements ProjectService {
     @Autowired
     private RessourceProjectService ressourcePersoService;
     
+    @Autowired
+    private ChatGroupRepository chatGroupRepository;
+
     @Transactional
     public Project createProject(Project project, Account creator) {
 
@@ -75,24 +80,30 @@ public class ProjectServiceImplement implements ProjectService {
         project.setProjectGroup(projectGroup);
         project.setAdminGroup(adminGroup);
 
+
         /*
          * creating the Ressources of the project  (WEB and SRC depots)
          */
         RessourceProject ressourceProject = ressourcePersoService.createRessourceProject(project);
         
         project.setRessourceProject(ressourceProject);
+        
+        /*
+        * chat groups creation
+        */
+        
+        // admins chat group
+        ChatGroup adminChatGroup = chatGroupService.createChatGroup(project.getId(), project.getShortName() + "-adm", ChatGroupType.ADMIN, List.of(creator.getId()));
+        // generale chat group (admins + members)
+        ChatGroup generalChatGroup = chatGroupService.createChatGroup(project.getId(), project.getShortName(), ChatGroupType.GENERALE, List.of(creator.getId()));
 
+        // Fetch the general ChatGroup from MongoDB
+
+        project.setGeneralChatGroup(generalChatGroup); // Set the general chat group
+        project.setAdminChatGroup(adminChatGroup); // Set the admin chat group
+        
         // save the project
         project = projectRepository.save(project);
-
-        /*
-         * chat groups creation
-         */
-
-        // admins chat group
-        chatGroupService.createChatGroup(project.getId(), project.getShortName() + "-adm", ChatGroupType.ADMIN, List.of(creator.getId()));
-        // generale chat group (admins + members)
-        chatGroupService.createChatGroup(project.getId(), project.getShortName(), ChatGroupType.GENERALE, List.of(creator.getId()));
 
         return project;
     }
@@ -108,6 +119,14 @@ public class ProjectServiceImplement implements ProjectService {
             return new ArrayList<>(); 
         }
         return projectRepository.findByIdIn(projectIds);
+    }
+
+@Override
+    public Project getProjectByShortName(String shortName) {
+        // Fetch the project from MySQL
+        Project project = projectRepository.findByShortName(shortName);
+
+        return project;
     }
     
     

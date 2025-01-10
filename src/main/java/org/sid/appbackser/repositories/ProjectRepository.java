@@ -11,4 +11,6 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     List<Project> findByIdIn(List<Integer> ids);
 
+    Project findByShortName(String shortName);
+
 }

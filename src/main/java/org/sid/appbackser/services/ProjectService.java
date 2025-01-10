@@ -12,5 +12,7 @@ public interface ProjectService {
 
     public Page<Project> findAllProjects(PageRequest pageable);
 	public List<Project> getProjectsByIds(List<Integer> projectIds);
+
+	public Project getProjectByShortName(String shortName);
 	 
 }
