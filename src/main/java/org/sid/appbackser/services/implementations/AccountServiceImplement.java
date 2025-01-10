@@ -1,15 +1,26 @@
 package org.sid.appbackser.services.implementations;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.sid.appbackser.dto.UserLoggedDTO;
+import org.sid.appbackser.entities.Account;
+import org.sid.appbackser.entities.GroupAccount;
+import org.sid.appbackser.enums.AccountStatus;
+import org.sid.appbackser.enums.Roles;
+import org.sid.appbackser.repositories.AccountRepository;
+import org.sid.appbackser.repositories.UserRepository;
+import org.sid.appbackser.services.AccountDetails;
+import org.sid.appbackser.services.AccountService;
+import org.sid.appbackser.services.GroupAccountService;
+import org.sid.appbackser.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -62,10 +73,15 @@ public class AccountServiceImplement implements AccountService {
     @Autowired
     private RessourcePersoRepository ressourcePersoRepository;
 
+   @Autowired
+   private GroupAccountService groupAccountService;
+
     
 	private static final Logger logger =  LoggerFactory.getLogger(UserService.class);
 
     private BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(10);
+
+    
     
     public AccountServiceImplement(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
@@ -76,6 +92,7 @@ public class AccountServiceImplement implements AccountService {
     	account.setPassword(encoder.encode(account.getPassword()));
       //  account.setGroups(null);
         account.setRole(Roles.REGISTRED_USER);
+        account.setStatus(AccountStatus.ACTIVE);
     	Account account_2= accountRepository.save(account);
     	//this.setRoleForAccount(account_2.getId(),Roles.REGISTRED_USER);
 
@@ -137,38 +154,50 @@ public class AccountServiceImplement implements AccountService {
 		return "not registred";
 	}
 
-	@Override
-	public UserLoggedDTO loadInfo(Account acc) {
-		
-		logger.info("email:"+acc.getEmail());
-		
-		Account account=accountRepository.findByEmail(acc.getEmail());
-		
-		logger.info("after fetching acc user is:"+account.getUser().getFirstName());
-		logger.info("agter fetching user is:"+account.getRole());
-		
-		UserLoggedDTO dto=new UserLoggedDTO();
-        dto.setId(account.getId());
-		dto.setRole(account.getRole().toString());
-
-		dto.setEmail(account.getEmail());
-		dto.setUser(account.getUser());
-
-		logger.info("after assiging the role in the dto is :"+dto.getRole());
-        logger.info("after fetching acc ID is :"+dto.getId());
-		return dto;
-	}
-
     @Override
-    public UserLoggedDTO loadInfo(String email) {
-        Account acc=accountRepository.findByEmail(email);
-        UserLoggedDTO dto=new UserLoggedDTO();
-        dto.setId(acc.getId());
-        dto.setRole(acc.getRole());
-        dto.setEmail(acc.getEmail());
-        dto.setUser(acc.getUser());
+    public UserLoggedDTO loadInfo(Account acc) {
+        logger.info("Email: " + acc.getEmail());
+
+        // Fetch the full account details
+        Account account = accountRepository.findByEmail(acc.getEmail());
+
+        if (account == null) {
+            throw new RuntimeException("Account not found for email: " + acc.getEmail());
+        }
+
+        logger.info("Fetched Account's User: " + account.getUser().getFirstName());
+        logger.info("Fetched Account Role: " + account.getRole());
+
+        // Prepare the UserLoggedDTO
+        UserLoggedDTO dto = new UserLoggedDTO();
+        dto.setId(account.getId());
+        dto.setRole(account.getRole().toString());
+        dto.setEmail(account.getEmail());
+        dto.setUser(account.getUser());
+
+        // Populate group details
+        List<UserLoggedDTO.GroupData> groupDataList = new ArrayList<>();
+        for (GroupAccount groupAccount : account.getGroups()) {
+            UserLoggedDTO.GroupData groupData = new UserLoggedDTO.GroupData();
+            groupData.setRolePerGroup(groupAccount.getRole().toString());
+            groupData.setProjectId(groupAccount.getGroup().getProject() != null
+                    ? groupAccount.getGroup().getProject().getId()
+                    : null);
+            groupData.setProjectShortName(groupAccount.getGroup().getProject() != null
+                    ? groupAccount.getGroup().getProject().getShortName()
+                    : null);
+
+            groupDataList.add(groupData);
+        }
+
+        // Set groups in DTO
+        dto.setGroups(groupDataList);
+
         return dto;
     }
+
+
+
 
     @Override
     @Transactional

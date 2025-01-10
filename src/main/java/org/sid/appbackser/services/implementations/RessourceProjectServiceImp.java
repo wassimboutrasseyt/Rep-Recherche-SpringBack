@@ -31,6 +31,7 @@ public class RessourceProjectServiceImp implements RessourceProjectService {
         ressourceProject.setProjet(project);
         ressourceProject.setWebDepot(webDepot);
         ressourceProject.setSrcDepot(srcDepot);
+        
         ressourceProjectRepository.save(ressourceProject);
 
         return ressourceProject;

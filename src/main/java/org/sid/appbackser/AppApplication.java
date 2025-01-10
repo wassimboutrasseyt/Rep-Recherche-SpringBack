@@ -14,19 +14,5 @@ public class AppApplication {
 		
 		SpringApplication.run(AppApplication.class, args);
 	}
-	@Bean
-	CommandLineRunner start(AccountService accountService){
-		return args -> {
-			// accountService.saveRole(new AppRole(null,"USER"));
-			// accountService.saveRole(new AppRole(null,"ADMIN"));
-			// accountService.saveRole(new AppRole(null,"CUSTOMER_MANAGER"));
-			// accountService.saveRole(new AppRole(null,"PRODUCT_MANAGER"));
-			// accountService.saveRole(new AppRole(null,"BILLS_MANAGER"));
-			// accountService.saveRole(new AppRole(null,"CUSTOMER_MANAGER"));
-			// accountService.saveRole(new AppRole(null,"SUPPLIER_MANAGER"));
-			// accountService.saveRole(new AppRole(null,"STOCK_MANAGER"));
-			// accountService.saveRole(new AppRole(null,"SALES_MANAGER"));
-		};
 
-}
 }

@@ -14,16 +14,20 @@ import org.sid.appbackser.entities.RessourceFolder.Folder;
 import org.sid.appbackser.services.AccountDetails;
 import org.sid.appbackser.services.AccountService;
 import org.sid.appbackser.services.ChatGroupService;
-import org.sid.appbackser.services.DepotService;
 import org.sid.appbackser.services.FolderService;
+import org.sid.appbackser.services.ProjectService;
 import org.sid.appbackser.services.PropositionService;
 import org.sid.appbackser.services.implementations.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.method.AuthorizeReturnObject;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +37,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -58,11 +65,12 @@ public class RegistredUserController {
 	@Autowired
 	private ChatGroupService chatGroupService;
 	
-	
+	@Autowired
+	private ProjectService	projectService;
+
 	@Autowired
 	private FolderService folderService;
 
-	
 	// @Autowired
     // public RegistredUserController(JwtService jwtService) {
     //     this.jwtService = jwtService;
@@ -112,28 +120,11 @@ public class RegistredUserController {
 
 	@GetMapping("/me")
     public ResponseEntity<UserLoggedDTO> getUserInfo(@AuthenticationPrincipal AccountDetails acc) {
-			// UserDetails user = UserDetailsService.loadUserByUsername(principal.getName());
-			// if(authorizationHeader==null) {
-			// 	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No token provided");
-			// }
-			// String Token=authorizationHeader.substring(7);
-			// String email=jwtService.extractEmail(Token);
-			// UserLoggedDTO user=accountService.loadInfo(account.getEmail());
-			// if(user==null){
-			// 	logger.error("User not found");
-			// 	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
-			// }
-
 		Account account=acc.getAccount();
-		UserLoggedDTO dto=new UserLoggedDTO();
-        dto.setRole(account.getRole());
-        dto.setEmail(account.getEmail());
-        dto.setUser(account.getUser());
-
-		
+		UserLoggedDTO dto=accountService.loadInfo(account);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(dto);
-
     }
+
 
 
 	@PostMapping("/ProjectProposition")
@@ -150,6 +141,8 @@ public class RegistredUserController {
     }
 	}
 
+
+	
 	@GetMapping("/AllPropositionByMe")
 	public ResponseEntity<Iterable<Proposition>> getProjectPropositions(Principal principal) {
 		try {
@@ -161,5 +154,11 @@ public class RegistredUserController {
 					.body(null);
 		}
 	}
+
+	@PostMapping("/projects/by-ids")
+    public ResponseEntity<List<Project>> getProjects(@RequestBody List<Integer> projectIds) {
+        List<Project> projects = projectService.getProjectsByIds(projectIds);
+        return ResponseEntity.ok(projects);
+    }
 
 }

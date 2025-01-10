@@ -103,7 +103,7 @@ public class EmailServiceImplementation implements EmailService {
         builder.append("</table>");
         builder.append("<br/>");
         builder.append("<p>Pour approuver ou rejeter cette proposition, veuillez cliquer sur le bouton ci-dessous :</p>");
-        builder.append("<a href='").append("http://localhost:6541/admin/Proposition").append("' class='button'>Approuver la Proposition</a>");
+        builder.append("<a href='").append("http://localhost:3000/Admin/proposition-management").append("' class='button'>Approuver la Proposition</a>");
         builder.append("<br/><br/>");
         builder.append("<p>Cordialement,</p>");
         builder.append("<p>Next Generation Research</p>");

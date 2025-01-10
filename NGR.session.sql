@@ -1,1 +1,1 @@
-SELECT * FROM ressource_project
+SELECT * FROM groups

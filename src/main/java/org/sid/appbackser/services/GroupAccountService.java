@@ -1,5 +1,7 @@
 package org.sid.appbackser.services;
 
+import java.util.List;
+
 import org.sid.appbackser.entities.GroupAccount;
 
 public interface GroupAccountService {
@@ -10,6 +12,8 @@ public interface GroupAccountService {
 
     GroupAccount getRoleForAccountInGroup(Integer accountId, Integer groupId);
 
-
 	void assignAccountToGroupWithRole(Integer accountId, Integer groupId);
+
+
+    List<GroupAccount> getGroupsForAccount(Integer accountId);
 }

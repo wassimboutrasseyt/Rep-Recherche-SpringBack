@@ -1,5 +1,7 @@
 package org.sid.appbackser.services.implementations;
 
+import java.util.List;
+
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.Group;
 import org.sid.appbackser.entities.GroupAccount;
@@ -63,6 +65,11 @@ public class GroupAccountServiceImplement implements GroupAccountService {
 
         // Save the GroupAccount to the repository
         groupAccountRepository.save(groupAccount);
+    }
+
+    @Override
+    public List<GroupAccount> getGroupsForAccount(Integer accountId) {
+        return groupAccountRepository.findByAccountId(accountId);
     }
    
 
