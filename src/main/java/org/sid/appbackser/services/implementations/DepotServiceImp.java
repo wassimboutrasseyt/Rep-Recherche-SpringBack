@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class DepotServiceImp implements DepotService {
 
@@ -49,4 +51,9 @@ public class DepotServiceImp implements DepotService {
         return depot;
     }
 
+    @Override
+    public Depot getDepotById(Integer depotId) {
+        return depotRepository.findById(depotId)
+            .orElseThrow(() -> new EntityNotFoundException("Depot not found with ID: " + depotId));
+    }
 }

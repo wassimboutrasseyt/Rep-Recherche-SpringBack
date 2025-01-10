@@ -50,7 +50,7 @@ public class UserServicesImplement implements UserService{
 
 	@Override
 	public User updateUser(Integer id, String firstName, String lastName, String phone, Date dob, String proffession) {
-		User user = userRepository.getById(id);
+		User user = userRepository.findById(id).get();
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setPhone(phone);
