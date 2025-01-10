@@ -166,13 +166,7 @@ public class ProjectServiceImplement implements ProjectService {
         return projectDTOs;
     }
 
-@Override
-    public Project getProjectByShortName(String shortName) {
-        // Fetch the project from MySQL
-        Project project = projectRepository.findByShortName(shortName);
-        
-        return project;
-    }
+
     
     
 }
