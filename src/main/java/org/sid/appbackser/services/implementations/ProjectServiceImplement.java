@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.sid.appbackser.dto.ProjectDTO;
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.ChatGroup;
 import org.sid.appbackser.entities.Group;
@@ -139,14 +140,39 @@ public class ProjectServiceImplement implements ProjectService {
     }
 
     @Override
-    public List<Project> getProjectsByIds(List<Integer> projectIds) {
+    public List<ProjectDTO> getProjectsByIds(List<Integer> projectIds) {
         if (projectIds == null || projectIds.isEmpty()) {
             return new ArrayList<>(); 
         }
-        return projectRepository.findByIdIn(projectIds);
+        List<Project> projects= projectRepository.findByIdIn(projectIds);
+        List<ProjectDTO> projectDTOs=new ArrayList<>();
+        projects.forEach(p->
+        projectDTOs.add(new ProjectDTO(
+            p.getId(),
+            p.getLongname(),
+            p.getShortName(),
+            p.getType(),
+            p.getCategory(),
+            p.getVisibility(),
+            p.getLicenseName(),
+            p.getDescription(),
+            p.getCreatedAt(),
+            p.getGeneralChatGroupId(),
+            p.getAdminChatGroupId(),
+            p.getProjectGroup(),
+            p.getAdminGroup()
+        )));
+
+        return projectDTOs;
     }
 
-    
+@Override
+    public Project getProjectByShortName(String shortName) {
+        // Fetch the project from MySQL
+        Project project = projectRepository.findByShortName(shortName);
+        
+        return project;
+    }
     
     
 }
