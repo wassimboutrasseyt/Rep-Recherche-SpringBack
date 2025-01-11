@@ -58,11 +58,11 @@ public class AdminInitializer {
             admin1.setStatus(AccountStatus.ACTIVE);
     
             User user2 = new User();
-            user1.setFirstName("");
-            user1.setLastName("");
-            user1.setPhone("");
-            user1.setDob(new Date(System.currentTimeMillis())); // Set to the current date
-            user1.setProffession("");
+            user2.setFirstName("");
+            user2.setLastName("");
+            user2.setPhone("");
+            user2.setDob(new Date(System.currentTimeMillis())); // Set to the current date
+            user2.setProffession("");
             userRepository.save(user2);
     
             Account admin2 = new Account();
@@ -73,11 +73,11 @@ public class AdminInitializer {
             admin2.setStatus(AccountStatus.ACTIVE);
     
             User user3 = new User();
-            user1.setFirstName("");
-            user1.setLastName("");
-            user1.setPhone("");
-            user1.setDob(new Date(System.currentTimeMillis())); // Set to the current date
-            user1.setProffession("");
+            user3.setFirstName("");
+            user3.setLastName("");
+            user3.setPhone("");
+            user3.setDob(new Date(System.currentTimeMillis())); // Set to the current date
+            user3.setProffession("");
             userRepository.save(user3);
     
 
