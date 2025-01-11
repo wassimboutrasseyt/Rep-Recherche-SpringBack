@@ -10,6 +10,7 @@ import org.sid.appbackser.entities.GroupAccount;
 import org.sid.appbackser.enums.AccountStatus;
 import org.sid.appbackser.enums.Roles;
 import org.sid.appbackser.repositories.AccountRepository;
+import org.sid.appbackser.repositories.ProjectRepository;
 import org.sid.appbackser.repositories.UserRepository;
 import org.sid.appbackser.services.AccountDetails;
 import org.sid.appbackser.services.AccountService;
@@ -44,6 +45,9 @@ public class AccountServiceImplement implements AccountService {
     @Autowired
     AuthenticationManager authManager;
     
+    @Autowired
+    ProjectRepository projectRepository;
+
     @Autowired 
     JWTService JwtService;
 
@@ -151,11 +155,11 @@ public class AccountServiceImplement implements AccountService {
         for (GroupAccount groupAccount : account.getGroups()) {
             UserLoggedDTO.GroupData groupData = new UserLoggedDTO.GroupData();
             groupData.setRolePerGroup(groupAccount.getRole().toString());
-            groupData.setProjectId(groupAccount.getGroup().getProject() != null
-                    ? groupAccount.getGroup().getProject().getId()
+            groupData.setProjectId(projectRepository.findByAdminGroupOrProjectGroup(groupAccount.getGroup())!=null
+                    ? projectRepository.findByAdminGroupOrProjectGroup(groupAccount.getGroup()).getId()
                     : null);
-            groupData.setProjectShortName(groupAccount.getGroup().getProject() != null
-                    ? groupAccount.getGroup().getProject().getShortName()
+            groupData.setProjectShortName(projectRepository.findByAdminGroupOrProjectGroup(groupAccount.getGroup()) != null
+                    ? projectRepository.findByAdminGroupOrProjectGroup(groupAccount.getGroup()).getShortName()
                     : null);
 
             groupDataList.add(groupData);
