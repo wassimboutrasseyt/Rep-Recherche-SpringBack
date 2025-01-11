@@ -27,6 +27,9 @@ public class Folder {
     @Column(nullable = false)
     private String localPath; // Full path to the folder on the local file system
 
+    @Column(nullable = false)
+    private Integer ownerId; // The accountID of the owner
+    
     @ManyToOne
     @JoinColumn(name = "depot_id", nullable = false)
     @JsonBackReference // Prevents infinite recursion by ignoring this side during serialization

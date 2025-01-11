@@ -7,6 +7,7 @@ import java.util.Map;
 
 
 import org.sid.appbackser.dto.ChatGroupDTO;
+import org.sid.appbackser.dto.ProjectDTO;
 import org.sid.appbackser.dto.UserLoggedDTO;
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.User;
@@ -163,8 +164,8 @@ public class RegistredUserController {
 	}
 
 	@PostMapping("/projects/by-ids")
-    public ResponseEntity<List<Project>> getProjects(@RequestBody List<Integer> projectIds) {
-        List<Project> projects = projectService.getProjectsByIds(projectIds);
+    public ResponseEntity<List<ProjectDTO>> getProjects(@RequestBody List<Integer> projectIds) {
+        List<ProjectDTO> projects = projectService.getProjectsByIds(projectIds);
         return ResponseEntity.ok(projects);
     }
 
@@ -190,32 +191,33 @@ public class RegistredUserController {
 	 * projects depot section ----------------------------------------------------------------
 	 */
 	
+	//projects depot section
 	@PostMapping("/project/depot/create-folder")
 	public ResponseEntity<Folder> createFolder(@RequestBody Map<String, Object> requestBody) {
 
 		/*
-		* Request body example:
-		* {
-		*    "depotId": 1,
-		*    "name": "New Folder",
-		*    "parentFolderId": 2 // if it's a subfolde, if the folder will be created directly on the SRC or WEB, this should be null or absent
-		* }
-		*
-		*/
+			* Request body example:
+			* {
+			*    "depotId": 1,
+			*    "name": "New Folder",
+			*    "parentFolderId": 2 // if it's a subfolde, if the folder will be created directly on the SRC or WEB, this should be null or absent
+			* }
+			*/
 
 		Integer depotId = (Integer) requestBody.get("depotId");
 		String name = (String) requestBody.get("name");
 		Integer parentFolderId = requestBody.get("parentFolderId") != null ? (Integer) requestBody.get("parentFolderId") : null;
 	
+		logger.info("Creating folder with name: {}, depotId: {}, parentFolderId: {}", name, depotId, parentFolderId);
 		Folder folder = folderService.createFolder(depotId, name, parentFolderId);
-		return ResponseEntity.ok(folder);
+		return ResponseEntity.status(HttpStatus.CREATED).body(folder);
 	}
 	
 
-	@DeleteMapping("/delete/{folderId}")
+	@DeleteMapping("/folder/delete/{folderId}")
 	public ResponseEntity<Void> deleteFolder(@PathVariable Integer folderId) {
 		folderService.deleteFolder(folderId);
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}
 
 	@GetMapping("/project/depot/{id}")
@@ -232,6 +234,4 @@ public class RegistredUserController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred. Please try again.");
 		}
 	}
-
-
 }
