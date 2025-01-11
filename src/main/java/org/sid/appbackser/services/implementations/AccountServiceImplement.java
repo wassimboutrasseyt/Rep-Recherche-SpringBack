@@ -101,8 +101,6 @@ public class AccountServiceImplement implements AccountService {
         return accountRepository.findAll(); 
     }
 
-
-
     // New method to set a role for an account
     public String setRoleForAccount(Integer accountId, Roles roleEnum) {
         Account account = accountRepository.findById(accountId).orElse(null);
@@ -161,7 +159,6 @@ public class AccountServiceImplement implements AccountService {
             groupData.setProjectShortName(projectRepository.findByAdminGroupOrProjectGroup(groupAccount.getGroup()) != null
                     ? projectRepository.findByAdminGroupOrProjectGroup(groupAccount.getGroup()).getShortName()
                     : null);
-
             groupDataList.add(groupData);
         }
 
