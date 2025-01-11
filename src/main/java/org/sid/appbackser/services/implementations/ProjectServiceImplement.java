@@ -164,4 +164,25 @@ public class ProjectServiceImplement implements ProjectService {
 
         return projectDTOs;
     }
+
+    @Override
+    public boolean isAccountMemberOfProject(Integer accountId, Integer projectId) {
+        // Step 1: Retrieve the project by ID
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+    
+        // Step 2: Retrieve all groups the account belongs to
+        List<Integer> accountGroupIds = groupAccountRepository.findByAccountId(accountId).stream()
+                .map(accountGroup -> accountGroup.getGroup().getId())
+                .collect(Collectors.toList());
+    
+        // Step 3: Check if the account's groups match the project groups
+        Integer projectGroupId = project.getProjectGroup().getId();
+        Integer adminGroupId = project.getAdminGroup().getId();
+    
+        return accountGroupIds.contains(projectGroupId) || accountGroupIds.contains(adminGroupId);
+    }
+
+    
+    
 }

@@ -9,11 +9,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 public interface ProjectService {
-	 public Project createProject(Project project, Account creatorId);
+	public Project createProject(Project project, Account creatorId);
 
     public Page<Project> findAllProjects(PageRequest pageable);
 	public List<ProjectDTO> getProjectsByIds(List<Integer> projectIds);
 
 	public Project getProjectByShortName(String shortName);
-	 
+
+	public boolean isAccountMemberOfProject(Integer accountId, Integer projectId);
 }

@@ -1,5 +1,10 @@
 package org.sid.appbackser.controllers;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.sql.Date;
 import java.util.List;
@@ -27,33 +32,23 @@ import org.sid.appbackser.services.PropositionService;
 import org.sid.appbackser.services.UserService;
 import org.sid.appbackser.services.implementations.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Producer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authorization.method.AuthorizeReturnObject;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 
 
 @RestController
@@ -293,6 +288,53 @@ public class RegistredUserController {
             // Handle any errors or exceptions
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                 .body("Error uploading file: " + e.getMessage());
+        }
+    }
+
+	@GetMapping("/project/file/download/{fileId}")
+    public ResponseEntity<?> downloadFile(@PathVariable Integer fileId) throws IOException {
+        try {
+            // Fetch the file from the service
+            File file = fileService.downloadFile(fileId);
+
+            // Create the headers for file download
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"");
+
+            // Read the file as a byte array
+            Path filePath = Paths.get(file.getAbsolutePath());
+            byte[] fileBytes = Files.readAllBytes(filePath);
+
+            // Return the file as a response
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(fileBytes.length)
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(fileBytes);
+
+		} catch (IOException e) {
+            // Handle IOException and return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error reading file: " + e.getMessage());
+        }catch (RuntimeException e) {
+            // Handle exceptions and return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error downloading file: " + e.getMessage());
+        }
+    }
+
+	@DeleteMapping("/project/file/delete/{fileId}")
+    public ResponseEntity<?> deleteFile(@PathVariable Integer fileId) {
+        try {
+            // Call the service to delete the file
+            fileService.deleteFile(fileId);
+
+            // Return a success response
+            return ResponseEntity.ok("File deleted successfully");
+        } catch (RuntimeException e) {
+            // Handle errors and return appropriate response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error deleting file: " + e.getMessage());
         }
     }
 	

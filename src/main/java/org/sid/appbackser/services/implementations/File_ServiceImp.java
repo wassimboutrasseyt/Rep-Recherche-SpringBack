@@ -107,26 +107,41 @@ public class File_ServiceImp implements File_Service {
     
         return fileMetadata;
     }
-    
-    
 
-    public File_ retrieveFile(Integer fileId) {
-        return fileRepository.findById(fileId)
-            .orElseThrow(() -> new IllegalArgumentException("File not found"));
+    @Override
+    public File downloadFile(Integer fileId) throws IOException {
+        // Retrieve the file metadata from the database
+        File_ fileMetadata = fileRepository.findById(fileId)
+                .orElseThrow(() -> new RuntimeException("File not found"));
+
+        // Get the file's local path
+        String localPath = fileMetadata.getLocalPath();
+        File file = new File(localPath);
+
+        // Check if the file exists
+        if (!file.exists()) {
+            throw new RuntimeException("File not found on the server: " + localPath);
+        }
+        return file; // Return the file object
     }
 
+    @Override
     public void deleteFile(Integer fileId) {
-        File_ file = fileRepository.findById(fileId)
-            .orElseThrow(() -> new IllegalArgumentException("File not found"));
+        // Retrieve the file metadata
+        File_ fileMetadata = fileRepository.findById(fileId)
+                .orElseThrow(() -> new RuntimeException("File not found"));
 
-        // Delete file entry from database
-        fileRepository.delete(file);
+        // Get the file's local path
+        String localPath = fileMetadata.getLocalPath();
+        File file = new File(localPath);
 
-        // Delete file from local storage
-        File localFile = new File(file.getLocalPath());
-        if (localFile.exists()) {
-            localFile.delete(); // Delete the file from the local filesystem
+        // Attempt to delete the physical file
+        if (file.exists() && !file.delete()) {
+            throw new RuntimeException("Failed to delete the file from the server: " + localPath);
         }
+
+        // Delete the file metadata from the database
+        fileRepository.delete(fileMetadata);
     }
 
 }
