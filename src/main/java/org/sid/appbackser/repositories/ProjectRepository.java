@@ -17,6 +17,8 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
     Project findByAdminGroup(Group adminGroup);
     Project findByProjectGroup(Group ProjectGroup);
     Project findByShortName(String shortName);
-    Project findByAdminGroupOrProjectGroup(Group group);
+
+    @Query("SELECT p FROM Project p WHERE p.adminGroup = :group OR p.projectGroup = :group")
+    Project findByAdminGroupOrProjectGroup(@Param("group") Group group);
 
 }
