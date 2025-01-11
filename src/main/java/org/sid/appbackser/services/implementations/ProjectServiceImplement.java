@@ -72,13 +72,12 @@ public class ProjectServiceImplement implements ProjectService {
         Group projectGroup = new Group();
         projectGroup.setName(project.getShortName());
         projectGroup = groupRepository.save(projectGroup);
-        projectGroup.setProject(project);
 
         // admin group
         Group adminGroup = new Group();
         adminGroup.setName(project.getShortName() + "-adm");
         adminGroup = groupRepository.save(adminGroup);
-        adminGroup.setProject(project);
+
 
         // creator is the admin of the project (the association between the account and the group)
         GroupAccount groupAccount = new GroupAccount();
@@ -165,6 +164,16 @@ public class ProjectServiceImplement implements ProjectService {
 
         return projectDTOs;
     }
+
+@Override
+    public Project getProjectByShortName(String shortName) {
+        // Fetch the project from MySQL
+        Project project = projectRepository.findByShortName(shortName);
+        
+        return project;
+    }
+
+
 
 
     
