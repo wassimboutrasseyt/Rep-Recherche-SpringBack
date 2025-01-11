@@ -37,7 +37,7 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String longname;
 
     @Column(nullable = false, unique = true)

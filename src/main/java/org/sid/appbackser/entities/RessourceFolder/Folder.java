@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Data
@@ -44,6 +45,7 @@ public class Folder {
     private List<Folder> subFolders;
     
     @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<File_> files;
     
     private Instant createdAt = Instant.now();

@@ -6,7 +6,8 @@ import org.sid.appbackser.entities.RessourceFolder.File_;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface File_Service {
-    File_ uploadFile(MultipartFile file, Long folderId) throws IOException;
+    File_ createFile(String fileName, Integer folderId, Integer ownerId, String fileType) throws IOException;
+    File_ uploadFile(String fileName, Integer folderId, Integer ownerId, String fileType, MultipartFile file) throws IOException;
     void deleteFile(Integer fileId);
     File_ retrieveFile(Integer fileId);
 }

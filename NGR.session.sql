@@ -1,1 +1,1 @@
-SELECT * FROM folder 
+SELECT * FROM file_ 

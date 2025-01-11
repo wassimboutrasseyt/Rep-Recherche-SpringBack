@@ -22,7 +22,7 @@ public class DepotServiceImp implements DepotService {
     @Autowired
     private FolderService folderService;
 
-    private static final String BASE_PATH = "src\\main\\resources\\Storage\\";
+    private static final String BASE_PATH = "C:\\Users\\user\\Desktop\\Spring\\NGR\\AppBackService\\src\\main\\resources\\Storage";
 
     @Override
     public Depot createDepot(String projectName, DepotType type) {

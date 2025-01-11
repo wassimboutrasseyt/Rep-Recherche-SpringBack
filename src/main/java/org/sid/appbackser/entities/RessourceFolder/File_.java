@@ -2,6 +2,8 @@ package org.sid.appbackser.entities.RessourceFolder;
 
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +41,7 @@ public class File_ {
     private Instant createdAt = Instant.now();
 
     @ManyToOne
+    @JsonBackReference
     private Folder folder;
 
 }
