@@ -32,7 +32,7 @@ public class Folder {
     private Integer ownerId; // The accountID of the owner
     
     @ManyToOne
-    @JoinColumn(name = "depot_id", nullable = false)
+    @JoinColumn(name = "depot_id")
     @JsonBackReference // Prevents infinite recursion by ignoring this side during serialization
     private Depot depot;
 
@@ -42,7 +42,7 @@ public class Folder {
     private Folder parentFolder;
     
     @OneToMany(mappedBy = "parentFolder", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Folder> subFolders;
+    private List<Folder> folders;
     
     @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference

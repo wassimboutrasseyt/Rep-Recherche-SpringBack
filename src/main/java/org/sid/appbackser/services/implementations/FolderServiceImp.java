@@ -44,8 +44,10 @@ public class FolderServiceImp implements FolderService {
         folder.setName(name);
         folder.setCreatedAt(Instant.now());
         folder.setLocalPath(folderPath);  // Store the local file path
-        folder.setParentFolder(parentFolder);  // Link the folder to its parent
-        folder.setDepot(depot);  // Link the folder to the depot
+        folder.setParentFolder(parentFolder);
+        if(parentFolder==null){
+            folder.setDepot(depot);  // Link the folder to the depot
+        }  // Link the folder to its parent
 
         // Create the folder on the local filesystem
         File folderDirectory = new File(folderPath);

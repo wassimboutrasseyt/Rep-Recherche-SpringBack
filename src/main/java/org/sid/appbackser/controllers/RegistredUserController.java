@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +50,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 @RequestMapping("/registred-user")
@@ -121,10 +121,17 @@ public class RegistredUserController {
 			String firstName = (String) requestBody.get("firstName");
 			String lastName = (String) requestBody.get("lastName");
 			String phone = (String) requestBody.get("phone");
-			Date dob = (Date) requestBody.get("dob");
+			String dobString = (String) requestBody.get("dob"); // dob as String
 			String profession = (String) requestBody.get("profession");
-			
-			User updatedUser =  userService.updateUser(id, firstName, lastName, phone, dob, profession);
+
+			Date dob = null;
+			if (dobString != null && !dobString.isEmpty()) {
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Ensure this matches the frontend format
+				java.util.Date utilDate = dateFormat.parse(dobString); // Parse String to Date
+				dob = new java.sql.Date(utilDate.getTime()); // Convert java.util.Date to java.sql.Date
+			}
+
+			User updatedUser = userService.updateUser(id, firstName, lastName, phone, dob, profession);
 			return ResponseEntity.ok(updatedUser);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating user: " + e.getMessage());
