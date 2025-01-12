@@ -225,7 +225,8 @@ public class ProjectServiceImplement implements ProjectService {
                 memberInfo.put("lastName", account.getUser().getLastName());
                 memberInfo.put("email", account.getEmail());
                 memberInfo.put("role", account.getRole());
-                memberInfo.put("status", account.getStatus());
+                memberInfo.put("proffession", account.getUser().getProffession());
+                memberInfo.put("phone",account.getUser().getPhone());
                 return memberInfo;
             })
             .collect(Collectors.toList());
@@ -248,6 +249,8 @@ public class ProjectServiceImplement implements ProjectService {
                 memberInfo.put("email", account.getEmail());
                 memberInfo.put("role", account.getRole());
                 memberInfo.put("status", account.getStatus());
+                memberInfo.put("proffession", account.getUser().getProffession());
+                memberInfo.put("phone",account.getUser().getPhone());
                 return memberInfo;
             })
             .collect(Collectors.toList());
