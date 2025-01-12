@@ -31,6 +31,7 @@ import org.sid.appbackser.repositories.GroupRepository;
 import org.sid.appbackser.repositories.ProjectRepository;
 import org.sid.appbackser.services.AccountService;
 import org.sid.appbackser.services.ChatGroupService;
+import org.sid.appbackser.services.EmailService;
 import org.sid.appbackser.services.GroupAccountService;
 import org.sid.appbackser.services.ProjectService;
 import org.springframework.cglib.core.Local;
@@ -68,6 +69,9 @@ public class ProjectServiceImplement implements ProjectService {
 
     @Autowired
     private EntityManager entityManager;
+
+    @Autowired
+    private EmailService emailService;
 
     @Transactional
     public Project createProject(Project project, Account creator) {
@@ -274,7 +278,9 @@ public class ProjectServiceImplement implements ProjectService {
         if (groupAccountService.isAccountMemberOfGroup(userToAdd.getId(), project.getProjectGroup().getId())) {
             throw new RuntimeException("User is already a member of the project");
         }
-        groupAccountService.assignAccountToGroupWithRole(adminId, newMemberAccount.getId(), RolesPerGroup.MEMBER);
+
+        groupAccountService.assignAccountToGroupWithRole(newMemberAccount.getId(), project.getProjectGroup().getId() , RolesPerGroup.MEMBER);
+        emailService.notifyUserAddedToProject(project, projectId, adminId);
     }
 
     @Override
@@ -343,6 +349,11 @@ public class ProjectServiceImplement implements ProjectService {
 
         // Step 5: Assign the demoted user as a regular member in the project group
         groupAccountService.assignAccountToGroupWithRole(adminToDemoteId, project.getProjectGroup().getId(), RolesPerGroup.MEMBER);
+    }
+
+    @Override
+    public Project getProjectById(Integer projectId) {
+        return projectRepository.findProjectById(projectId);
     }
 
 

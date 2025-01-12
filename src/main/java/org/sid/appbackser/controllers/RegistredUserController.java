@@ -274,7 +274,6 @@ public class RegistredUserController {
 		}
 	}
 
-
 	@GetMapping("/project/{projectId}/groups")
 	public ResponseEntity<List<Map<String, Object>>> getProjectGroupsWithMembers(@PathVariable Integer projectId) {
 		try {
@@ -288,18 +287,14 @@ public class RegistredUserController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Return 500 for other errors
 		}
 	}
-	
 
-
-
-	
 	/*
 	 * projects depot section ----------------------------------------------------------------
 	 */
 	
 
 	@PostMapping("/project/depot/create-folder")
-	public ResponseEntity<Folder> createFolder(@RequestBody Map<String, Object> requestBody) {
+	public ResponseEntity<Folder> createFolder(@RequestBody Map<String, Object> requestBody, @AuthenticationPrincipal AccountDetails authAcc) {
 
 		/*
 			* Request body example:
@@ -313,15 +308,17 @@ public class RegistredUserController {
 		Integer depotId = (Integer) requestBody.get("depotId");
 		String name = (String) requestBody.get("name");
 		Integer parentFolderId = requestBody.get("parentFolderId") != null ? (Integer) requestBody.get("parentFolderId") : null;
-	
+		Account auth = authAcc.getAccount();
+
 		logger.info("Creating folder with name: {}, depotId: {}, parentFolderId: {}", name, depotId, parentFolderId);
-		Folder folder = folderService.createFolder(depotId, name, parentFolderId);
+		Folder folder = folderService.createFolder(depotId, name, parentFolderId, auth.getId());
 		return ResponseEntity.status(HttpStatus.CREATED).body(folder);
 	}
 
-	@DeleteMapping("/folder/delete/{folderId}")
-	public ResponseEntity<Void> deleteFolder(@PathVariable Integer folderId) {
-		folderService.deleteFolder(folderId);
+	@DeleteMapping("/project/{projectId}/folder/delete/{folderId}")
+	public ResponseEntity<Void> deleteFolder(@PathVariable Integer folderId,@PathVariable Integer projectId, @AuthenticationPrincipal AccountDetails authAcc) {
+		Project project = projectService.getProjectById(projectId);
+		folderService.deleteFolder(project ,folderId, authAcc.getAccount().getId());
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}
 

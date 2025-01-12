@@ -14,6 +14,7 @@ public interface ProjectService {
 
     public Page<Project> findAllProjects(PageRequest pageable);
 	public List<ProjectDTO> getProjectsByIds(List<Integer> projectIds);
+	public Project getProjectById(Integer projectId);
 
 	public Project getProjectByShortName(String shortName);
 

@@ -40,11 +40,9 @@ public class PropositionServiceImplement implements PropositionService {
         proposition.setStatus(PropositionStatus.PENDING);
         proposition.setCreatedAt(LocalDateTime.now());
         propositionRepository.save(proposition);
-        // emailService.notifyAdmins(proposition);
+        emailService.notifyAdmins(proposition);
         return "Proposition created successfully";
     }
-
-
 
     @Override
     public List<Proposition> getPendingPropositions() {

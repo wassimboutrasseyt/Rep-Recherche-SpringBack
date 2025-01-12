@@ -20,5 +20,6 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     @Query("SELECT p FROM Project p WHERE p.adminGroup = :group OR p.projectGroup = :group")
     Project findByAdminGroupOrProjectGroup(@Param("group") Group group);
+    Project findProjectById(Integer projectId);
 
 }
