@@ -192,7 +192,7 @@ public class RegistredUserController {
 		}
 	}
 
-	@PutMapping("/projects/{projectId}/members/{newMemberId}")
+	@PutMapping("/project/{projectId}/newmember/{newMemberId}")
 	public ResponseEntity<String> addMemberToProject(
 			@PathVariable Integer projectId,
 			@PathVariable Integer newMemberId, 
@@ -213,7 +213,7 @@ public class RegistredUserController {
 		}
 	}
 
-	@PutMapping("/projects/{projectId}/promote/{memberId}")
+	@PutMapping("/project/{projectId}/promote/{memberId}")
 	public ResponseEntity<String> promoteMemberToAdmin(
 			@PathVariable Integer projectId,
 			@PathVariable Integer memberId, @AuthenticationPrincipal AccountDetails authAcc) {
