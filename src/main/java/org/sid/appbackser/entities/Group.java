@@ -34,12 +34,5 @@ public class Group {
     @OneToMany(mappedBy = "group")
     private List<GroupAccount> accounts;
 
-    // @ManyToOne
-    // @JsonBackReference
-    // private Project project;
-
-    // public Project getProject(){
-
-    // }
 
 }

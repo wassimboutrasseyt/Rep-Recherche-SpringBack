@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -193,33 +195,65 @@ public class ProjectServiceImplement implements ProjectService {
         return accountGroupIds.contains(projectGroupId) || accountGroupIds.contains(adminGroupId);
     }
 
-    @Override
-    public List<Account> getProjectMembers(Integer projectId) {
-        // Step 1: Retrieve the project by ID
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
-    
-        // Step 2: Retrieve the project and admin groups associated with the project
-        Group projectGroup = project.getProjectGroup();
-        Group adminGroup = project.getAdminGroup();
-    
-        // Step 3: Retrieve the accounts that belong to the projectGroup
-        List<GroupAccount> projectGroupAccounts = groupAccountRepository.findByGroup(projectGroup);
-        List<Account> projectGroupMembers = projectGroupAccounts.stream()
-                .map(GroupAccount::getAccount)
-                .collect(Collectors.toList());
-    
-        // Step 4: Retrieve the accounts that belong to the adminGroup
-        List<GroupAccount> adminGroupAccounts = groupAccountRepository.findByGroup(adminGroup);
-        List<Account> adminGroupMembers = adminGroupAccounts.stream()
-                .map(GroupAccount::getAccount)
-                .collect(Collectors.toList());
-    
-        // Step 5: Combine the project group and admin group members and remove duplicates
-        return Stream.concat(projectGroupMembers.stream(), adminGroupMembers.stream())
-                .distinct()
-                .collect(Collectors.toList());
-    }
+    public List<Map<String, Object>> getProjectGroupsWithMembers(Integer projectId) {
+    // Step 1: Retrieve the project by ID
+    Project project = projectRepository.findById(projectId)
+            .orElseThrow(() -> new RuntimeException("Project not found"));
+
+    // Step 2: Retrieve the project and admin groups associated with the project
+    Group projectGroup = project.getProjectGroup();
+    Group adminGroup = project.getAdminGroup();
+
+    // Step 3: Prepare the response list
+    List<Map<String, Object>> groupsWithMembers = new ArrayList<>();
+
+    // Add the project group details
+    Map<String, Object> projectGroupInfo = new HashMap<>();
+    projectGroupInfo.put("groupName", projectGroup.getName());
+
+    // Get members of the project group
+    List<Map<String, Object>> projectGroupMembers = projectGroup.getAccounts().stream()
+            .map(groupAccount -> {
+                Account account = groupAccount.getAccount();
+                Map<String, Object> memberInfo = new HashMap<>();
+                memberInfo.put("id", account.getId());
+                memberInfo.put("firstName", account.getUser().getFirstName());
+                memberInfo.put("lastName", account.getUser().getLastName());
+                memberInfo.put("email", account.getEmail());
+                memberInfo.put("role", account.getRole());
+                memberInfo.put("status", account.getStatus());
+                return memberInfo;
+            })
+            .collect(Collectors.toList());
+
+    projectGroupInfo.put("members", projectGroupMembers);
+    groupsWithMembers.add(projectGroupInfo);
+
+    // Add the admin group details
+    Map<String, Object> adminGroupInfo = new HashMap<>();
+    adminGroupInfo.put("groupName", adminGroup.getName());
+
+    // Get members of the admin group
+    List<Map<String, Object>> adminGroupMembers = adminGroup.getAccounts().stream()
+            .map(groupAccount -> {
+                Account account = groupAccount.getAccount();
+                Map<String, Object> memberInfo = new HashMap<>();
+                memberInfo.put("id", account.getId());
+                memberInfo.put("firstName", account.getUser().getFirstName());
+                memberInfo.put("lastName", account.getUser().getLastName());
+                memberInfo.put("email", account.getEmail());
+                memberInfo.put("role", account.getRole());
+                memberInfo.put("status", account.getStatus());
+                return memberInfo;
+            })
+            .collect(Collectors.toList());
+
+    adminGroupInfo.put("members", adminGroupMembers);
+    groupsWithMembers.add(adminGroupInfo);
+
+    return groupsWithMembers;
+}
+
     
 
     @Override
@@ -241,7 +275,6 @@ public class ProjectServiceImplement implements ProjectService {
             throw new RuntimeException("User is already a member of the project");
         }
         groupAccountService.assignAccountToGroupWithRole(adminId, newMemberAccount.getId(), RolesPerGroup.MEMBER);
-
     }
 
     @Override

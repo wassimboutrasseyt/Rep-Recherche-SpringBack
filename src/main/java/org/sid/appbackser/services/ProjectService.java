@@ -1,6 +1,7 @@
 package org.sid.appbackser.services;
 
 import java.util.List;
+import java.util.Map;
 
 import org.sid.appbackser.dto.ProjectDTO;
 import org.sid.appbackser.entities.Account;
@@ -17,7 +18,7 @@ public interface ProjectService {
 	public Project getProjectByShortName(String shortName);
 
 	public boolean isAccountMemberOfProject(Integer accountId, Integer projectId);
-	public List<Account> getProjectMembers(Integer projectId);
+	List<Map<String, Object>> getProjectGroupsWithMembers(Integer projectId);
 
 	void addMemberToProject(Integer projectId, Integer adminId, String newMemberEmail);
 	void promoteMemberToAdmin(Integer projectId, Integer adminId, Integer memberId);

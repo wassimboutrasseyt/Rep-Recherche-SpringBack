@@ -233,6 +233,20 @@ public class RegistredUserController {
 		}
 	}
 
+	@GetMapping("/project/{projectId}/groups")
+	public ResponseEntity<List<Map<String, Object>>> getProjectGroupsWithMembers(@PathVariable Integer projectId) {
+		try {
+			List<Map<String, Object>> groupsWithMembers = projectService.getProjectGroupsWithMembers(projectId);
+			return ResponseEntity.ok(groupsWithMembers); // Return groups with members
+		} catch (RuntimeException e) {
+			// Handle case where project was not found or other errors
+			if (e.getMessage().contains("Project not found")) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Return 404 if project not found
+			}
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Return 500 for other errors
+		}
+	}
+	
 
 
 
