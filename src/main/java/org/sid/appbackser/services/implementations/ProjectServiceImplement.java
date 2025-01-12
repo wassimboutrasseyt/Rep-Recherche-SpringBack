@@ -270,17 +270,15 @@ public class ProjectServiceImplement implements ProjectService {
         if (!groupAccountService.isAccountMemberOfGroup(adminId, project.getAdminGroup().getId())) {
             throw new RuntimeException("Only project admins can add members");
         }
-        
-        // Step 3: Check if the user with the given email exists
-        Account userToAdd =  accountService.getAccount(newMemberAccount.getId());
-    
         // Step 4: Check if the user is already a member of the project group
-        if (groupAccountService.isAccountMemberOfGroup(userToAdd.getId(), project.getProjectGroup().getId())) {
+        if (groupAccountService.isAccountMemberOfGroup(newMemberAccount.getId(), project.getProjectGroup().getId())) {
             throw new RuntimeException("User is already a member of the project");
         }
 
+        //adding hem as a normal member
         groupAccountService.assignAccountToGroupWithRole(newMemberAccount.getId(), project.getProjectGroup().getId() , RolesPerGroup.MEMBER);
-        emailService.notifyUserAddedToProject(project, projectId, adminId);
+        chatGroupService.addMember(project.getGeneralChatGroupId(), newMemberAccount.getId());
+        emailService.notifyUserAddedToProject(project, newMemberAccount.getId(), adminId);
     }
 
     @Override
@@ -306,26 +304,44 @@ public class ProjectServiceImplement implements ProjectService {
 
         // Step 5: Assign the member to the admin group with the admin role
         groupAccountService.assignAccountToGroupWithRole(memberId, project.getAdminGroup().getId(), RolesPerGroup.ADMIN);
+        groupAccountService.removeAccountFromGroup( memberId, project.getProjectGroup().getId());
+
+        //step 6 adding hem to the admin chat group
+        chatGroupService.addMember(project.getAdminChatGroupId(), memberId);
     }
 
     @Override
     public void removeMemberFromProject(Integer projectId, Integer adminId, String memberEmail) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
-    
+
         Account memberAccount = accountService.getAccountByEmail(memberEmail);
         // Step 2: Check if the admin is a member of the admin group
         if (!groupAccountService.isAccountMemberOfGroup(adminId, project.getAdminGroup().getId())) {
             throw new RuntimeException("Only project admins can remove members");
         }
-    
-        // Step 3: Check if the user to be removed is part of the project group
-        if (!groupAccountService.isAccountMemberOfGroup(memberAccount.getId(), project.getProjectGroup().getId())) {
+
+        // Step 3: Check if the user to be removed is part of the project groups
+        if (!groupAccountService.isAccountMemberOfGroup(memberAccount.getId(), project.getProjectGroup().getId()) 
+            || !groupAccountService.isAccountMemberOfGroup(memberAccount.getId(), project.getAdminGroup().getId())
+            ) {
             throw new RuntimeException("User is not a member of the project");
         }
-    
         // Step 4: Remove the user from the project group
         groupAccountService.removeAccountFromGroup(memberAccount.getId(), project.getProjectGroup().getId());
+
+        // if he was an admin removing hem from the admin group
+        if (groupAccountService.isAccountMemberOfGroup(memberAccount.getId(), project.getAdminGroup().getId())) {
+            groupAccountService.removeAccountFromGroup(memberAccount.getId(), project.getAdminGroup().getId());
+        }
+
+        // remove hem from the general chat group
+        chatGroupService.removeMember(project.getGeneralChatGroupId(), memberAccount.getId());
+
+        // if he was an admin removing hem from the admin chat group
+        if (chatGroupService.getMembers(project.getAdminChatGroupId()).contains(memberAccount.getId())) {
+            chatGroupService.removeMember(project.getAdminChatGroupId(), memberAccount.getId());
+        }
     }
 
     @Override
@@ -349,6 +365,9 @@ public class ProjectServiceImplement implements ProjectService {
 
         // Step 5: Assign the demoted user as a regular member in the project group
         groupAccountService.assignAccountToGroupWithRole(adminToDemoteId, project.getProjectGroup().getId(), RolesPerGroup.MEMBER);
+        groupAccountService.removeAccountFromGroup( adminToDemoteId, project.getAdminGroup().getId());
+        //removing from admin chat group
+        chatGroupService.removeMember(project.getAdminChatGroupId(), adminToDemoteId);
     }
 
     @Override

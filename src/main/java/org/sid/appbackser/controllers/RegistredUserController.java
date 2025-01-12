@@ -446,6 +446,5 @@ public class RegistredUserController {
                     .body("Error deleting file: " + e.getMessage());
         }
     }
-	
 
 }
