@@ -368,6 +368,9 @@ public class ProjectServiceImplement implements ProjectService {
         groupAccountService.removeAccountFromGroup( adminToDemoteId, project.getAdminGroup().getId());
         //removing from admin chat group
         chatGroupService.removeMember(project.getAdminChatGroupId(), adminToDemoteId);
+        if (!chatGroupService.getMembers(project.getGeneralChatGroupId()).contains(adminToDemoteId)) {
+            chatGroupService.addMember(project.getGeneralChatGroupId(), adminToDemoteId);
+        } 
     }
 
     @Override
