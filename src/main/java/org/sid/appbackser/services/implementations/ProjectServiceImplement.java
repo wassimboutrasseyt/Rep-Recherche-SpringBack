@@ -11,6 +11,7 @@ import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.sid.appbackser.dto.ProjectDTO;
 import org.sid.appbackser.entities.Account;
@@ -21,11 +22,14 @@ import org.sid.appbackser.entities.Project;
 import org.sid.appbackser.entities.RessourceFolder.RessourceProject;
 import org.sid.appbackser.enums.ChatGroupType;
 import org.sid.appbackser.enums.RolesPerGroup;
+import org.sid.appbackser.repositories.AccountRepository;
 import org.sid.appbackser.repositories.ChatGroupRepository;
 import org.sid.appbackser.repositories.GroupAccountRepository;
 import org.sid.appbackser.repositories.GroupRepository;
 import org.sid.appbackser.repositories.ProjectRepository;
+import org.sid.appbackser.services.AccountService;
 import org.sid.appbackser.services.ChatGroupService;
+import org.sid.appbackser.services.GroupAccountService;
 import org.sid.appbackser.services.ProjectService;
 import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
@@ -44,6 +48,12 @@ public class ProjectServiceImplement implements ProjectService {
 
     @Autowired
     private GroupAccountRepository groupAccountRepository;
+
+    @Autowired
+    private AccountService accountService;
+    
+    @Autowired
+    private GroupAccountService groupAccountService;
 
     @Autowired
     private ChatGroupService chatGroupService;
@@ -183,6 +193,80 @@ public class ProjectServiceImplement implements ProjectService {
         return accountGroupIds.contains(projectGroupId) || accountGroupIds.contains(adminGroupId);
     }
 
+    @Override
+    public List<Account> getProjectMembers(Integer projectId) {
+        // Step 1: Retrieve the project by ID
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
     
+        // Step 2: Retrieve the project and admin groups associated with the project
+        Group projectGroup = project.getProjectGroup();
+        Group adminGroup = project.getAdminGroup();
+    
+        // Step 3: Retrieve the accounts that belong to the projectGroup
+        List<GroupAccount> projectGroupAccounts = groupAccountRepository.findByGroup(projectGroup);
+        List<Account> projectGroupMembers = projectGroupAccounts.stream()
+                .map(GroupAccount::getAccount)
+                .collect(Collectors.toList());
+    
+        // Step 4: Retrieve the accounts that belong to the adminGroup
+        List<GroupAccount> adminGroupAccounts = groupAccountRepository.findByGroup(adminGroup);
+        List<Account> adminGroupMembers = adminGroupAccounts.stream()
+                .map(GroupAccount::getAccount)
+                .collect(Collectors.toList());
+    
+        // Step 5: Combine the project group and admin group members and remove duplicates
+        return Stream.concat(projectGroupMembers.stream(), adminGroupMembers.stream())
+                .distinct()
+                .collect(Collectors.toList());
+    }
+    
+
+    @Override
+    public void addMemberToProject(Integer projectId, Integer adminId, Integer newMemberId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+    
+        // Step 2: Check if the admin is a member of the admin group
+        if (!groupAccountService.isAccountMemberOfGroup(adminId, project.getAdminGroup().getId())) {
+            throw new RuntimeException("Only project admins can add members");
+        }
+        
+        // Step 3: Check if the user with the given email exists
+        Account userToAdd =  accountService.getAccount(newMemberId);
+    
+        // Step 4: Check if the user is already a member of the project group
+        if (groupAccountService.isAccountMemberOfGroup(userToAdd.getId(), project.getProjectGroup().getId())) {
+            throw new RuntimeException("User is already a member of the project");
+        }
+        groupAccountService.assignAccountToGroupWithRole(adminId, newMemberId, RolesPerGroup.MEMBER);
+
+    }
+
+    @Override
+    public void promoteMemberToAdmin(Integer projectId, Integer adminId, Integer memberId) {
+        // Step 1: Retrieve the project by ID
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        // Step 2: Check if the requesting admin is part of the admin group
+        if (!groupAccountService.isAccountMemberOfGroup(adminId, project.getAdminGroup().getId())) {
+            throw new RuntimeException("Only project admins can promote members to admins");
+        }
+
+        // Step 3: Check if the target member is part of the project group
+        if (!groupAccountService.isAccountMemberOfGroup(memberId, project.getProjectGroup().getId())) {
+            throw new RuntimeException("The user is not a member of the project");
+        }
+
+        // Step 4: Check if the member is already part of the admin group
+        if (groupAccountService.isAccountMemberOfGroup(memberId, project.getAdminGroup().getId())) {
+            throw new RuntimeException("The user is already an admin of the project");
+        }
+
+        // Step 5: Assign the member to the admin group with the admin role
+        groupAccountService.assignAccountToGroupWithRole(memberId, project.getAdminGroup().getId(), RolesPerGroup.ADMIN);
+    }
+
     
 }

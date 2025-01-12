@@ -73,4 +73,7 @@ public class Account {
         this.role = role;
     }
 	
+    public void setEmail(String _email) {
+        this.email = _email == null ? null : _email.toLowerCase();
+    }
 }

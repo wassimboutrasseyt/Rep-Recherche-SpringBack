@@ -17,4 +17,8 @@ public interface ProjectService {
 	public Project getProjectByShortName(String shortName);
 
 	public boolean isAccountMemberOfProject(Integer accountId, Integer projectId);
+	public List<Account> getProjectMembers(Integer projectId);
+
+	void addMemberToProject(Integer projectId, Integer adminId, Integer newMemberId);
+	void promoteMemberToAdmin(Integer projectId, Integer adminId, Integer memberId);
 }

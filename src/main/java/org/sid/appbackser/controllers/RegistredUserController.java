@@ -192,6 +192,48 @@ public class RegistredUserController {
 		}
 	}
 
+	@PutMapping("/projects/{projectId}/members/{newMemberId}")
+	public ResponseEntity<String> addMemberToProject(
+			@PathVariable Integer projectId,
+			@PathVariable Integer newMemberId, 
+			@AuthenticationPrincipal AccountDetails authAcc) {
+		try {
+			Account auth = authAcc.getAccount();
+			projectService.addMemberToProject(projectId, auth.getId(), newMemberId);
+			return ResponseEntity.ok("Member added successfully to the project.");
+		} catch (RuntimeException e) {
+			if (e.getMessage().contains("Only project admins can add members")) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+			} else if (e.getMessage().contains("Project not found") || e.getMessage().contains("Account not found")) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+			} else if (e.getMessage().contains("User is already a member of the project")) {
+				return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+			}
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@PutMapping("/projects/{projectId}/promote/{memberId}")
+	public ResponseEntity<String> promoteMemberToAdmin(
+			@PathVariable Integer projectId,
+			@PathVariable Integer memberId, @AuthenticationPrincipal AccountDetails authAcc) {
+		try {
+			Account auth = authAcc.getAccount();
+			projectService.promoteMemberToAdmin(projectId, auth.getId(), memberId);
+			return ResponseEntity.ok("Member promoted to admin successfully.");
+		} catch (RuntimeException e) {
+			if (e.getMessage().contains("Only project admins can promote members to admins")) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+			} else if (e.getMessage().contains("Project not found") || e.getMessage().contains("The user is not a member of the project")) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+			} else if (e.getMessage().contains("The user is already an admin of the project")) {
+				return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+			}
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+
 
 
 	
@@ -269,7 +311,7 @@ public class RegistredUserController {
 		} catch (Exception e) {
 			// Handle any errors or exceptions (e.g., file already exists or folder not found)
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-								 .body("Error creating file: " + e.getMessage());
+								.body("Error creating file: " + e.getMessage());
 		}
 	}
 
