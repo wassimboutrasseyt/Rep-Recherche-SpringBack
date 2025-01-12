@@ -200,69 +200,37 @@ public class ProjectServiceImplement implements ProjectService {
     }
 
     public List<Map<String, Object>> getProjectGroupsWithMembers(Integer projectId) {
-    // Step 1: Retrieve the project by ID
-    Project project = projectRepository.findById(projectId)
-            .orElseThrow(() -> new RuntimeException("Project not found"));
+        // Step 1: Retrieve the project by ID
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
 
-    // Step 2: Retrieve the project and admin groups associated with the project
-    Group projectGroup = project.getProjectGroup();
-    Group adminGroup = project.getAdminGroup();
+        // Step 2: Collect groups (Project and Admin groups)
+        List<Group> groups = List.of(project.getProjectGroup(), project.getAdminGroup());
 
-    // Step 3: Prepare the response list
-    List<Map<String, Object>> groupsWithMembers = new ArrayList<>();
-
-    // Add the project group details
-    Map<String, Object> projectGroupInfo = new HashMap<>();
-    projectGroupInfo.put("groupName", projectGroup.getName());
-
-    // Get members of the project group
-    List<Map<String, Object>> projectGroupMembers = projectGroup.getAccounts().stream()
-            .map(groupAccount -> {
-                Account account = groupAccount.getAccount();
-                Map<String, Object> memberInfo = new HashMap<>();
-                memberInfo.put("id", account.getId());
-                memberInfo.put("firstName", account.getUser().getFirstName());
-                memberInfo.put("lastName", account.getUser().getLastName());
-                memberInfo.put("email", account.getEmail());
-                memberInfo.put("role", account.getRole());
-                memberInfo.put("proffession", account.getUser().getProffession());
-                memberInfo.put("phone",account.getUser().getPhone());
-                return memberInfo;
-            })
-            .collect(Collectors.toList());
-
-    projectGroupInfo.put("members", projectGroupMembers);
-    groupsWithMembers.add(projectGroupInfo);
-
-    // Add the admin group details
-    Map<String, Object> adminGroupInfo = new HashMap<>();
-    adminGroupInfo.put("groupName", adminGroup.getName());
-
-    // Get members of the admin group
-    List<Map<String, Object>> adminGroupMembers = adminGroup.getAccounts().stream()
-            .map(groupAccount -> {
-                Account account = groupAccount.getAccount();
-                Map<String, Object> memberInfo = new HashMap<>();
-                memberInfo.put("id", account.getId());
-                memberInfo.put("firstName", account.getUser().getFirstName());
-                memberInfo.put("lastName", account.getUser().getLastName());
-                memberInfo.put("email", account.getEmail());
-                memberInfo.put("role", account.getRole());
-                memberInfo.put("status", account.getStatus());
-                memberInfo.put("proffession", account.getUser().getProffession());
-                memberInfo.put("phone",account.getUser().getPhone());
-                return memberInfo;
-            })
-            .collect(Collectors.toList());
-
-    adminGroupInfo.put("members", adminGroupMembers);
-    groupsWithMembers.add(adminGroupInfo);
-
-    return groupsWithMembers;
-}
-
-    
-
+        // Step 3: Build response for each group and its members
+        return groups.stream()
+                .map(group -> {
+                    Map<String, Object> groupInfo = new HashMap<>();
+                    groupInfo.put("groupName", group.getName());
+                    groupInfo.put("members", group.getAccounts().stream()
+                            .map(groupAccount -> {
+                                Account account = groupAccount.getAccount();
+                                Map<String, Object> memberInfo = new HashMap<>();
+                                memberInfo.put("id", account.getId());
+                                memberInfo.put("firstName", account.getUser().getFirstName());
+                                memberInfo.put("lastName", account.getUser().getLastName());
+                                memberInfo.put("email", account.getEmail());
+                                memberInfo.put("status", account.getStatus());
+                                memberInfo.put("groupRole", groupAccount.getRole()); // Role from GroupAccount
+                                memberInfo.put("proffession", account.getUser().getProffession());
+                                memberInfo.put("phone",account.getUser().getPhone());
+                                return memberInfo;
+                            })
+                            .collect(Collectors.toList()));
+                    return groupInfo;
+                })
+                .collect(Collectors.toList());
+    }
     @Override
     public void addMemberToProject(Integer projectId, Integer adminId, String newMemberEmail) {
         Project project = projectRepository.findById(projectId)
