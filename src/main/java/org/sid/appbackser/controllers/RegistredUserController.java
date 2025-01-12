@@ -212,7 +212,27 @@ public class RegistredUserController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-
+	@DeleteMapping("/project/{projectId}/remove/{memberEmail}")
+	public ResponseEntity<String> removeMemberFromProject(
+			@PathVariable Integer projectId,
+			@PathVariable String memberEmail, 
+			@AuthenticationPrincipal AccountDetails authAcc) {
+		try {
+			Account auth = authAcc.getAccount();
+			projectService.removeMemberFromProject(projectId, auth.getId(), memberEmail);
+			return ResponseEntity.ok("Member removed successfully from the project.");
+		} catch (RuntimeException e) {
+			if (e.getMessage().contains("Only project admins can remove members")) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+			} else if (e.getMessage().contains("Project not found") || e.getMessage().contains("Account not found")) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+			} else if (e.getMessage().contains("User is not a member of the project")) {
+				return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+			}
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
 	@PutMapping("/project/{projectId}/promote/{memberId}")
 	public ResponseEntity<String> promoteMemberToAdmin(
 			@PathVariable Integer projectId,
@@ -232,6 +252,28 @@ public class RegistredUserController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+
+	@PutMapping("/project/{projectId}/demote/{adminId}")
+	public ResponseEntity<String> demoteAdminToMember(
+			@PathVariable Integer projectId,
+			@PathVariable Integer adminId, 
+			@AuthenticationPrincipal AccountDetails authAcc) {
+		try {
+			Account auth = authAcc.getAccount();
+			projectService.demoteAdminToMember(projectId, auth.getId(), adminId);
+			return ResponseEntity.ok("Admin demoted to member successfully.");
+		} catch (RuntimeException e) {
+			if (e.getMessage().contains("Only project admins can demote other admins")) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+			} else if (e.getMessage().contains("Project not found") || e.getMessage().contains("The user is not an admin of the project")) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+			} else if (e.getMessage().contains("The user is not an admin of the project")) {
+				return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+			}
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 
 	@GetMapping("/project/{projectId}/groups")
 	public ResponseEntity<List<Map<String, Object>>> getProjectGroupsWithMembers(@PathVariable Integer projectId) {

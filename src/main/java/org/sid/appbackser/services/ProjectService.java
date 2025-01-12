@@ -22,4 +22,7 @@ public interface ProjectService {
 
 	void addMemberToProject(Integer projectId, Integer adminId, String newMemberEmail);
 	void promoteMemberToAdmin(Integer projectId, Integer adminId, Integer memberId);
+
+	void removeMemberFromProject(Integer projectId, Integer adminId, String memberEmail);
+	void demoteAdminToMember(Integer projectId, Integer adminId, Integer adminToDemoteId);
 }

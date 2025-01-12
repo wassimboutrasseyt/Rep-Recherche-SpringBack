@@ -302,5 +302,53 @@ public class ProjectServiceImplement implements ProjectService {
         groupAccountService.assignAccountToGroupWithRole(memberId, project.getAdminGroup().getId(), RolesPerGroup.ADMIN);
     }
 
+    @Override
+    public void removeMemberFromProject(Integer projectId, Integer adminId, String memberEmail) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+    
+        Account memberAccount = accountService.getAccountByEmail(memberEmail);
+        // Step 2: Check if the admin is a member of the admin group
+        if (!groupAccountService.isAccountMemberOfGroup(adminId, project.getAdminGroup().getId())) {
+            throw new RuntimeException("Only project admins can remove members");
+        }
+    
+        // Step 3: Check if the user to be removed is part of the project group
+        if (!groupAccountService.isAccountMemberOfGroup(memberAccount.getId(), project.getProjectGroup().getId())) {
+            throw new RuntimeException("User is not a member of the project");
+        }
+    
+        // Step 4: Remove the user from the project group
+        groupAccountService.removeAccountFromGroup(memberAccount.getId(), project.getProjectGroup().getId());
+    }
+
+    @Override
+    public void demoteAdminToMember(Integer projectId, Integer adminId, Integer adminToDemoteId) {
+        // Step 1: Retrieve the project by ID
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        // Step 2: Check if the requesting admin is part of the admin group
+        if (!groupAccountService.isAccountMemberOfGroup(adminId, project.getAdminGroup().getId())) {
+            throw new RuntimeException("Only project admins can demote other admins");
+        }
+
+        // Step 3: Check if the admin to be demoted is part of the admin group
+        if (!groupAccountService.isAccountMemberOfGroup(adminToDemoteId, project.getAdminGroup().getId())) {
+            throw new RuntimeException("The user is not an admin of the project");
+        }
+
+        // Step 4: Remove the admin from the admin group
+        groupAccountService.removeAccountFromGroup(adminToDemoteId, project.getAdminGroup().getId());
+
+        // Step 5: Assign the demoted user as a regular member in the project group
+        groupAccountService.assignAccountToGroupWithRole(adminToDemoteId, project.getProjectGroup().getId(), RolesPerGroup.MEMBER);
+    }
+
+
+
+    
+
+
     
 }
