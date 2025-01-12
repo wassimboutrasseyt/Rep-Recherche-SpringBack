@@ -212,6 +212,7 @@ public class RegistredUserController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	
 	@DeleteMapping("/project/{projectId}/remove/{memberEmail}")
 	public ResponseEntity<String> removeMemberFromProject(
 			@PathVariable Integer projectId,
@@ -232,6 +233,7 @@ public class RegistredUserController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	
 	
 	@PutMapping("/project/{projectId}/promote/{memberId}")
 	public ResponseEntity<String> promoteMemberToAdmin(
@@ -292,28 +294,33 @@ public class RegistredUserController {
 	 * projects depot section ----------------------------------------------------------------
 	 */
 	
-
-	@PostMapping("/project/depot/create-folder")
-	public ResponseEntity<Folder> createFolder(@RequestBody Map<String, Object> requestBody, @AuthenticationPrincipal AccountDetails authAcc) {
-
-		/*
-			* Request body example:
-			* {
-			*    "depotId": 1,
-			*    "name": "New Folder",
-			*    "parentFolderId": 2 // if it's a subfolde, if the folder will be created directly on the SRC or WEB, this should be null or absent
-			* }
-			*/
-
-		Integer depotId = (Integer) requestBody.get("depotId");
-		String name = (String) requestBody.get("name");
-		Integer parentFolderId = requestBody.get("parentFolderId") != null ? (Integer) requestBody.get("parentFolderId") : null;
+	 @PostMapping("/project/depot/create-folder")
+	 public ResponseEntity<?> createFolder(@RequestBody Map<String, Object> requestBody, @AuthenticationPrincipal AccountDetails authAcc) {
+		 /*
+		  * Request body example:
+		  * {
+		  *    "depotId": 1,
+		  *    "name": "New Folder",
+		  *    "parentFolderId": 2 // if it's a subfolder, if the folder will be created directly on the SRC or WEB, this should be null or absent
+		  * }
+		  */
+	 
+		 Integer depotId = (Integer) requestBody.get("depotId");
+		 String name = (String) requestBody.get("name");
+		 Integer parentFolderId = requestBody.get("parentFolderId") != null ? (Integer) requestBody.get("parentFolderId") : null;
 		Account auth = authAcc.getAccount();
-
-		logger.info("Creating folder with name: {}, depotId: {}, parentFolderId: {}", name, depotId, parentFolderId);
-		Folder folder = folderService.createFolder(depotId, name, parentFolderId, auth.getId());
-		return ResponseEntity.status(HttpStatus.CREATED).body(folder);
-	}
+	 
+		 logger.info("Creating folder with name: {}, depotId: {}, parentFolderId: {}", name, depotId, parentFolderId);
+	 
+		 try {
+			 Folder folder = folderService.createFolder(depotId, name, parentFolderId, auth.getId());
+			 return ResponseEntity.status(HttpStatus.CREATED).body(folder);
+		 } catch (IllegalArgumentException ex) {
+			 // Return a 400 Bad Request with the error message when the folder already exists
+			 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Folder already exists at path: " + ex.getMessage());
+		 }
+	 }
+	 
 
 	@DeleteMapping("/project/{projectId}/folder/delete/{folderId}")
 	public ResponseEntity<Void> deleteFolder(@PathVariable Integer folderId,@PathVariable Integer projectId, @AuthenticationPrincipal AccountDetails authAcc) {
