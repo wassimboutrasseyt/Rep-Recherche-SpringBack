@@ -183,4 +183,14 @@ public class AccountServiceImplement implements AccountService {
         return accountRepository.findByRole(Roles.ADMIN);
       }
 
+    @Override
+    public Account getAccountByEmail(String email) {
+        
+        Account account = accountRepository.findByEmail(email);
+        if (account == null) {
+            throw new IllegalArgumentException("Account not found");
+        }
+        return account;
+    }
+
 }

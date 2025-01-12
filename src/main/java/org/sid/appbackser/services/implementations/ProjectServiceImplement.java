@@ -223,23 +223,24 @@ public class ProjectServiceImplement implements ProjectService {
     
 
     @Override
-    public void addMemberToProject(Integer projectId, Integer adminId, Integer newMemberId) {
+    public void addMemberToProject(Integer projectId, Integer adminId, String newMemberEmail) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
     
+        Account newMemberAccount = accountService.getAccountByEmail(newMemberEmail);
         // Step 2: Check if the admin is a member of the admin group
         if (!groupAccountService.isAccountMemberOfGroup(adminId, project.getAdminGroup().getId())) {
             throw new RuntimeException("Only project admins can add members");
         }
         
         // Step 3: Check if the user with the given email exists
-        Account userToAdd =  accountService.getAccount(newMemberId);
+        Account userToAdd =  accountService.getAccount(newMemberAccount.getId());
     
         // Step 4: Check if the user is already a member of the project group
         if (groupAccountService.isAccountMemberOfGroup(userToAdd.getId(), project.getProjectGroup().getId())) {
             throw new RuntimeException("User is already a member of the project");
         }
-        groupAccountService.assignAccountToGroupWithRole(adminId, newMemberId, RolesPerGroup.MEMBER);
+        groupAccountService.assignAccountToGroupWithRole(adminId, newMemberAccount.getId(), RolesPerGroup.MEMBER);
 
     }
 

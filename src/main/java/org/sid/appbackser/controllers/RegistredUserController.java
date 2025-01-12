@@ -192,14 +192,14 @@ public class RegistredUserController {
 		}
 	}
 
-	@PutMapping("/project/{projectId}/newmember/{newMemberId}")
+	@PutMapping("/project/{projectId}/newmember/{newMemberEmail}")
 	public ResponseEntity<String> addMemberToProject(
 			@PathVariable Integer projectId,
-			@PathVariable Integer newMemberId, 
+			@PathVariable String newMemberEmail, 
 			@AuthenticationPrincipal AccountDetails authAcc) {
 		try {
 			Account auth = authAcc.getAccount();
-			projectService.addMemberToProject(projectId, auth.getId(), newMemberId);
+			projectService.addMemberToProject(projectId, auth.getId(), newMemberEmail);
 			return ResponseEntity.ok("Member added successfully to the project.");
 		} catch (RuntimeException e) {
 			if (e.getMessage().contains("Only project admins can add members")) {

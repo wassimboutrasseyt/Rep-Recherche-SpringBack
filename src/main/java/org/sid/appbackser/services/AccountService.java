@@ -17,6 +17,8 @@ public interface AccountService {
     Account getAccount(Integer accountId); // Consistent naming
 
     String deleteAccount(Integer accountId);
+    
+    Account getAccountByEmail(String email);
 
     List<Account> getAccountsByUserId(Integer userId);
     
