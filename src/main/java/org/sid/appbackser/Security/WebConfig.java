@@ -27,11 +27,10 @@ public class WebConfig implements WebMvcConfigurer {
                .exposedHeaders("Authorization") // Expose headers to the client
                .allowCredentials(true) // Allow cookies, etc.
                .maxAge(3600); // Cache preflight responses for 1 hour
-   }
-   
-   @Override
-   public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-       converters.add(new MappingJackson2HttpMessageConverter());
-   }
-   
+    }
+    
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new MappingJackson2HttpMessageConverter());
+    }
 }
