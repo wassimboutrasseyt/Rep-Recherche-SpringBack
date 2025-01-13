@@ -16,6 +16,7 @@ import org.sid.appbackser.dto.ChatGroupDTO;
 import org.sid.appbackser.dto.ProjectDTO;
 import org.sid.appbackser.dto.UserLoggedDTO;
 import org.sid.appbackser.entities.Account;
+import org.sid.appbackser.entities.Message;
 import org.sid.appbackser.entities.User;
 import org.sid.appbackser.entities.Project;
 import org.sid.appbackser.entities.Proposition;
@@ -28,6 +29,7 @@ import org.sid.appbackser.services.ChatGroupService;
 import org.sid.appbackser.services.DepotService;
 import org.sid.appbackser.services.File_Service;
 import org.sid.appbackser.services.FolderService;
+import org.sid.appbackser.services.MessageService;
 import org.sid.appbackser.services.ProjectService;
 import org.sid.appbackser.services.PropositionService;
 import org.sid.appbackser.services.UserService;
@@ -70,6 +72,9 @@ public class RegistredUserController {
 
 	@Autowired
 	private ChatGroupService chatGroupService;
+
+	@Autowired
+	private MessageService messageService;
 	
 	@Autowired
 	private ProjectService	projectService;
@@ -82,6 +87,7 @@ public class RegistredUserController {
 
 	@Autowired
 	private File_Service fileService;
+
 	@Autowired
 	private UserService	userService;
 	// @Autowired
@@ -103,6 +109,16 @@ public class RegistredUserController {
 		List<ChatGroupDTO> chatGroupDTOs = chatGroupService.getChatGroupsForAccount(authAcc.getAccount().getId());
 		return ResponseEntity.ok(chatGroupDTOs);
 	}
+
+	@GetMapping("/chat/group/messages/{chatGroupId}")
+    public ResponseEntity<List<Message>> getMessagesForChatGroup(@PathVariable String chatGroupId) {
+        try {
+            List<Message> messages = messageService.getMessagesForChatGroup(chatGroupId);
+            return ResponseEntity.ok(messages);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null); // Return 500 Internal Server Error in case of exceptions
+        }
+    }
 
 	/*
 	 * user section ----------------------------------------------------------------

@@ -22,6 +22,12 @@ public class MessageServiceImplement implements MessageService{
     @Autowired
     private ChatGroupRepository chatGroupRepository;
 
+    @Override
+	public List<Message> getMessagesForChatGroup(String chatGroupId) {
+        List<Message> messages = messageRepository.findByChatGroupId(chatGroupId);
+        return messages;
+	}
+    
 	@Override
     public Message createMessageToGroup(Integer senderId, String chatGroupId, String content, MessageType type) {
         ChatGroup chatGroup = chatGroupRepository.findById(chatGroupId).orElseThrow(() -> new RuntimeException("Chat group not found"));
@@ -51,9 +57,5 @@ public class MessageServiceImplement implements MessageService{
         return accountMessages;
 	}
 
-	@Override
-	public List<Message> getMessagesForChatGroup(String chatGroupId) {
-        List<Message> messages = messageRepository.findByChatGroupId(chatGroupId);
-        return messages;
-	}
+
 }
