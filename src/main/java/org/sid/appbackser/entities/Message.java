@@ -33,5 +33,4 @@ public class Message {
     private Instant timestamp = Instant.now();
 
     private MessageType type;
-
 }

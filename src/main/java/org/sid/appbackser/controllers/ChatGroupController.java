@@ -2,6 +2,7 @@ package org.sid.appbackser.controllers;
 
 import java.security.Principal;
 
+import org.sid.appbackser.dto.MessageDTO;
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.Message;
 import org.sid.appbackser.enums.MessageType;
@@ -29,7 +30,7 @@ public class ChatGroupController {
 
     @MessageMapping("/chat/{projectId}/{groupId}")
     @SendTo("/topic/chat/{projectId}/{groupId}")
-    public Message sendMessageToGroup(@DestinationVariable String projectId,
+    public MessageDTO sendMessageToGroup(@DestinationVariable String projectId,
                                        @DestinationVariable String groupId,
                                        @Payload Message message,
                                        Principal principal) {
@@ -58,7 +59,7 @@ public class ChatGroupController {
             logger.debug("Message created: {}", newMessage);
 
             // Return the message to broadcast it to all subscribed clients
-            return newMessage;
+            return messageService.convertToDTO(newMessage);
         } catch (Exception e) {
             // Log any exceptions that occur
             logger.error("Error while processing group chat message", e);

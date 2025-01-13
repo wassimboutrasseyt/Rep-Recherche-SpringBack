@@ -4,11 +4,14 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sid.appbackser.dto.MessageDTO;
 import org.sid.appbackser.entities.ChatGroup;
 import org.sid.appbackser.entities.Message;
+import org.sid.appbackser.entities.User;
 import org.sid.appbackser.enums.MessageType;
 import org.sid.appbackser.repositories.ChatGroupRepository;
 import org.sid.appbackser.repositories.MessageRepository;
+import org.sid.appbackser.services.AccountService;
 import org.sid.appbackser.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,9 @@ public class MessageServiceImplement implements MessageService{
     
     @Autowired
     private ChatGroupRepository chatGroupRepository;
+
+    @Autowired 
+    private AccountService accountService;
 
     @Override
 	public List<Message> getMessagesForChatGroup(String chatGroupId) {
@@ -37,6 +43,20 @@ public class MessageServiceImplement implements MessageService{
         message.setContent(content);
         message.setType(type);
         return messageRepository.save(message);
+    }
+
+    @Override
+    public MessageDTO convertToDTO(Message message) {
+        User senderUser = accountService.getAccount(message.getSenderId()).getUser();
+        return new MessageDTO(
+            message.getId(),
+            message.getSenderId(),
+            senderUser.getFirstName(),
+            senderUser.getLastName(),
+            message.getContent(),
+            message.getTimestamp(),
+            message.getType()
+        );
     }
 
 	@Override
