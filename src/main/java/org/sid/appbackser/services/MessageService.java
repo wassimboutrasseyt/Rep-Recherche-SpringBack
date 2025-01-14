@@ -9,7 +9,7 @@ import org.sid.appbackser.enums.MessageType;
 
 public interface MessageService {
     Message createMessageToGroup(Integer senderId, String chatGroupId, String content, MessageType type);
-    List<Message> getMessagesForChatGroup(String chatGroup);
+    List<MessageDTO> getMessagesForChatGroup(String chatGroup);
     List<Message> getMessagesForAccountOnGroup(Integer accountId, String chatGroupId);
     void deleteMessage(String messageId);
     MessageDTO convertToDTO(Message message);

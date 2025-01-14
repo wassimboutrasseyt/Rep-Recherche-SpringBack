@@ -13,10 +13,10 @@ import java.util.Map;
 
 import org.springframework.http.MediaType;
 import org.sid.appbackser.dto.ChatGroupDTO;
+import org.sid.appbackser.dto.MessageDTO;
 import org.sid.appbackser.dto.ProjectDTO;
 import org.sid.appbackser.dto.UserLoggedDTO;
 import org.sid.appbackser.entities.Account;
-import org.sid.appbackser.entities.Message;
 import org.sid.appbackser.entities.User;
 import org.sid.appbackser.entities.Project;
 import org.sid.appbackser.entities.Proposition;
@@ -59,10 +59,6 @@ public class RegistredUserController {
 
 
 	private static final Logger logger = LoggerFactory.getLogger(RegistredUserController.class);
-
-
-	@Autowired
-	private JWTService jwtService;
 
 	@Autowired
 	private AccountService accountService;
@@ -111,9 +107,9 @@ public class RegistredUserController {
 	}
 
 	@GetMapping("/chat/group/messages/{chatGroupId}")
-    public ResponseEntity<List<Message>> getMessagesForChatGroup(@PathVariable String chatGroupId) {
+    public ResponseEntity<List<MessageDTO>> getMessagesForChatGroup(@PathVariable String chatGroupId) {
         try {
-            List<Message> messages = messageService.getMessagesForChatGroup(chatGroupId);
+            List<MessageDTO> messages = messageService.getMessagesForChatGroup(chatGroupId);
             return ResponseEntity.ok(messages);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(null); // Return 500 Internal Server Error in case of exceptions

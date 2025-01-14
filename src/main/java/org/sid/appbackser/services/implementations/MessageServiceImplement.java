@@ -29,12 +29,16 @@ public class MessageServiceImplement implements MessageService{
     private AccountService accountService;
 
     @Override
-	public List<Message> getMessagesForChatGroup(String chatGroupId) {
+    public List<MessageDTO> getMessagesForChatGroup(String chatGroupId) {
         List<Message> messages = messageRepository.findByChatGroupId(chatGroupId);
-        return messages;
-	}
+        List<MessageDTO> messageDTOs = new ArrayList<>();
+        for (Message message : messages) {
+            messageDTOs.add(convertToDTO(message));
+        }
+        return messageDTOs;
+    }
     
-	@Override
+    @Override
     public Message createMessageToGroup(Integer senderId, String chatGroupId, String content, MessageType type) {
         ChatGroup chatGroup = chatGroupRepository.findById(chatGroupId).orElseThrow(() -> new RuntimeException("Chat group not found"));
         Message message = new Message();

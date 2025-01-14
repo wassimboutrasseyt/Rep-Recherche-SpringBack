@@ -58,11 +58,4 @@ public class WebSecurityConfig {
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 		return config.getAuthenticationManager();
 	}
-	
-//	@Bean
-//	public UserDetailsService userDetailsService() {
-//		UserDetails user1=User.withDefaultPasswordEncoder().username("ayman").password("123").roles("admin").build();
-//		return new InMemoryUserDetailsManager(user1);
-//	}
-
 }
