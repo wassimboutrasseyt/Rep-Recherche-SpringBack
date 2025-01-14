@@ -7,6 +7,8 @@ import java.util.List;
 import org.sid.appbackser.dto.UserLoggedDTO;
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.GroupAccount;
+import org.sid.appbackser.entities.RessourceFolder.Calendrier;
+import org.sid.appbackser.entities.RessourceFolder.RessourcePerso;
 import org.sid.appbackser.enums.AccountStatus;
 import org.sid.appbackser.enums.Roles;
 import org.sid.appbackser.repositories.AccountRepository;
@@ -47,6 +49,9 @@ public class AccountServiceImplement implements AccountService {
     
     @Autowired
     ProjectRepository projectRepository;
+    
+    @Autowired
+    RessourcePersoRepository ressourcePersoRepository;
 
     @Autowired 
     JWTService JwtService;
@@ -69,7 +74,13 @@ public class AccountServiceImplement implements AccountService {
         account.setRole(Roles.REGISTRED_USER);
         account.setStatus(AccountStatus.ACTIVE);
     	Account account_2= accountRepository.save(account);
-    	//this.setRoleForAccount(account_2.getId(),Roles.REGISTRED_USER);
+    	RessourcePerso ressourcePerso = new RessourcePerso();
+        Calendrier calendrier = new Calendrier();
+        calendrier.setTaches(new ArrayList<>());
+        ressourcePerso.setAccount(account_2);
+        ressourcePerso.setCalendrier(calendrier);
+        ressourcePersoRepository.save(ressourcePerso);
+
 
         return account_2;// Return saved account
     }

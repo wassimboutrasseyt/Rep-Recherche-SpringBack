@@ -33,7 +33,7 @@ public class PropositionServiceImplement implements PropositionService {
     private EmailService emailService;
 
     
-    
+    Logger logger = LoggerFactory.getLogger(PropositionServiceImplement.class);
 
     @Override
     public String createProposition(Proposition proposition) {
@@ -63,9 +63,11 @@ public class PropositionServiceImplement implements PropositionService {
         project.setVisibility(proposition.getVisibility());
         project.setLicenseName(proposition.getLicenseName());
         project.setDescription(proposition.getDescription());
+        
+        logger.info("Creating project from proposition" + project.toString());
         projectService.createProject(project, proposition.getAccount());
 
-        // Creating Personnel ressources 
+        
         return proposition;
     }
 

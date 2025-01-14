@@ -17,6 +17,8 @@ import lombok.NoArgsConstructor;
 public class RessourcePerso extends Ressource {
     @OneToOne
     private Account account;
+    // @OneToOne
+    // private Calendrier calendrier;
 
     
 }

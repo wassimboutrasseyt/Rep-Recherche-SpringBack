@@ -8,6 +8,9 @@ import java.nio.file.Paths;
 import java.security.Principal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,11 +24,15 @@ import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.User;
 import org.sid.appbackser.entities.Project;
 import org.sid.appbackser.entities.Proposition;
+import org.sid.appbackser.entities.RessourceFolder.Calendrier;
 import org.sid.appbackser.entities.RessourceFolder.Depot;
 import org.sid.appbackser.entities.RessourceFolder.File_;
 import org.sid.appbackser.entities.RessourceFolder.Folder;
+import org.sid.appbackser.entities.RessourceFolder.RessourcePerso;
+import org.sid.appbackser.entities.RessourceFolder.Tache;
 import org.sid.appbackser.services.AccountDetails;
 import org.sid.appbackser.services.AccountService;
+import org.sid.appbackser.services.CalendrierService;
 import org.sid.appbackser.services.ChatGroupService;
 import org.sid.appbackser.services.DashboardService;
 import org.sid.appbackser.services.DepotService;
@@ -34,6 +41,7 @@ import org.sid.appbackser.services.FolderService;
 import org.sid.appbackser.services.MessageService;
 import org.sid.appbackser.services.ProjectService;
 import org.sid.appbackser.services.PropositionService;
+import org.sid.appbackser.services.RessourcePersoService;
 import org.sid.appbackser.services.UserService;
 import org.sid.appbackser.services.implementations.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +100,12 @@ public class RegistredUserController {
 	@Autowired
 	private DashboardService dashboardService;
 
+
+	@Autowired
+	RessourcePersoService ressourcePersoService;
+
+	@Autowired
+	CalendrierService calendrierService;
 	// @Autowired
     // public RegistredUserController(JwtService jwtService) {
     //     this.jwtService = jwtService;
@@ -491,4 +505,65 @@ public class RegistredUserController {
         }
     }
 
-}
+
+	@GetMapping("/RessourcePersonnel/Calendrier")
+	public	 ResponseEntity<?> getTasks(@AuthenticationPrincipal AccountDetails authAcc) {
+		try {
+			System.out.println("Fetching calendrier Fetching calendrier Fetching calendrierFetching calendrierFetching calendrierFetching calendrier Fetching calendrier");
+			Account account = authAcc.getAccount();
+			Calendrier calendrier = ressourcePersoService.getCalendrierByAccount(account);
+						return ResponseEntity.ok(calendrier);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error getting calendrier: " + e.getMessage());
+		}
+	}
+
+	@PostMapping("/RessourcePersonnel/Calendrier/addTask")
+	public ResponseEntity<?> addTask(@AuthenticationPrincipal AccountDetails authAcc, @RequestBody Map<String, Object> requestBody) {
+		try {
+			System.out.println(requestBody);
+			Account account = authAcc.getAccount();
+			Calendrier calendrier = ressourcePersoService.getCalendrierByAccount(account);
+
+			// Validate and extract required fields
+			String taskName = (String) requestBody.get("title");
+			if (taskName == null) {
+				return ResponseEntity.badRequest().body("Task title is required.");
+			}
+
+			Map<String, Object> taskDate = (Map<String, Object>) requestBody.get("time");
+			if (taskDate == null || taskDate.get("start") == null || taskDate.get("end") == null) {
+				return ResponseEntity.badRequest().body("Start and end times are required.");
+			}
+
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+			LocalDateTime dateDebut = LocalDateTime.parse(taskDate.get("start").toString(), formatter);
+			LocalDateTime dateFin = LocalDateTime.parse(taskDate.get("end").toString(), formatter);
+
+			// Extract optional fields
+			String taskDescription =  requestBody.get("description").toString();
+			System.out.println("AaaaaaaaaaaaaaAAAAAAAAAAAAAAaaaaaaaaa "+taskDescription);
+
+			// Create and associate task
+			Tache task = new Tache();
+			task.setNom(taskName);
+			task.setDateDebut(dateDebut);
+			task.setDateFin(dateFin);
+			task.setDescription(taskDescription);
+			task.setCalendrier(calendrier);
+			calendrier.getTaches().add(task);
+
+			// Save calendar with the new task
+			calendrierService.createCalendar(calendrier);
+
+			return ResponseEntity.ok("Task added successfully");
+		} catch (DateTimeParseException e) {
+			return ResponseEntity.badRequest().body("Invalid date format: " + e.getParsedString());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error adding task: " + e.getMessage());
+		}
+	}
+
+	}
+	
+
