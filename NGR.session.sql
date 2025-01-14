@@ -1,1 +1,1 @@
-SELECT * FROM groups
+SELECT * FROM depot;
