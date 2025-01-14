@@ -13,4 +13,6 @@ public interface PropositionRepository extends JpaRepository<Proposition, Intege
     List<Proposition> findByStatus(PropositionStatus status);
     List<Proposition> findByAccount(Account account);
     // Proposition fin
+    long countByStatus(String string);
+    long countByAccountIdAndStatus(Integer id, PropositionStatus approved);
 }

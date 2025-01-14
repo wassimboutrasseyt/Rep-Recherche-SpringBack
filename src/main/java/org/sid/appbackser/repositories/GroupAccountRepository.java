@@ -14,4 +14,5 @@ public interface GroupAccountRepository extends JpaRepository<GroupAccount, Inte
     void deleteByAccountIdAndGroupId(Integer accountId, Integer groupId);
     List<GroupAccount> findByGroup(Group adminGroup);
     boolean existsByAccountIdAndGroupId(Integer accountId, Integer groupId);
+    Long countDistinctGroupByAccountId(Integer id);
 }

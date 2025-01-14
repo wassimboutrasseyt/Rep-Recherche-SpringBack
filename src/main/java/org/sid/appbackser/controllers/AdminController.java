@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.sid.appbackser.dto.DashboardAdminDTO;
 import org.sid.appbackser.dto.UserLoggedDTO;
 import org.sid.appbackser.entities.Project;
 import org.sid.appbackser.entities.Proposition;
 import org.sid.appbackser.entities.User;
+import org.sid.appbackser.services.DashboardService;
 import org.sid.appbackser.services.ProjectService;
 import org.sid.appbackser.services.PropositionService;
 import org.sid.appbackser.services.UserService;
@@ -41,6 +43,8 @@ public class AdminController {
 	@Autowired
 	private ProjectService projectService;
 
+	@Autowired
+	private DashboardService dashboardService;
 
 	@GetMapping
 	public ResponseEntity<String> helloRUser() {
@@ -108,5 +112,26 @@ public class AdminController {
 		return ResponseEntity.ok(projects);
 	}	
 	
+
+	@GetMapping("/dashboard/infos")
+    public ResponseEntity<?> getDashboardAdminInfos() {
+		/*
+		 * Response will look like:
+		 * {
+		 *   "nbAccounts": 100,
+		 *   "nbProjects": 50,
+		 *   "nbPendingPropositions": 10
+		 * }
+		 */
+        try {
+            DashboardAdminDTO dashboardAdminInfos = dashboardService.getDashboardAdminInfos();
+            return ResponseEntity.ok(dashboardAdminInfos); // HTTP 200 OK
+        } catch (Exception ex) {
+            // Handle specific exceptions if needed
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR) // HTTP 500 Internal Server Error
+                    .body("Error fetching admin dashboard data: " + ex.getMessage());
+        }
+    }
 	
 }

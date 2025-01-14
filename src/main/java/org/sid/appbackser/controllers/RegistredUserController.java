@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.springframework.http.MediaType;
 import org.sid.appbackser.dto.ChatGroupDTO;
+import org.sid.appbackser.dto.DashboardRUserDTO;
 import org.sid.appbackser.dto.MessageDTO;
 import org.sid.appbackser.dto.ProjectDTO;
 import org.sid.appbackser.dto.UserLoggedDTO;
@@ -26,6 +27,7 @@ import org.sid.appbackser.entities.RessourceFolder.Folder;
 import org.sid.appbackser.services.AccountDetails;
 import org.sid.appbackser.services.AccountService;
 import org.sid.appbackser.services.ChatGroupService;
+import org.sid.appbackser.services.DashboardService;
 import org.sid.appbackser.services.DepotService;
 import org.sid.appbackser.services.File_Service;
 import org.sid.appbackser.services.FolderService;
@@ -86,6 +88,10 @@ public class RegistredUserController {
 
 	@Autowired
 	private UserService	userService;
+
+	@Autowired
+	private DashboardService dashboardService;
+
 	// @Autowired
     // public RegistredUserController(JwtService jwtService) {
     //     this.jwtService = jwtService;
@@ -150,6 +156,32 @@ public class RegistredUserController {
 		}
 	}
 
+	//Dashboard infos
+	    @GetMapping("/dashboard/infos")
+    public ResponseEntity<?> getDashboardRUsersInfos(@AuthenticationPrincipal Account authUser) {
+		/*
+		 * Response will look like:
+		 * 
+		 * {
+		 *   "projectsHeCreated": 5,
+		 *   "projectsMemberOn": 3
+		 * }
+		 */
+        try {
+            if (authUser == null) {
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED) // HTTP 401 Unauthorized
+                        .body("User not authenticated");
+            }
+
+            DashboardRUserDTO dashboardRUserInfos = dashboardService.getDashboardRUsersInfos(authUser);
+            return ResponseEntity.ok(dashboardRUserInfos); // HTTP 200 OK
+        } catch (Exception ex) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR) // HTTP 500 Internal Server Error
+                    .body("Error fetching user dashboard data: " + ex.getMessage());
+        }
+    }
 
 	/*
 	 * PROJECT SECTION ----------------------------------------------------------------
