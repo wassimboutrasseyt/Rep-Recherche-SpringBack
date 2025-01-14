@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class MessageDTO {
     private String id;
     private Integer senderId;
-    private String senderFisrtName;
+    private String senderFirstName;
     private String senderLastName;
     private String content;
     private Instant timestamp;

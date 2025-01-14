@@ -3,6 +3,7 @@ package org.sid.appbackser.controllers;
 import java.security.Principal;
 
 import org.sid.appbackser.dto.MessageDTO;
+import org.sid.appbackser.dto.sentMessageDTO;
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.Message;
 import org.sid.appbackser.enums.MessageType;
@@ -32,16 +33,14 @@ public class ChatGroupController {
     @SendTo("/topic/chat/{projectId}/{groupId}")
     public MessageDTO sendMessageToGroup(@DestinationVariable String projectId,
                                        @DestinationVariable String groupId,
-                                       @Payload Message message,
-                                       Principal principal) {
+                                       @Payload sentMessageDTO messageDTO
+                                       ) {
         // Log method entry and parameters
         logger.info("Received message for group chat");
-        logger.debug("projectId: {}, groupId: {}, message: {}", projectId, groupId, message);
+        logger.debug("projectId: {}, groupId: {}, message: {}", projectId, groupId, messageDTO);
 
         try {
-            // Retrieve the authenticated account using Spring Security (JWT)
-            logger.info("Retrieving account for principal: {}", principal.getName());
-            Account account = accountService.getAccountFromToken(principal);
+            Account account = accountService.getAccount(messageDTO.getSenderId());
 
             // Log account details
             logger.debug("Account retrieved: {}", account);
@@ -51,7 +50,7 @@ public class ChatGroupController {
             Message newMessage = messageService.createMessageToGroup(
                     account.getId(),
                     groupId,
-                    message.getContent(),
+                    messageDTO.getContent(),
                     MessageType.TEXT
             );
 

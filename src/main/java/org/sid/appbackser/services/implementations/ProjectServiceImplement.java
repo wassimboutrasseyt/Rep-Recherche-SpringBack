@@ -252,6 +252,7 @@ public class ProjectServiceImplement implements ProjectService {
         emailService.notifyUserAddedToProject(project, newMemberAccount.getId(), adminId);
     }
 
+    @Transactional
     @Override
     public void promoteMemberToAdmin(Integer projectId, Integer adminId, Integer memberId) {
         // Step 1: Retrieve the project by ID
@@ -315,6 +316,7 @@ public class ProjectServiceImplement implements ProjectService {
         }
     }
 
+    @Transactional
     @Override
     public void demoteAdminToMember(Integer projectId, Integer adminId, Integer adminToDemoteId) {
         // Step 1: Retrieve the project by ID
