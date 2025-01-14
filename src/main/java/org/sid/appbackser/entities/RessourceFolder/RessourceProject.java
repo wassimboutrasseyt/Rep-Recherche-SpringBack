@@ -2,6 +2,7 @@ package org.sid.appbackser.entities.RessourceFolder;
 
 import org.sid.appbackser.entities.Project;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class RessourceProject extends Ressource {
     @OneToOne
     @JoinColumn(name = "project_id")
-    @JsonManagedReference // Prevents infinite recursion, manages serialization for project
+    @JsonBackReference // Prevents infinite recursion
     private Project projet;
     
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true) 
@@ -29,4 +30,5 @@ public class RessourceProject extends Ressource {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true) 
     @JoinColumn(name = "src_depot_id")
     private Depot srcDepot; // Represents the SRC depot
+
 }

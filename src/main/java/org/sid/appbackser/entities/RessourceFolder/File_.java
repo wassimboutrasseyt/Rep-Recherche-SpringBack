@@ -36,9 +36,13 @@ public class File_ {
 
     private String type; // e.g., "text/plain", "image/png"
 
+    @Column(nullable = false)
+    private Integer ownerId; // The accountID of the owner
+
     private Instant createdAt = Instant.now();
 
     @ManyToOne
+    @JsonBackReference
     private Folder folder;
 
     @ManyToOne

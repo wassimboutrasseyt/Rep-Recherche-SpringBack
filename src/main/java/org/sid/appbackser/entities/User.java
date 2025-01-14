@@ -28,12 +28,12 @@ public class User {
     private String lastName;
     private String phone;
     private Date dob;
+    private String proffession;
 
     // One user can have many accounts
     @JsonManagedReference
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // "user" is the field in Account entity
     private List<Account> accounts;
 
  

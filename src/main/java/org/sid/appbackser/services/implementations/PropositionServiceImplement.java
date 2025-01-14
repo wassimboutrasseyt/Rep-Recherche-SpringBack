@@ -44,8 +44,6 @@ public class PropositionServiceImplement implements PropositionService {
         return "Proposition created successfully";
     }
 
-
-
     @Override
     public List<Proposition> getPendingPropositions() {
         return propositionRepository.findByStatus(PropositionStatus.PENDING);

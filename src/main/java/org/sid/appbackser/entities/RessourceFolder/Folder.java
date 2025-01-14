@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Data
@@ -27,8 +28,11 @@ public class Folder {
     @Column(nullable = false)
     private String localPath; // Full path to the folder on the local file system
 
+    @Column(nullable = false)
+    private Integer ownerId; // The accountID of the owner
+    
     @ManyToOne
-    @JoinColumn(name = "depot_id", nullable = false)
+    @JoinColumn(name = "depot_id")
     @JsonBackReference // Prevents infinite recursion by ignoring this side during serialization
     private Depot depot;
 
@@ -38,9 +42,10 @@ public class Folder {
     private Folder parentFolder;
     
     @OneToMany(mappedBy = "parentFolder", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Folder> subFolders;
+    private List<Folder> folders;
     
     @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<File_> files;
     
     private Instant createdAt = Instant.now();

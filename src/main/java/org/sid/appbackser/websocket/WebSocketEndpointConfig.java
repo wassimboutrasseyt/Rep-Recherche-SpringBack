@@ -24,12 +24,12 @@ public class WebSocketEndpointConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(groupChatWebSocketHandler(), "/ws/chat/{projectId}/{groupId}")
-            .addInterceptors(new HttpSessionHandshakeInterceptor())
-            .setAllowedOrigins("*"); 
+        // registry.addHandler(groupChatWebSocketHandler(), "/ws/chat/{projectId}/{groupId}")
+        //     .addInterceptors(new HttpSessionHandshakeInterceptor())
+        //     .setAllowedOrigins("*"); 
 
-        registry.addHandler(privateChatWebSocketHandler(), "/ws/chat/private/{projectId}/{recieverId}")
-            .addInterceptors(new HttpSessionHandshakeInterceptor())
-            .setAllowedOrigins("*");
+        // registry.addHandler(privateChatWebSocketHandler(), "/ws/chat/private/{projectId}/{recieverId}")
+        //     .addInterceptors(new HttpSessionHandshakeInterceptor())
+        //     .setAllowedOrigins("*");
     }
 }

@@ -20,4 +20,28 @@ public abstract class Ressource {
     @JoinColumn(name = "calendrier_id")
     private Calendrier calendrier;
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setCalendrier(Calendrier calendrier) {
+        this.calendrier = calendrier;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public Calendrier getCalendrier() {
+        return calendrier;
+    }
+
 }

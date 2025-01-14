@@ -7,9 +7,12 @@ import java.util.List;
 import org.sid.appbackser.dto.UserLoggedDTO;
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.GroupAccount;
+import org.sid.appbackser.entities.RessourceFolder.Calendrier;
+import org.sid.appbackser.entities.RessourceFolder.RessourcePerso;
 import org.sid.appbackser.enums.AccountStatus;
 import org.sid.appbackser.enums.Roles;
 import org.sid.appbackser.repositories.AccountRepository;
+import org.sid.appbackser.repositories.ProjectRepository;
 import org.sid.appbackser.repositories.UserRepository;
 import org.sid.appbackser.services.AccountDetails;
 import org.sid.appbackser.services.AccountService;
@@ -23,27 +26,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import jakarta.transaction.Transactional;
-
-import org.sid.appbackser.dto.UserLoggedDTO;
-import org.sid.appbackser.entities.Account;
-import org.sid.appbackser.services.AccountDetails;
-import org.sid.appbackser.entities.Group;
-import org.sid.appbackser.entities.GroupAccount;
-import org.sid.appbackser.entities.User;
-import org.sid.appbackser.entities.RessourceFolder.Depot;
-import org.sid.appbackser.entities.RessourceFolder.RessourcePerso;
-import org.sid.appbackser.enums.DepotType;
-import org.sid.appbackser.enums.Roles;
-import org.sid.appbackser.repositories.AccountRepository;
 import org.sid.appbackser.repositories.RessourcePersoRepository;
-import org.sid.appbackser.repositories.UserRepository;
-import org.sid.appbackser.services.AccountService;
 import org.sid.appbackser.services.DepotService;
 import org.sid.appbackser.services.FolderService;
-import org.sid.appbackser.services.UserService;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
 @Service
 public class AccountServiceImplement implements AccountService {
@@ -61,20 +47,14 @@ public class AccountServiceImplement implements AccountService {
     @Autowired
     AuthenticationManager authManager;
     
+    @Autowired
+    ProjectRepository projectRepository;
+    
+    @Autowired
+    RessourcePersoRepository ressourcePersoRepository;
+
     @Autowired 
     JWTService JwtService;
-    
-    @Autowired
-    private DepotService depotService;
-
-    @Autowired
-    private FolderService folderService;
-    
-    @Autowired
-    private RessourcePersoRepository ressourcePersoRepository;
-
-   @Autowired
-   private GroupAccountService groupAccountService;
 
     
 	private static final Logger logger =  LoggerFactory.getLogger(UserService.class);
@@ -94,7 +74,13 @@ public class AccountServiceImplement implements AccountService {
         account.setRole(Roles.REGISTRED_USER);
         account.setStatus(AccountStatus.ACTIVE);
     	Account account_2= accountRepository.save(account);
-    	//this.setRoleForAccount(account_2.getId(),Roles.REGISTRED_USER);
+    	RessourcePerso ressourcePerso = new RessourcePerso();
+        Calendrier calendrier = new Calendrier();
+        calendrier.setTaches(new ArrayList<>());
+        ressourcePerso.setAccount(account_2);
+        ressourcePerso.setCalendrier(calendrier);
+        ressourcePersoRepository.save(ressourcePerso);
+
 
         return account_2;// Return saved account
     }
@@ -125,8 +111,6 @@ public class AccountServiceImplement implements AccountService {
     public List<Account> getAllAccounts() {
         return accountRepository.findAll(); 
     }
-
-
 
     // New method to set a role for an account
     public String setRoleForAccount(Integer accountId, Roles roleEnum) {
@@ -180,13 +164,12 @@ public class AccountServiceImplement implements AccountService {
         for (GroupAccount groupAccount : account.getGroups()) {
             UserLoggedDTO.GroupData groupData = new UserLoggedDTO.GroupData();
             groupData.setRolePerGroup(groupAccount.getRole().toString());
-            groupData.setProjectId(groupAccount.getGroup().getProject() != null
-                    ? groupAccount.getGroup().getProject().getId()
+            groupData.setProjectId(projectRepository.findByAdminGroupOrProjectGroup(groupAccount.getGroup())!=null
+                    ? projectRepository.findByAdminGroupOrProjectGroup(groupAccount.getGroup()).getId()
                     : null);
-            groupData.setProjectShortName(groupAccount.getGroup().getProject() != null
-                    ? groupAccount.getGroup().getProject().getShortName()
+            groupData.setProjectShortName(projectRepository.findByAdminGroupOrProjectGroup(groupAccount.getGroup()) != null
+                    ? projectRepository.findByAdminGroupOrProjectGroup(groupAccount.getGroup()).getShortName()
                     : null);
-
             groupDataList.add(groupData);
         }
 
@@ -210,5 +193,15 @@ public class AccountServiceImplement implements AccountService {
     public List<Account> getAdmisAccount() {
         return accountRepository.findByRole(Roles.ADMIN);
       }
+
+    @Override
+    public Account getAccountByEmail(String email) {
+        
+        Account account = accountRepository.findByEmail(email);
+        if (account == null) {
+            throw new IllegalArgumentException("Account not found");
+        }
+        return account;
+    }
 
 }

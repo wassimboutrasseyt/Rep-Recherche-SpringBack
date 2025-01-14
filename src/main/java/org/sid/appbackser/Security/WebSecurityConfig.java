@@ -32,7 +32,7 @@ public class WebSecurityConfig {
 		return http.csrf(customizer->customizer.disable()).
 		cors(cors->{}).
 		authorizeHttpRequests(request -> request.requestMatchers("/auth/**").permitAll()
-				// .requestMatchers("/ws/chat/**").authenticated()  // Allow WebSocket URL
+				.requestMatchers("/ws/chat/**").hasAnyAuthority("ADMIN","REGISTRED_USER")  // Allow WebSocket URL
 				// .requestMatchers("/auth/login").permitAll()
 				.requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
 				.requestMatchers("/registred-user/**").hasAnyAuthority("ADMIN","REGISTRED_USER")
@@ -58,11 +58,4 @@ public class WebSecurityConfig {
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 		return config.getAuthenticationManager();
 	}
-	
-//	@Bean
-//	public UserDetailsService userDetailsService() {
-//		UserDetails user1=User.withDefaultPasswordEncoder().username("ayman").password("123").roles("admin").build();
-//		return new InMemoryUserDetailsManager(user1);
-//	}
-
 }

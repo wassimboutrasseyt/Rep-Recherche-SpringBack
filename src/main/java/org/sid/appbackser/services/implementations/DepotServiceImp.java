@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class DepotServiceImp implements DepotService {
 
@@ -21,14 +23,14 @@ public class DepotServiceImp implements DepotService {
 
     @Autowired
     private FolderService folderService;
-    private static final String BASE_PATH = "C:\\Users\\wassi\\Documents\\Proojet\\Rep-Recherche-SpringBack\\src\\main\\resources";
+    private static final String BASE_PATH = "C:\\Users\\wassi\\Documents\\Proojet\\Rep-Recherche-SpringBack\\src\\main\\resources\\Storage";
     
     private  final Logger LOGGER = Logger.getLogger(DepotServiceImp.class.getName());
 
     @Override
     public Depot createDepot(String projectName, DepotType type) {
         // Construct the full path to the depot with projectName
-        String depotPath = BASE_PATH + projectName + "_ressources/" + type.toString();
+        String depotPath = BASE_PATH +"/"+ projectName + "_ressources/" + type.toString();
         
         // Create and save the depot entity to the database
         Depot depot = new Depot();
@@ -54,4 +56,9 @@ public class DepotServiceImp implements DepotService {
         return depot;
     }
 
+    @Override
+    public Depot getDepotById(Integer depotId) {
+        return depotRepository.findById(depotId)
+            .orElseThrow(() -> new EntityNotFoundException("Depot not found with ID: " + depotId));
+    }
 }

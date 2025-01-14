@@ -5,6 +5,7 @@ import java.util.List;
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.Group;
 import org.sid.appbackser.entities.GroupAccount;
+import org.sid.appbackser.enums.RolesPerGroup;
 import org.sid.appbackser.repositories.AccountRepository;
 import org.sid.appbackser.repositories.GroupAccountRepository;
 import org.sid.appbackser.repositories.GroupRepository;
@@ -51,8 +52,14 @@ public class GroupAccountServiceImplement implements GroupAccountService {
         return groupAccountRepository.findById(accountId).orElse(null);
     }
 
+    @Override
+    public boolean isAccountMemberOfGroup(Integer accountId, Integer groupId) {
+        return groupAccountRepository.existsByAccountIdAndGroupId(accountId, groupId);
+    }
+    
+
 	@Override
-    public void assignAccountToGroupWithRole(Integer accountId,Integer groupId) {
+    public void assignAccountToGroupWithRole(Integer accountId,Integer groupId, RolesPerGroup role) {
         // Fetch the Account, Group, and Role
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
@@ -62,7 +69,7 @@ public class GroupAccountServiceImplement implements GroupAccountService {
         GroupAccount groupAccount = new GroupAccount();
         groupAccount.setAccount(account);
         groupAccount.setGroup(group);
-
+        groupAccount.setRole(role);
         // Save the GroupAccount to the repository
         groupAccountRepository.save(groupAccount);
     }

@@ -5,4 +5,5 @@ import org.sid.appbackser.enums.DepotType;
 
 public interface DepotService {
     Depot createDepot(String email, DepotType type);
+    Depot getDepotById(Integer depotId);
 }

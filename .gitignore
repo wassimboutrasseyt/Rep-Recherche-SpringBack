@@ -31,8 +31,14 @@ build/
 /src\main\resources\application.yml
 /src\main\resources\application.properties
 
+application.properties
+application.yml
+
 ### VS Code ###
 .vscode/
 
 src/main/resources/application.properties
 src/main/resources/application.yml
+application.properties
+application.yml
+
