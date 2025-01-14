@@ -102,7 +102,7 @@ public class RegistredUserController {
 
 
 	@Autowired
-	RessourcePersoService ressourcePersoService;
+	private RessourcePersoService ressourcePersoService;
 
 	@Autowired
 	CalendrierService calendrierService;

@@ -19,7 +19,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "groupss")
+@Table(name = "groups")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -10,7 +10,9 @@ import org.sid.appbackser.repositories.ProjectRepository;
 import org.sid.appbackser.repositories.PropositionRepository;
 import org.sid.appbackser.services.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DashboardServiceImp implements DashboardService{
 
     @Autowired

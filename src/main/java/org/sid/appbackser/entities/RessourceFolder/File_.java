@@ -45,9 +45,4 @@ public class File_ {
     @JsonBackReference
     private Folder folder;
 
-    @ManyToOne
-    @JoinColumn(name = "depot_id", nullable = true) // A file can belong directly to a depot
-    @JsonBackReference
-    private Depot depot;
-
 }

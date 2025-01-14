@@ -40,10 +40,5 @@ public class Depot {
     @OneToMany(mappedBy = "depot", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference // Prevents infinite recursion, manages serialization for folders
     private List<Folder> folders;
-    
-    // Direct association with Files
-    @OneToMany(mappedBy = "depot", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // Prevents infinite recursion for files
-    private List<File_> files;
-    
+
 }
