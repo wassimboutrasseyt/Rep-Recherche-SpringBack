@@ -28,7 +28,7 @@ public class Message {
     private ChatGroup chatGroup;
     private Integer senderId;
     private String content;
-
+    
     
     private Instant timestamp = Instant.now();
 
