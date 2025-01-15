@@ -512,6 +512,7 @@ public class RegistredUserController {
 			System.out.println("Fetching calendrier Fetching calendrier Fetching calendrierFetching calendrierFetching calendrierFetching calendrier Fetching calendrier");
 			Account account = authAcc.getAccount();
 			Calendrier calendrier = ressourcePersoService.getCalendrierByAccount(account);
+			System.out.println("Fetching calendrier Fetching calendrier Fetch" + calendrier);
 						return ResponseEntity.ok(calendrier);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error getting calendrier: " + e.getMessage());

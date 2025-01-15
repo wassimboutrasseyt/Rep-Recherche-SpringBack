@@ -12,6 +12,7 @@ import org.sid.appbackser.entities.RessourceFolder.RessourcePerso;
 import org.sid.appbackser.enums.AccountStatus;
 import org.sid.appbackser.enums.Roles;
 import org.sid.appbackser.repositories.AccountRepository;
+import org.sid.appbackser.repositories.CalendrierRepository;
 import org.sid.appbackser.repositories.ProjectRepository;
 import org.sid.appbackser.repositories.UserRepository;
 import org.sid.appbackser.services.AccountDetails;
@@ -51,6 +52,9 @@ public class AccountServiceImplement implements AccountService {
     ProjectRepository projectRepository;
     
     @Autowired
+    CalendrierRepository calendrierRepository;
+
+    @Autowired
     RessourcePersoRepository ressourcePersoRepository;
 
     @Autowired 
@@ -76,9 +80,10 @@ public class AccountServiceImplement implements AccountService {
     	Account account_2= accountRepository.save(account);
     	RessourcePerso ressourcePerso = new RessourcePerso();
         Calendrier calendrier = new Calendrier();
-        calendrier.setTaches(new ArrayList<>());
+        // calendrier.setTaches(new ArrayList<>());
         ressourcePerso.setAccount(account_2);
         ressourcePerso.setCalendrier(calendrier);
+        calendrierRepository.save(calendrier);
         ressourcePersoRepository.save(ressourcePerso);
 
 

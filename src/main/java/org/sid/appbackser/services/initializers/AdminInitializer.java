@@ -1,17 +1,22 @@
 package org.sid.appbackser.services.initializers;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.sid.appbackser.entities.User;
+import org.sid.appbackser.entities.RessourceFolder.Calendrier;
+import org.sid.appbackser.entities.RessourceFolder.RessourcePerso;
 import org.sid.appbackser.entities.Account;
 import org.sid.appbackser.entities.ChatGroup;
 import org.sid.appbackser.enums.AccountStatus;
 import org.sid.appbackser.enums.ChatGroupType;
 import org.sid.appbackser.enums.Roles;
 import org.sid.appbackser.repositories.AccountRepository;
+import org.sid.appbackser.repositories.CalendrierRepository;
 import org.sid.appbackser.repositories.ChatGroupRepository;
+import org.sid.appbackser.repositories.RessourcePersoRepository;
 import org.sid.appbackser.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
@@ -29,6 +34,10 @@ public class AdminInitializer {
     private AccountRepository accountRepository;
     @Autowired  
     private UserRepository userRepository;
+    @Autowired
+    private RessourcePersoRepository ressourcePersoRepository;
+    @Autowired
+    private CalendrierRepository calendrierRepository;
 
 
     @Autowired
@@ -56,6 +65,16 @@ public class AdminInitializer {
             admin1.setRole(role);
             admin1.setUser(user1);
             admin1.setStatus(AccountStatus.ACTIVE);
+            accountRepository.save(admin1);
+
+            RessourcePerso ressourcePerso = new RessourcePerso();
+            Calendrier calendrier = new Calendrier();
+            calendrier.setTaches(new ArrayList<>());
+            //calendrierRepository.save(calendrier);
+            ressourcePerso.setAccount(admin1);
+            ressourcePerso.setCalendrier(calendrier);
+            
+            ressourcePersoRepository.save(ressourcePerso);
     
             User user2 = new User();
             user2.setFirstName("");
@@ -71,6 +90,15 @@ public class AdminInitializer {
             admin2.setRole(role);
             admin2.setUser(user2);
             admin2.setStatus(AccountStatus.ACTIVE);
+            accountRepository.save(admin2);
+
+            RessourcePerso ressourcePerso1 = new RessourcePerso();
+            Calendrier calendrier1 = new Calendrier();
+            calendrier1.setTaches(new ArrayList<>());
+            ressourcePerso.setAccount(admin2);
+            ressourcePerso.setCalendrier(calendrier1);
+            ressourcePersoRepository.save(ressourcePerso1);
+            
     
             User user3 = new User();
             user3.setFirstName("");
@@ -87,10 +115,18 @@ public class AdminInitializer {
             admin3.setRole(role);
             admin3.setUser(user3);
             admin3.setStatus(AccountStatus.ACTIVE);
-    
-            accountRepository.save(admin1);
-            accountRepository.save(admin2);
             accountRepository.save(admin3);
+
+            RessourcePerso ressourcePerso2 = new RessourcePerso();
+            Calendrier calendrier2 = new Calendrier();
+            calendrier2.setTaches(new ArrayList<>());
+            ressourcePerso.setAccount(admin3);
+            ressourcePerso.setCalendrier(calendrier2);
+            ressourcePersoRepository.save(ressourcePerso2);
+    
+            
+            
+            
     
             // Create a default chat group
             ChatGroup newGroup = new ChatGroup();

@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CalendrierRepository extends JpaRepository<Calendrier, Integer> {
-
-    
+  
 }
