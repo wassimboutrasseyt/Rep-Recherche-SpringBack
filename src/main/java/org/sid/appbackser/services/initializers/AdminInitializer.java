@@ -128,12 +128,12 @@ public class AdminInitializer {
             
             
     
-            // Create a default chat group
-            ChatGroup newGroup = new ChatGroup();
-            newGroup.setName("General Group 1");
-            newGroup.setType(ChatGroupType.GENERALE); // Adjust based on your use case
-            newGroup.setMembers(List.of(admin1.getId(), admin2.getId(), admin3.getId())); // IDs of members
-            chatGroupRepository.save(newGroup);
+            // // Create a default chat group
+            // ChatGroup newGroup = new ChatGroup();
+            // newGroup.setName("General Group 1");
+            // newGroup.setType(ChatGroupType.GENERALE); // Adjust based on your use case
+            // newGroup.setMembers(List.of(admin1.getId(), admin2.getId(), admin3.getId())); // IDs of members
+            // chatGroupRepository.save(newGroup);
         }
     }
     

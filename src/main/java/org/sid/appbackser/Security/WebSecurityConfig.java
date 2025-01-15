@@ -32,8 +32,8 @@ public class WebSecurityConfig {
 		return http.csrf(customizer->customizer.disable()).
 		cors(cors->{}).
 		authorizeHttpRequests(request -> request.requestMatchers("/auth/**").permitAll()
-				.requestMatchers("/ws/chat/**").permitAll()  // Allow WebSocket URL
-				// .requestMatchers("/auth/login").permitAll()
+				.requestMatchers("/ws/chat/**").permitAll()
+				.requestMatchers("/web/**").permitAll()
 				.requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
 				.requestMatchers("/registred-user/**").hasAnyAuthority("ADMIN","REGISTRED_USER")
 				.requestMatchers("/guest/**").hasAnyAuthority("ADMIN","REGISTRED_USER","GUEST")

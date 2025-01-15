@@ -23,7 +23,7 @@ public class DepotServiceImp implements DepotService {
 
     @Autowired
     private FolderService folderService;
-    private static final String BASE_PATH = "C:\\Users\\wassi\\Documents\\Proojet\\Rep-Recherche-SpringBack\\src\\main\\resources\\Storage";
+    private static final String BASE_PATH = "C:\\Users\\user\\Desktop\\Spring\\NGR\\AppBackService\\src\\main\\resources\\Storage\\";
     
     private  final Logger LOGGER = Logger.getLogger(DepotServiceImp.class.getName());
 
