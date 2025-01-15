@@ -33,7 +33,7 @@ public class DashboardServiceImp implements DashboardService{
 
         long totalAccounts = accountRepository.count();
         long totalProjects = projectRepository.count();
-        long pendingPropositions = propositionRepository.countByStatus(PropositionStatus.PENDING.toString());
+        long pendingPropositions = propositionRepository.countByStatus(PropositionStatus.PENDING);
 
         dashboardAdmin.setNbProjects(totalProjects);
         dashboardAdmin.setNbAccounts(totalAccounts);

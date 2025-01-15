@@ -28,7 +28,7 @@ public class Folder {
     @Column(nullable = false)
     private String localPath; // Full path to the folder on the local file system
 
-    @Column(nullable = false)
+    @Column()
     private Integer ownerId; // The accountID of the owner
     
     @ManyToOne

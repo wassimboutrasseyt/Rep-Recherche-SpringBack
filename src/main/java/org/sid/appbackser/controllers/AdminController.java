@@ -113,7 +113,7 @@ public class AdminController {
 	}	
 	
 
-	@GetMapping("/dashboard/infos")
+	@GetMapping("/dashboardAdmin/infos")
     public ResponseEntity<?> getDashboardAdminInfos() {
 		/*
 		 * Response will look like:

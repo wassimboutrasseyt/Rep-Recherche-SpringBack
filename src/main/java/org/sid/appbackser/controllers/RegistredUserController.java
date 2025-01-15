@@ -172,7 +172,7 @@ public class RegistredUserController {
 
 	//Dashboard infos
 	    @GetMapping("/dashboard/infos")
-    public ResponseEntity<?> getDashboardRUsersInfos(@AuthenticationPrincipal Account authUser) {
+    public ResponseEntity<?> getDashboardRUsersInfos(@AuthenticationPrincipal AccountDetails authUser) {
 		/*
 		 * Response will look like:
 		 * 
@@ -180,7 +180,9 @@ public class RegistredUserController {
 		 *   "projectsHeCreated": 5,
 		 *   "projectsMemberOn": 3
 		 * }
+		 * 
 		 */
+		
         try {
             if (authUser == null) {
                 return ResponseEntity
@@ -188,7 +190,7 @@ public class RegistredUserController {
                         .body("User not authenticated");
             }
 
-            DashboardRUserDTO dashboardRUserInfos = dashboardService.getDashboardRUsersInfos(authUser);
+            DashboardRUserDTO dashboardRUserInfos = dashboardService.getDashboardRUsersInfos(authUser.getAccount());
             return ResponseEntity.ok(dashboardRUserInfos); // HTTP 200 OK
         } catch (Exception ex) {
             return ResponseEntity

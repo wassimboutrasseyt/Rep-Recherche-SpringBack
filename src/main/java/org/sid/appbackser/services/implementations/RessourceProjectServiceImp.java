@@ -1,5 +1,7 @@
 package org.sid.appbackser.services.implementations;
 
+import java.security.Principal;
+
 import org.sid.appbackser.entities.Project;
 import org.sid.appbackser.entities.RessourceFolder.Depot;
 import org.sid.appbackser.entities.RessourceFolder.Folder;
@@ -27,6 +29,7 @@ public class RessourceProjectServiceImp implements RessourceProjectService {
 
     public RessourceProject createRessourceProject(Project project) {
         
+        Principal principal;
         // Create depots for the Project (WEB and SRC)
         Depot webDepot = depotService.createDepot(project.getShortName(), DepotType.WEB);
         Folder hostingFolder = folderService.createFolder(webDepot.getId(), "Host", null, null);
