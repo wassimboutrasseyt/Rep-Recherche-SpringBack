@@ -33,9 +33,9 @@ public class WebPagesController {
         }
     
         // Path to the project depot
-        String depotFolderPath = project.getRessourceProject().getWebDepot().getLocalPath();
+        String depotFolderPath = project.getRessourceProject().getWebDepot().getLocalPath() + "/Host/";
         File indexFile = new File(Paths.get(depotFolderPath, "index.html").toString());
-    
+
         if (!indexFile.exists()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("The requested project depot does not contain an index.html file.");
