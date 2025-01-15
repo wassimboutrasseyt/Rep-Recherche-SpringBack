@@ -114,6 +114,12 @@ spring.mail.username=your_email@example.com
 spring.mail.password=your_email_password
 ```
 
+### Notify the developer
+
+- You have the change the BasePath of the storage folder on 
+```src\main\java\org\sid\appbackser\services\implementations\DepotServiceImp.java.
+```
+
 ## Usage
 
 - Access the RESTful APIs via tools like Postman or a frontend application.
