@@ -34,7 +34,8 @@ public class WebSecurityConfig {
 		authorizeHttpRequests(request -> request.requestMatchers("/auth/**").permitAll()
 				.requestMatchers("/ws/chat/**").permitAll()
 				.requestMatchers("/web/**").permitAll()
-				.requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+				.requestMatchers("Les ressources publiques sont accessibles à tous les rôles définis dans la configuration.\n" + //
+										"Les ressources privées sont accessibles uniquement aux utilisateurs ou administrateurs autorisés.").hasAnyAuthority("ADMIN")
 				.requestMatchers("/registred-user/**").hasAnyAuthority("ADMIN","REGISTRED_USER")
 				.requestMatchers("/guest/**").hasAnyAuthority("ADMIN","REGISTRED_USER","GUEST")
 				.anyRequest().authenticated()).

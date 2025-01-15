@@ -118,11 +118,11 @@
 		</dependency>
 
   <!-- dep for quick refresh -->
-    <dependency>
+    <!-- <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
       <scope>runtime</scope>
-    </dependency>
+    </dependency> -->
 
 
     <!-- test dependencies -->
